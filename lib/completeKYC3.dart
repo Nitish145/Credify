@@ -1,4 +1,4 @@
-import 'package:credify/completeKYC2.dart';
+import 'package:credify/confirmed_screen.dart';
 import 'package:flutter/material.dart';
 
 class CompleteKYC3 extends StatefulWidget {
@@ -8,6 +8,13 @@ class CompleteKYC3 extends StatefulWidget {
 
 class _CompleteKYC3State extends State<CompleteKYC3> {
   var formKey = new GlobalKey<FormState>();
+//  TextEditingController _occupationController = TextEditingController();
+//  TextEditingController _monthlyIncomeController = TextEditingController();
+//  TextEditingController _livesWithController = TextEditingController();
+
+  String occupation;
+  var monthlyIncome;
+  String livesWith;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +62,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         top: 30, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Occupation",
                             labelStyle: TextStyle(color: Colors.white),
@@ -66,6 +74,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.number,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Your Monthly Income",
                             labelStyle: TextStyle(color: Colors.white),
@@ -77,6 +86,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "You live with",
                             labelStyle: TextStyle(color: Colors.white),
@@ -103,7 +113,12 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                               style: new TextStyle(
                                   fontSize: 18.0, color: Colors.white)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ConfirmedScreen()));
+                        },
                       ),
                     ),
                   )

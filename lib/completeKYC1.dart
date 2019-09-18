@@ -13,6 +13,11 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
 //  TextEditingController _panController = TextEditingController();
 //  TextEditingController _aadharController = TextEditingController();
 
+  String fullName;
+  String dob;
+  String panNumber;
+  String aadhar;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +64,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                         top: 30, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Your Full Name",
                             labelStyle: TextStyle(color: Colors.white),
@@ -70,6 +76,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.datetime,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Date of Birth",
                             labelStyle: TextStyle(color: Colors.white),
@@ -81,6 +88,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Your PAN Card",
                             labelStyle: TextStyle(color: Colors.white),
@@ -92,6 +100,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Your Aadhar Number",
                             labelStyle: TextStyle(color: Colors.white),

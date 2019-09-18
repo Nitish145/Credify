@@ -1,8 +1,5 @@
-import 'package:credify/completeKYC1.dart';
-import 'package:credify/completeKYC2.dart';
-import 'package:credify/confirmed_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:credify/mobile_number_screen.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,21 +15,23 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         cursorColor: Colors.white,
         primaryTextTheme: TextTheme(
-          display1: TextStyle(color: Colors.white , fontSize: 30),
-          display2: TextStyle(color: Colors.white , fontSize: 24),
-          display3: TextStyle(color: Colors.white , fontSize: 18),
+          display1: TextStyle(color: Colors.white, fontSize: 32),
+          display2: TextStyle(color: Colors.white, fontSize: 26),
+          display3: TextStyle(color: Colors.white, fontSize: 20),
+          display4: TextStyle(color: Colors.white, fontSize: 16),
           body1: TextStyle(color: Colors.white),
           body2: TextStyle(color: Colors.white),
         ),
         accentTextTheme: TextTheme(
-          display1: TextStyle(color: Colors.white , fontSize: 30),
-          display2: TextStyle(color: Colors.white , fontSize: 24),
-          display3: TextStyle(color: Colors.white , fontSize: 18),
+          display1: TextStyle(color: Colors.grey, fontSize: 32),
+          display2: TextStyle(color: Colors.grey, fontSize: 26),
+          display3: TextStyle(color: Colors.grey, fontSize: 20),
+          display4: TextStyle(color: Colors.grey, fontSize: 16),
           body1: TextStyle(color: Colors.white),
           body2: TextStyle(color: Colors.white),
         ),
       ),
-      home: CompleteKYC1(),
+      home: MobileNumberScreen(),
     );
   }
 }

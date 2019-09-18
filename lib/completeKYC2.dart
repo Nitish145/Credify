@@ -8,6 +8,15 @@ class CompleteKYC2 extends StatefulWidget {
 
 class _CompleteKYC2State extends State<CompleteKYC2> {
   var formKey = new GlobalKey<FormState>();
+//  TextEditingController _pincodeController = TextEditingController();
+//  TextEditingController _houseNumberController = TextEditingController();
+//  TextEditingController _localityController = TextEditingController();
+//  TextEditingController _cityController = TextEditingController();
+
+  String pincode;
+  String houseNumber;
+  String locality;
+  String city;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +64,7 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                         top: 30, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.number,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Pincode",
                             labelStyle: TextStyle(color: Colors.white),
@@ -66,6 +76,7 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "House Number , Street Number",
                             labelStyle: TextStyle(color: Colors.white),
@@ -77,6 +88,7 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.multiline,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Locality",
                             labelStyle: TextStyle(color: Colors.white),
@@ -88,6 +100,7 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "City / District",
                             labelStyle: TextStyle(color: Colors.white),

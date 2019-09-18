@@ -1,15 +1,15 @@
-import 'package:credify/otpVerificationScreen.dart';
+import 'package:credify/completeKYC1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MobileNumberScreen extends StatefulWidget {
+class OtpVerificationScreen extends StatefulWidget {
   @override
-  _MobileNumberScreenState createState() => _MobileNumberScreenState();
+  _OtpVerificationScreenState createState() => _OtpVerificationScreenState();
 }
 
-class _MobileNumberScreenState extends State<MobileNumberScreen> {
+class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   var formKey = new GlobalKey<FormState>();
-  String phoneNo;
+  String otp;
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +75,20 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                       top: 100, left: 30, right: 30, bottom: 10),
                   child: TextFormField(
                     keyboardType: TextInputType.phone,
-                    maxLength: 10,
+                    maxLength: 4,
                     style: Theme.of(context).primaryTextTheme.display3,
                     decoration: InputDecoration(
-                        labelText: "Mobile Number",
+                        labelText: "OTP",
                         labelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder()),
-                    validator: (_phoneNo) {
-                      if (_phoneNo.length < 10) {
-                        return "Enter a valid mobile no.";
+                    validator: (_otp) {
+                      if (_otp.length < 4) {
+                        return "Enter a valid Otp";
                       }
                       return null;
                     },
-                    onSaved: (String _phoneNo) => phoneNo = _phoneNo,
+                    onSaved: (String _otp) => otp = _otp,
                   ),
                 ),
               ],
@@ -109,15 +109,13 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                     borderRadius: new BorderRadius.circular(5)),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
-                  child: new Text('Send OTP',
+                  child: new Text('Verify',
                       style:
                           new TextStyle(fontSize: 18.0, color: Colors.white)),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OtpVerificationScreen()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => CompleteKYC1()));
                 },
               ),
             ),
