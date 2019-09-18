@@ -50,22 +50,25 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(30.0, 100.0, 30.0, 30.0),
-              child: RaisedButton(
-                elevation: 5.0,
-                color: Color.fromRGBO(45, 156, 219, 1),
-                shape: new RoundedRectangleBorder(
-                    side: BorderSide(
-                      style: BorderStyle.solid,
-                      width: 2,
-                    ),
-                    borderRadius: new BorderRadius.circular(5)),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
-                  child: new Text('Go to Dashboard',
-                      style:
-                          new TextStyle(fontSize: 18.0, color: Colors.white)),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: RaisedButton(
+                  elevation: 5.0,
+                  color: Color.fromRGBO(45, 156, 219, 1),
+                  shape: new RoundedRectangleBorder(
+                      side: BorderSide(
+                        style: BorderStyle.solid,
+                        width: 2,
+                      ),
+                      borderRadius: new BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
+                    child: new Text('Go to Dashboard',
+                        style:
+                            new TextStyle(fontSize: 18.0, color: Colors.white)),
+                  ),
+                  onPressed: () {},
                 ),
-                onPressed: () {},
               ),
             )
           ],

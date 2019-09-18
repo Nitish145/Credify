@@ -1,3 +1,5 @@
+import 'package:credify/completeKYC1.dart';
+import 'package:credify/completeKYC2.dart';
 import 'package:credify/confirmed_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:credify/mobile_number_screen.dart';
@@ -13,6 +15,8 @@ class MyApp extends StatelessWidget {
       title: 'CREDIFY',
       theme: ThemeData(
         fontFamily: 'Raleway',
+        primaryColor: Colors.white,
+        cursorColor: Colors.white,
         primaryTextTheme: TextTheme(
           display1: TextStyle(color: Colors.white , fontSize: 30),
           display2: TextStyle(color: Colors.white , fontSize: 24),
@@ -28,7 +32,7 @@ class MyApp extends StatelessWidget {
           body2: TextStyle(color: Colors.white),
         ),
       ),
-      home: ConfirmedScreen(),
+      home: CompleteKYC1(),
     );
   }
 }
