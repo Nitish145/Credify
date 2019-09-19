@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 class TravelCard extends StatefulWidget {
   final String imageLocation;
-  final bool isAtBottom;
-  final String heading;
-  final String subheading;
-  final bool isDark;
+  final String place;
+  final String daysNights;
+  final String price;
+  final String timeSpan;
 
   const TravelCard(
       {Key key,
-      this.isAtBottom,
-      this.heading,
-      this.subheading,
-      this.isDark,
-      this.imageLocation})
+      this.imageLocation,
+      this.place,
+      this.daysNights,
+      this.price,
+      this.timeSpan})
       : super(key: key);
   @override
   _TravelCardState createState() => _TravelCardState();
@@ -38,43 +38,57 @@ class _TravelCardState extends State<TravelCard> {
           child: Stack(children: <Widget>[
             Image.asset(widget.imageLocation, fit: BoxFit.fill),
             Column(
-              mainAxisAlignment: widget.isAtBottom
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, top: 15),
+                  padding: const EdgeInsets.only(left: 15, top: 20),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      widget.heading,
-                      style: widget.isDark
-                          ? Theme.of(context)
-                              .accentTextTheme
-                              .display2
-                              .copyWith(fontWeight: FontWeight.bold)
-                          : Theme.of(context)
-                              .primaryTextTheme
-                              .display2
-                              .copyWith(fontWeight: FontWeight.bold),
+                      widget.place,
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .display1
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, bottom: 15, top: 5),
+                  padding: const EdgeInsets.only(left: 15, bottom: 5, top: 5),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      widget.subheading,
-                      style: widget.isDark
-                          ? Theme.of(context)
-                              .accentTextTheme
-                              .display4
-                              .copyWith(fontWeight: FontWeight.w400)
-                          : Theme.of(context)
-                              .primaryTextTheme
-                              .display4
-                              .copyWith(fontWeight: FontWeight.w400),
+                      widget.daysNights,
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .display4
+                          .copyWith(fontWeight: FontWeight.w300),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, top: 5),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      widget.price,
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .display2
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, top: 2),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      widget.timeSpan,
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .display4
+                          .copyWith(fontWeight: FontWeight.w300),
                     ),
                   ),
                 ),
