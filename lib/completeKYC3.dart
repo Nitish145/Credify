@@ -111,10 +111,8 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                   fontSize: 18.0, color: Colors.white)),
                         ),
                         onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConfirmedScreen()));
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              '/confirmed', (Route<dynamic> route) => false);
                         },
                       ),
                     ),

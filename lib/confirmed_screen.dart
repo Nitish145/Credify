@@ -69,10 +69,8 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
                             new TextStyle(fontSize: 18.0, color: Colors.white)),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DashboardScreen()));
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/dashboard', (Route<dynamic> route) => false);
                   },
                 ),
               ),
