@@ -1,5 +1,6 @@
 import 'package:credify/credify_card.dart';
 import 'package:credify/dashboard_card.dart';
+import 'package:credify/progress_bar.dart';
 import 'package:credify/travel_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -81,6 +82,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   .display2
                                   .copyWith(fontWeight: FontWeight.bold))
                         ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          elevation: 10.0,
+                          child: ProgressBar(
+                            linearGradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Color.fromRGBO(229, 93, 135, 1),
+                                  Color.fromRGBO(95, 195, 228, 1)
+                                ]),
+                            progress: 40.0,
+                            borderRadius: BorderRadius.circular(10.0),
+                            height: 15.0,
+                          ),
+                        ),
                       ),
                     ],
                   ),
