@@ -8,9 +8,6 @@ class CompleteKYC3 extends StatefulWidget {
 
 class _CompleteKYC3State extends State<CompleteKYC3> {
   var formKey = new GlobalKey<FormState>();
-//  TextEditingController _occupationController = TextEditingController();
-//  TextEditingController _monthlyIncomeController = TextEditingController();
-//  TextEditingController _livesWithController = TextEditingController();
 
   String occupation;
   var monthlyIncome;
@@ -114,7 +111,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                   fontSize: 18.0, color: Colors.white)),
                         ),
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ConfirmedScreen()));

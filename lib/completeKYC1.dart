@@ -8,10 +8,6 @@ class CompleteKYC1 extends StatefulWidget {
 
 class _CompleteKYC1State extends State<CompleteKYC1> {
   var formKey = new GlobalKey<FormState>();
-//  TextEditingController _fullNameController = TextEditingController();
-//  TextEditingController _dobController = TextEditingController();
-//  TextEditingController _panController = TextEditingController();
-//  TextEditingController _aadharController = TextEditingController();
 
   String fullName;
   String dob;

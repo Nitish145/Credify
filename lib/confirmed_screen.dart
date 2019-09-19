@@ -1,3 +1,4 @@
+import 'package:credify/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmedScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: 50 , left: 30),
+                padding: const EdgeInsets.only(top: 50, left: 30),
                 child: Text(
                   "Credify",
                   textAlign: TextAlign.left,
@@ -67,7 +68,12 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
                         style:
                             new TextStyle(fontSize: 18.0, color: Colors.white)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DashboardScreen()));
+                  },
                 ),
               ),
             )

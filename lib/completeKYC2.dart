@@ -8,10 +8,6 @@ class CompleteKYC2 extends StatefulWidget {
 
 class _CompleteKYC2State extends State<CompleteKYC2> {
   var formKey = new GlobalKey<FormState>();
-//  TextEditingController _pincodeController = TextEditingController();
-//  TextEditingController _houseNumberController = TextEditingController();
-//  TextEditingController _localityController = TextEditingController();
-//  TextEditingController _cityController = TextEditingController();
 
   String pincode;
   String houseNumber;

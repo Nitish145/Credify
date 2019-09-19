@@ -26,7 +26,7 @@ class _TravelScreenState extends State<TravelScreen> {
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 15, 15, 10),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
                   child: Text(
                     "Travel",
                     style: Theme.of(context)
