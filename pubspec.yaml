@@ -44,6 +44,8 @@ flutter:
   assets:
     - assets/images/topBackground.png
     - assets/images/C.png
+    - assets/images/bikeRide.png
+    - assets/images/travel.png
 
   fonts:
     - family: Raleway
