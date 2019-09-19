@@ -1,4 +1,3 @@
-import 'package:credify/confirmed_screen.dart';
 import 'package:flutter/material.dart';
 
 class CompleteKYC3 extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:credify/confirmed_screen.dart';
-import 'package:credify/dashboard_screen.dart';
 import 'package:credify/mobile_number_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
-        routes: {
-          "/dashboard": (context) => DashboardScreen(),
-          "/confirmed": (context) => ConfirmedScreen()
-        },
+        routes: {"/confirmed": (context) => ConfirmedScreen()},
         title: 'CREDIFY',
         theme: ThemeData(
           fontFamily: 'Raleway',
