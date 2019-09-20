@@ -1,4 +1,4 @@
-import 'package:credify/detail_screen.dart';
+import 'package:credify/travel_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class TravelCard extends StatefulWidget {

@@ -87,7 +87,7 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
+                      padding: const EdgeInsets.only(left: 35, top: 5),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(
@@ -100,7 +100,7 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 2),
+                      padding: const EdgeInsets.only(left: 35, top: 2),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(

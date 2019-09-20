@@ -10,9 +10,21 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
   var formKey = new GlobalKey<FormState>();
 
   String fullName;
-  String dob;
+  DateTime dob = DateTime(2000);
   String panNumber;
   String aadhar;
+
+  Future<Null> _dobPicker(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: dob,
+        firstDate: DateTime(1950, 8),
+        lastDate: DateTime.now());
+    if (picked != null && picked != dob)
+      setState(() {
+        dob = picked;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,23 +79,40 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                             border: OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder())),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, left: 30, right: 30, bottom: 30),
-                    child: TextFormField(
-                        keyboardType: TextInputType.datetime,
-                        style: Theme.of(context).primaryTextTheme.display3,
-                        decoration: InputDecoration(
-                            labelText: "Date of Birth",
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder())),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(40, 10, 30, 20),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "Date of birth",
+                            style: Theme.of(context).primaryTextTheme.display3,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: GestureDetector(
+                              child: Text(
+                                  dob
+                                      .toLocal()
+                                      .toIso8601String()
+                                      .substring(0, 10),
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .display3),
+                              onTap: () => _dobPicker(context),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.characters,
                         style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Your PAN Card",
@@ -95,7 +124,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     padding: const EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Your Aadhar Number",
