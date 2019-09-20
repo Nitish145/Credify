@@ -55,39 +55,47 @@ class _BankScreenState extends State<BankScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(40, 30, 40, 5),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: bankName,
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: Theme.of(context).primaryTextTheme.display3,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          bankName = newValue;
-                        });
-                      },
-                      items: <String>['HDFC Bank']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: Theme.of(context).primaryTextTheme.display3,
-                          ),
-                        );
-                      }).toList(),
+            Theme(
+              data: ThemeData.dark(),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(40, 30, 40, 5),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: bankName,
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: Theme.of(context).primaryTextTheme.display3,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            bankName = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'HDFC Bank',
+                          'AXIS Bank',
+                          'State Bank of India',
+                          'ICICI bank'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style:
+                                  Theme.of(context).primaryTextTheme.display3,
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),
