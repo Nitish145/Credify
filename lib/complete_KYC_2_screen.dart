@@ -1,19 +1,18 @@
-import 'package:credify/completeKYC2.dart';
+import 'package:credify/complete_KYC_3_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
 
-class CompleteKYC1 extends StatefulWidget {
+class CompleteKYC2 extends StatefulWidget {
   @override
-  _CompleteKYC1State createState() => _CompleteKYC1State();
+  _CompleteKYC2State createState() => _CompleteKYC2State();
 }
 
-class _CompleteKYC1State extends State<CompleteKYC1> {
+class _CompleteKYC2State extends State<CompleteKYC2> {
   var formKey = new GlobalKey<FormState>();
 
-  String fullName;
-  String dob;
-  String panNumber;
-  String aadhar;
+  String pincode;
+  String houseNumber;
+  String locality;
+  String city;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 0, left: 30),
                 child: Text(
-                  "  1/3",
+                  "  2/3",
                   style: Theme.of(context).primaryTextTheme.display3,
                 ),
               ),
@@ -60,10 +59,22 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     padding: const EdgeInsets.only(
                         top: 30, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        style: Theme.of(context).primaryTextTheme.display3,
+                        decoration: InputDecoration(
+                            labelText: "Pincode",
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder())),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, left: 30, right: 30, bottom: 30),
+                    child: TextFormField(
                         keyboardType: TextInputType.text,
                         style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
-                            labelText: "Your Full Name",
+                            labelText: "House Number , Street Number",
                             labelStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder())),
@@ -72,14 +83,10 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     padding: const EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
-                        keyboardType: TextInputType.datetime,
-                        inputFormatters: [
-                          MaskedTextInputFormatter(
-                              mask: "--/--/----", separator: "/")
-                        ],
+                        keyboardType: TextInputType.multiline,
                         style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
-                            labelText: "Date of Birth",
+                            labelText: "Locality",
                             labelStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder())),
@@ -88,37 +95,10 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     padding: const EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      textCapitalization: TextCapitalization.characters,
-                      style: Theme.of(context).primaryTextTheme.display3,
-                      decoration: InputDecoration(
-                          labelText: "Your PAN Card",
-                          labelStyle: TextStyle(color: Colors.white),
-                          border: OutlineInputBorder(),
-                          enabledBorder: OutlineInputBorder()),
-                      validator: (pan) {
-                        bool isPanValid =
-                            RegExp("[A-Z]{3}[ABCFGHLJPT][A-Z][0-9]{4}[A-Z]")
-                                .hasMatch(pan);
-                        if (!isPanValid) {
-                          return "Please Enter a valid PAN number";
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, left: 30, right: 30, bottom: 30),
-                    child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          MaskedTextInputFormatter(
-                              mask: "---- ---- ----", separator: " ")
-                        ],
+                        keyboardType: TextInputType.text,
                         style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
-                            labelText: "Your Aadhar Number",
+                            labelText: "City / District",
                             labelStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder())),
@@ -147,7 +127,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CompleteKYC2()));
+                                  builder: (context) => CompleteKYC3()));
                         },
                       ),
                     ),

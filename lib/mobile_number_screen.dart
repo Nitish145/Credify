@@ -1,4 +1,4 @@
-import 'package:credify/otpVerificationScreen.dart';
+import 'package:credify/otp_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

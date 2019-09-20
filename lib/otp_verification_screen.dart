@@ -1,4 +1,4 @@
-import 'package:credify/completeKYC1.dart';
+import 'package:credify/complete_KYC_1_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
