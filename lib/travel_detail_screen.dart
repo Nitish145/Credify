@@ -149,40 +149,45 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
           children: <Widget>[
             detailedScreenAppBar(),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(30, 20, 30, 5),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Color.fromRGBO(45, 156, 219, 1)),
-                child: DropdownButton<String>(
-                  value: dropdownValue,
-                  icon: Icon(Icons.keyboard_arrow_down),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: Theme.of(context).accentTextTheme.display3,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                  },
-                  items: <String>['Iteneary']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          value,
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: dropdownValue,
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: Theme.of(context).accentTextTheme.display3,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
+                      },
+                      items: <String>['Iteneary']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              value,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
