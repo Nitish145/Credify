@@ -1,3 +1,4 @@
+import 'package:credify/bank_2_screen.dart';
 import 'package:flutter/material.dart';
 
 class BankScreen extends StatefulWidget {
@@ -6,7 +7,7 @@ class BankScreen extends StatefulWidget {
 }
 
 class _BankScreenState extends State<BankScreen> {
-  String bankName = "HDFC Bank";
+  String bankName = "Choose your Bank";
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +82,7 @@ class _BankScreenState extends State<BankScreen> {
                           });
                         },
                         items: <String>[
+                          'Choose your Bank',
                           'HDFC Bank',
                           'AXIS Bank',
                           'State Bank of India',
@@ -101,6 +103,32 @@ class _BankScreenState extends State<BankScreen> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 30.0),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: RaisedButton(
+                  elevation: 5.0,
+                  color: Color.fromRGBO(45, 156, 219, 1),
+                  shape: new RoundedRectangleBorder(
+                      side: BorderSide(
+                        style: BorderStyle.solid,
+                        width: 2,
+                      ),
+                      borderRadius: new BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
+                    child: new Text('Continue',
+                        style:
+                            new TextStyle(fontSize: 18.0, color: Colors.white)),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BankScreen2()));
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),

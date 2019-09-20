@@ -105,7 +105,10 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen> {
                             style: new TextStyle(
                                 fontSize: 18.0, color: Colors.white)),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            '/bankScreen1', (Route<dynamic> route) => false);
+                      },
                     ),
                   ),
                 )

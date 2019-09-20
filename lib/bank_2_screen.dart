@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -142,7 +141,10 @@ class _BankScreen2State extends State<BankScreen2> {
                               style: new TextStyle(
                                   fontSize: 18.0, color: Colors.white)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              '/confirmed', (Route<dynamic> route) => false);
+                        },
                       ),
                     ),
                   )

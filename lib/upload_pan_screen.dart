@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:credify/video_selfie_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -187,7 +188,12 @@ class _UploadPanState extends State<UploadPan> {
                             style: new TextStyle(
                                 fontSize: 18.0, color: Colors.white)),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VideoSelfieScreen()));
+                      },
                     ),
                   ),
                 )

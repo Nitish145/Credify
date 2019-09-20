@@ -1,5 +1,9 @@
+import 'package:credify/bank_1_screen.dart';
+import 'package:credify/bank_2_screen.dart';
 import 'package:credify/confirmed_screen.dart';
 import 'package:credify/mobile_number_screen.dart';
+import 'package:credify/upload_aadhar_screen.dart';
+import 'package:credify/upload_pan_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -11,7 +15,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
-        routes: {"/confirmed": (context) => ConfirmedScreen()},
+        routes: {
+          "/confirmed": (context) => ConfirmedScreen(),
+          "/aadharScreen": (context) => UploadAadhar(),
+          "/panScreen": (context) => UploadPan(),
+          "/bankScreen1": (context) => BankScreen(),
+          "/bankScreen2": (context) => BankScreen2(),
+        },
         title: 'CREDIFY',
         theme: ThemeData(
             fontFamily: 'Raleway',

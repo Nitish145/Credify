@@ -648,7 +648,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         ),
                         onPressed: () {
                           Navigator.pushNamedAndRemoveUntil(context,
-                              '/confirmed', (Route<dynamic> route) => false);
+                              '/aadharScreen', (Route<dynamic> route) => false);
                         },
                       ),
                     ),
