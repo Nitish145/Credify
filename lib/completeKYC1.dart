@@ -1,5 +1,6 @@
 import 'package:credify/completeKYC2.dart';
 import 'package:flutter/material.dart';
+import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
 
 class CompleteKYC1 extends StatefulWidget {
   @override
@@ -71,8 +72,11 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     padding: const EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.characters,
+                        keyboardType: TextInputType.datetime,
+                        inputFormatters: [
+                          MaskedTextInputFormatter(
+                              mask: "--/--/----", separator: "/")
+                        ],
                         style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Date of Birth",
@@ -84,20 +88,34 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     padding: const EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.characters,
-                        style: Theme.of(context).primaryTextTheme.display3,
-                        decoration: InputDecoration(
-                            labelText: "Your PAN Card",
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder())),
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.characters,
+                      style: Theme.of(context).primaryTextTheme.display3,
+                      decoration: InputDecoration(
+                          labelText: "Your PAN Card",
+                          labelStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder()),
+                      validator: (pan) {
+                        bool isPanValid =
+                            RegExp("[A-Z]{3}[ABCFGHLJPT][A-Z][0-9]{4}[A-Z]")
+                                .hasMatch(pan);
+                        if (!isPanValid) {
+                          return "Please Enter a valid PAN number";
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 10, left: 30, right: 30, bottom: 30),
                     child: TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          MaskedTextInputFormatter(
+                              mask: "---- ---- ----", separator: " ")
+                        ],
                         style: Theme.of(context).primaryTextTheme.display3,
                         decoration: InputDecoration(
                             labelText: "Your Aadhar Number",
