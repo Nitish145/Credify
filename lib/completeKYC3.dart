@@ -448,7 +448,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "How do you get your Salary?",
+                      "What do you do?",
                       style: Theme.of(context).primaryTextTheme.display4,
                     ),
                   ),
