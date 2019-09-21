@@ -1,1 +1,1 @@
-bool isProgressing = false;
+String currentUserId;
