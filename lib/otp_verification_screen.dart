@@ -1,6 +1,7 @@
 import 'package:credify/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:toast/toast.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String mobileNumber;
@@ -80,7 +81,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       top: 100, left: 30, right: 30, bottom: 10),
                   child: TextFormField(
                     keyboardType: TextInputType.phone,
-                    maxLength: 4,
+                    maxLength: 6,
                     style: Theme.of(context).primaryTextTheme.display3,
                     decoration: InputDecoration(
                         labelText: "OTP",
@@ -88,8 +89,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder()),
                     validator: (_otp) {
-                      if (_otp.length < 4) {
-                        return "Enter a valid Otp";
+                      if (_otp.length < 6) {
+                        return "Invalid OTP";
                       }
                       return null;
                     },
@@ -126,6 +127,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => DashboardScreen()));
+                    } else {
+                      Toast.show("Wrong OTP entered", context,
+                          duration: Toast.LENGTH_SHORT,
+                          gravity: Toast.BOTTOM,
+                          backgroundColor: Colors.blueGrey);
                     }
                   }
                 },
