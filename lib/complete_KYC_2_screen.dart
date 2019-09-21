@@ -1,4 +1,4 @@
-import 'package:credify/Models/pin_info.dart';
+import 'package:credify/Models/pin_info_model.dart';
 import 'package:credify/complete_KYC_3_screen.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';

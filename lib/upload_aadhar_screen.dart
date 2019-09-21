@@ -63,7 +63,7 @@ class _UploadAadharState extends State<UploadAadhar> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 0, left: 30),
                 child: Text(
-                  "  2/2",
+                  "  1/2",
                   style: Theme.of(context).primaryTextTheme.display3,
                 ),
               ),

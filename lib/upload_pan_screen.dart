@@ -63,7 +63,7 @@ class _UploadPanState extends State<UploadPan> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 0, left: 30),
                 child: Text(
-                  "  1/2",
+                  "  2/2",
                   style: Theme.of(context).primaryTextTheme.display3,
                 ),
               ),

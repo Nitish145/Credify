@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
+  final String mobileNumber;
+  final String otp;
+
+  const OtpVerificationScreen({Key key, this.mobileNumber, this.otp})
+      : super(key: key);
   @override
   _OtpVerificationScreenState createState() => _OtpVerificationScreenState();
 }
@@ -114,8 +119,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           new TextStyle(fontSize: 18.0, color: Colors.white)),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => DashboardScreen()));
+                  if (formKey.currentState.validate()) {
+                    formKey.currentState.save();
+                    if (otp == widget.otp) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashboardScreen()));
+                    }
+                  }
                 },
               ),
             ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:credify/Models/pin_info.dart';
+import 'package:credify/Models/pin_info_model.dart';
 import 'package:http/http.dart' as http;
 
 String url = "https://api.postalpincode.in/pincode";

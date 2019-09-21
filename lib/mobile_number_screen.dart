@@ -1,6 +1,9 @@
+import 'package:credify/Models/otp_response_model.dart';
 import 'package:credify/otp_verification_screen.dart';
+import 'package:credify/services/otp_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:math' as math;
 
 class MobileNumberScreen extends StatefulWidget {
   @override
@@ -9,7 +12,16 @@ class MobileNumberScreen extends StatefulWidget {
 
 class _MobileNumberScreenState extends State<MobileNumberScreen> {
   var formKey = new GlobalKey<FormState>();
-  String phoneNo;
+  String mobileNumber;
+
+  String generateOtp() {
+    var rnd = new math.Random();
+    var next = rnd.nextDouble() * 1000000;
+    while (next < 100000) {
+      next *= 10;
+    }
+    return next.toInt().toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +100,7 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                       }
                       return null;
                     },
-                    onSaved: (String _phoneNo) => phoneNo = _phoneNo,
+                    onSaved: (String _phoneNo) => mobileNumber = _phoneNo,
                   ),
                 ),
               ],
@@ -113,11 +125,22 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                       style:
                           new TextStyle(fontSize: 18.0, color: Colors.white)),
                 ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OtpVerificationScreen()));
+                onPressed: () async {
+                  if (formKey.currentState.validate()) {
+                    formKey.currentState.save();
+                    String otp = generateOtp();
+                    OtpResponse otpResponse =
+                        await otpResponseService(mobileNumber, "otp", otp);
+                    if (otpResponse.isSent) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OtpVerificationScreen(
+                                    mobileNumber: mobileNumber,
+                                    otp: otp,
+                                  )));
+                    }
+                  }
                 },
               ),
             ),
