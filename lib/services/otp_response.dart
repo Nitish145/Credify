@@ -20,7 +20,8 @@ Future<OtpResponse> otpResponseService(
   };
 
   try {
-    var response = await client.post(uri, body: json);
+    http.Response response =
+        await client.post(uri, body: jsonEncode(json), headers: header);
     final jsonResponse = jsonDecode(response.body);
     OtpResponse otpResponse = new OtpResponse.fromJson(jsonResponse);
     print(jsonResponse);

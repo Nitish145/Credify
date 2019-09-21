@@ -1,1 +1,2 @@
-String currentUserId;
+String currentUserId = "";
+String currentUserMobileNumber = "";

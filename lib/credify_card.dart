@@ -1,4 +1,9 @@
+import 'package:credify/Models/is_new_user_model.dart';
+import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/complete_KYC_1_screen.dart';
+import 'package:credify/globals.dart';
+import 'package:credify/services/is_new_user.dart' as prefix0;
+import 'package:credify/services/user_data.dart';
 import 'package:flutter/material.dart';
 
 class CredifyCard extends StatefulWidget {
@@ -77,9 +82,15 @@ class _CredifyCardState extends State<CredifyCard> {
               ],
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => CompleteKYC1()));
+              onTap: () async {
+                IsNewUser isNewUser =
+                    await prefix0.isNewUser(currentUserMobileNumber);
+                currentUserId = isNewUser.id;
+                UserData currentUserData = await getUserData(currentUserId);
+                if (!currentUserData.kycStatus) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => CompleteKYC1()));
+                }
               },
               child: Align(
                 alignment: Alignment.bottomRight,

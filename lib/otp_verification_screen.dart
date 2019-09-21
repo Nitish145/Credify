@@ -1,4 +1,5 @@
 import 'package:credify/dashboard_screen.dart';
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
@@ -123,6 +124,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   if (formKey.currentState.validate()) {
                     formKey.currentState.save();
                     if (otp == widget.otp) {
+                      currentUserMobileNumber = widget.mobileNumber;
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

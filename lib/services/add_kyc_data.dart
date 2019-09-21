@@ -51,7 +51,8 @@ Future<AddKycDataResponse> addKycData(String id, int stage,
   }
 
   try {
-    var response = await client.post(uri, body: json);
+    var response =
+        await client.post(uri, body: jsonEncode(json), headers: header);
     final jsonResponse = jsonDecode(response.body);
     AddKycDataResponse addKycDataResponse =
         new AddKycDataResponse.fromJson(jsonResponse);
