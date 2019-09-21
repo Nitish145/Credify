@@ -1,3 +1,4 @@
+import 'package:credify/Models/otp_response_model.dart';
 import 'package:credify/otp_verification_screen.dart';
 import 'package:credify/services/otp_response.dart';
 import 'package:flutter/material.dart';
@@ -128,15 +129,18 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                   if (formKey.currentState.validate()) {
                     formKey.currentState.save();
                     String otp = generateOtp();
-                    await otpResponseService(mobileNumber, "otp", otp);
+                    OtpResponse otpResponse =
+                        await otpResponseService(mobileNumber, "otp", otp);
                     print(otp);
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpVerificationScreen(
-                                  mobileNumber: mobileNumber,
-                                  otp: otp,
-                                )));
+                    if (otpResponse.isSent) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OtpVerificationScreen(
+                                    mobileNumber: mobileNumber,
+                                    otp: otp,
+                                  )));
+                    }
                   }
                 },
               ),
