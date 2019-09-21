@@ -75,8 +75,8 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                             maxLength: 6,
                             style: Theme.of(context).primaryTextTheme.display3,
                             onChanged: (text) async {
-                              FocusScope.of(context).requestFocus(FocusNode());
                               if (text.length == 6) {
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 setState(() {
                                   isLoading = true;
                                 });
