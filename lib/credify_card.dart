@@ -1,3 +1,4 @@
+import 'package:credify/complete_KYC_1_screen.dart';
 import 'package:flutter/material.dart';
 
 class CredifyCard extends StatefulWidget {
@@ -75,12 +76,18 @@ class _CredifyCardState extends State<CredifyCard> {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text("Upgrade".toUpperCase(),
-                    style: Theme.of(context).accentTextTheme.display4),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => CompleteKYC1()));
+              },
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Text("Upgrade".toUpperCase(),
+                      style: Theme.of(context).accentTextTheme.display4),
+                ),
               ),
             ),
           ],

@@ -275,6 +275,17 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.only(
+                      top: 15, left: 50, right: 50, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Since when are you doing the above mentioned work",
+                      style: Theme.of(context).primaryTextTheme.display4,
+                    ),
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.fromLTRB(50, 10, 50, 15),
                   child: Container(
                     height: 40,

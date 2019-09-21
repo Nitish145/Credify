@@ -1,4 +1,4 @@
-import 'package:credify/complete_KYC_1_screen.dart';
+import 'package:credify/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -115,7 +115,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 ),
                 onPressed: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => CompleteKYC1()));
+                      MaterialPageRoute(builder: (context) => DashboardScreen()));
                 },
               ),
             ),

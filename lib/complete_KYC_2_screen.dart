@@ -72,8 +72,10 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                             top: 30, left: 30, right: 30, bottom: 30),
                         child: TextFormField(
                             keyboardType: TextInputType.number,
+                            maxLength: 6,
                             style: Theme.of(context).primaryTextTheme.display3,
                             onChanged: (text) async {
+                              FocusScope.of(context).requestFocus(FocusNode());
                               if (text.length == 6) {
                                 setState(() {
                                   isLoading = true;
@@ -98,7 +100,7 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 10, left: 30, right: 30, bottom: 30),
+                            top: 0, left: 30, right: 30, bottom: 30),
                         child: TextFormField(
                             keyboardType: TextInputType.text,
                             style: Theme.of(context).primaryTextTheme.display3,
