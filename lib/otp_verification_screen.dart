@@ -16,7 +16,14 @@ class OtpVerificationScreen extends StatefulWidget {
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   var formKey = new GlobalKey<FormState>();
+  TextEditingController otpController = new TextEditingController();
   String otp;
+
+  @override
+  void initState() {
+    super.initState();
+    otpController.text = widget.otp;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +91,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     keyboardType: TextInputType.phone,
                     maxLength: 6,
                     style: Theme.of(context).primaryTextTheme.display3,
+                    controller: otpController,
                     decoration: InputDecoration(
                         labelText: "OTP",
                         labelStyle: TextStyle(color: Colors.white),
