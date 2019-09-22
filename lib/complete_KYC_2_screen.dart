@@ -1,8 +1,13 @@
+import 'package:credify/Models/add_kyc_data_model.dart';
 import 'package:credify/Models/pin_info_model.dart';
 import 'package:credify/complete_KYC_3_screen.dart';
+import 'package:credify/globals.dart';
+import 'package:credify/services/add_kyc_data.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:credify/services/pin_info.dart';
+import 'package:flutter/services.dart';
+import 'package:toast/toast.dart';
 
 class CompleteKYC2 extends StatefulWidget {
   @override
@@ -17,7 +22,7 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
   TextEditingController localityController = new TextEditingController();
   TextEditingController cityController = new TextEditingController();
 
-  String pincode;
+  int pincode;
   String houseNumber;
   String locality;
   String city;
@@ -74,9 +79,22 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                             keyboardType: TextInputType.number,
                             maxLength: 6,
                             style: Theme.of(context).primaryTextTheme.display3,
+                            inputFormatters: <TextInputFormatter>[
+                              WhitelistingTextInputFormatter.digitsOnly
+                            ],
+                            validator: (_pincode) {
+                              if (_pincode.length < 6) {
+                                return "Enter a valid PINCODE";
+                              }
+                              return null;
+                            },
+                            onSaved: (_pincode) {
+                              pincode = int.parse(_pincode);
+                            },
                             onChanged: (text) async {
                               if (text.length == 6) {
-                                FocusScope.of(context).requestFocus(FocusNode());
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                                 setState(() {
                                   isLoading = true;
                                 });
@@ -105,6 +123,15 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                             keyboardType: TextInputType.text,
                             style: Theme.of(context).primaryTextTheme.display3,
                             controller: houseNumberController,
+                            validator: (_houseNo) {
+                              if (_houseNo.isEmpty) {
+                                return "Enter a house Number";
+                              }
+                              return null;
+                            },
+                            onSaved: (_houseNumber) {
+                              houseNumber = _houseNumber;
+                            },
                             decoration: InputDecoration(
                                 labelText: "House Number , Street Number",
                                 labelStyle: TextStyle(color: Colors.white),
@@ -118,6 +145,15 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                             keyboardType: TextInputType.multiline,
                             style: Theme.of(context).primaryTextTheme.display3,
                             controller: localityController,
+                            validator: (_locality) {
+                              if (_locality.isEmpty) {
+                                return "Enter a locality";
+                              }
+                              return null;
+                            },
+                            onSaved: (_locality) {
+                              locality = _locality;
+                            },
                             decoration: InputDecoration(
                                 labelText: "Locality",
                                 labelStyle: TextStyle(color: Colors.white),
@@ -131,6 +167,15 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                             keyboardType: TextInputType.text,
                             style: Theme.of(context).primaryTextTheme.display3,
                             controller: cityController,
+                            validator: (_city) {
+                              if (_city.isEmpty) {
+                                return "Enter a City";
+                              }
+                              return null;
+                            },
+                            onSaved: (_city) {
+                              city = _city;
+                            },
                             decoration: InputDecoration(
                                 labelText: "City / District",
                                 labelStyle: TextStyle(color: Colors.white),
@@ -158,11 +203,31 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                                   style: new TextStyle(
                                       fontSize: 18.0, color: Colors.white)),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CompleteKYC3()));
+                            onPressed: () async {
+                              if (formKey.currentState.validate()) {
+                                formKey.currentState.save();
+                                AddKycDataResponse addKycResponse =
+                                    await addKycData(
+                                  currentUserId,
+                                  2,
+                                  pincode: pincode,
+                                  houseNumber: houseNumber,
+                                  locality: locality,
+                                  city: city,
+                                );
+                                if (addKycResponse.updated) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompleteKYC3()));
+                                } else {
+                                  Toast.show("Something Wrong Occured", context,
+                                      duration: Toast.LENGTH_SHORT,
+                                      gravity: Toast.BOTTOM,
+                                      backgroundColor: Colors.blueGrey);
+                                }
+                              }
                             },
                           ),
                         ),
