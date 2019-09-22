@@ -1,5 +1,9 @@
+import 'package:credify/Models/add_kyc_data_model.dart';
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
+import 'package:toast/toast.dart';
+
+import 'services/add_kyc_data.dart';
 
 class CompleteKYC3 extends StatefulWidget {
   @override
@@ -16,11 +20,75 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
   bool _isMobileChecked = false;
   bool _isOthersChecked = false;
 
-  String occupation = "Choose your occupation";
-  int monthlyIncome;
-  String livesWith;
+  String employmentType = "Choose your occupation";
+  String livesWith = "";
+  String company = "";
+  String joiningDate = "";
+  int earningPm = 0;
+  String salaryDepositType = "";
+  String otherEmi = "";
+  List<String> existingDebts = [];
+
+  String profession = "";
+  String workExp = "";
+
+  String type = "";
+  int timePeriod = 0;
 
   String selfEmployedWorkTime = "Choose Time Duration";
+
+  String salaryDepositTypeFunction() {
+    switch (_radioValueSalary) {
+      case -1:
+        {
+          return null;
+        }
+        break;
+      case 0:
+        {
+          return "bank";
+        }
+        break;
+      case 1:
+        {
+          return "cash";
+        }
+        break;
+      case 2:
+        {
+          return "cheque";
+        }
+        break;
+      default:
+        {
+          return null;
+        }
+    }
+  }
+
+  String typeFunction() {
+    switch (_radioValueNotEarning) {
+      case -1:
+        {
+          return null;
+        }
+        break;
+      case 0:
+        {
+          return "student";
+        }
+        break;
+      case 1:
+        {
+          return "looking-for-job";
+        }
+        break;
+      default:
+        {
+          return null;
+        }
+    }
+  }
 
   void handleRadioValueChange(int value) {
     setState(() {
@@ -36,8 +104,29 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
 
   @override
   Widget build(BuildContext context) {
+    salaryDepositType = salaryDepositTypeFunction();
+    type = typeFunction();
+
+    if (_isMobileChecked) {
+      existingDebts.add("Mobile");
+    }
+
+    if (_isBikeChecked) {
+      existingDebts.add("Bike");
+    }
+
+    if (_isOthersChecked) {
+      existingDebts.add(otherEmi);
+    }
+
+    if (selfEmployedWorkTime != "Choose Time Duration") {
+      workExp = selfEmployedWorkTime;
+    } else {
+      workExp = null;
+    }
+
     Widget occupationSubOptions() {
-      switch (occupation) {
+      switch (employmentType) {
         case "Salaried":
           {
             return Column(
@@ -51,6 +140,15 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         keyboardType: TextInputType.text,
                         cursorColor: Colors.white,
                         style: Theme.of(context).primaryTextTheme.display4,
+                        validator: (_company) {
+                          if (_company.isEmpty) {
+                            return "Company name can't be empty";
+                          }
+                          return null;
+                        },
+                        onSaved: (_company) {
+                          company = _company;
+                        },
                         decoration: InputDecoration(
                           hintText: "Company Name",
                           hintStyle: TextStyle(color: Colors.white),
@@ -66,6 +164,15 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         keyboardType: TextInputType.text,
                         cursorColor: Colors.white,
                         style: Theme.of(context).primaryTextTheme.display4,
+                        validator: (_joiningDate) {
+                          if (_joiningDate.isEmpty) {
+                            return "Joining Date can't be empty";
+                          }
+                          return null;
+                        },
+                        onSaved: (_joiningDate) {
+                          joiningDate = _joiningDate;
+                        },
                         decoration: InputDecoration(
                           hintText: "When did you join the company",
                           hintStyle: TextStyle(color: Colors.white),
@@ -78,9 +185,18 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                   child: Container(
                     height: 40,
                     child: TextFormField(
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         cursorColor: Colors.white,
                         style: Theme.of(context).primaryTextTheme.display4,
+                        validator: (_earningPm) {
+                          if (_earningPm.isEmpty) {
+                            return "Earnings can't be zero";
+                          }
+                          return null;
+                        },
+                        onSaved: (_earningPm) {
+                          earningPm = int.parse(_earningPm);
+                        },
                         decoration: InputDecoration(
                           hintText: "How much do you earn monthly?",
                           hintStyle: TextStyle(color: Colors.white),
@@ -244,6 +360,15 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                               cursorColor: Colors.white,
                               style:
                                   Theme.of(context).primaryTextTheme.display4,
+                              validator: (_otherEmi) {
+                                if (_otherEmi.isEmpty) {
+                                  return "Other EMI's if checked can't be empty";
+                                }
+                                return null;
+                              },
+                              onSaved: (_otherEmi) {
+                                otherEmi = _otherEmi;
+                              },
                               decoration: InputDecoration(
                                 hintText: "Mention other EMI/Loans",
                                 hintStyle: TextStyle(color: Colors.white),
@@ -268,6 +393,15 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         keyboardType: TextInputType.text,
                         cursorColor: Colors.white,
                         style: Theme.of(context).primaryTextTheme.display4,
+                        validator: (_profession) {
+                          if (_profession.isEmpty) {
+                            return "Profession can't be empty";
+                          }
+                          return null;
+                        },
+                        onSaved: (_profession) {
+                          profession = _profession;
+                        },
                         decoration: InputDecoration(
                           hintText: "What do you do for a living?",
                           hintStyle: TextStyle(color: Colors.white),
@@ -342,6 +476,15 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         keyboardType: TextInputType.number,
                         cursorColor: Colors.white,
                         style: Theme.of(context).primaryTextTheme.display4,
+                        validator: (_earningPm) {
+                          if (_earningPm.isEmpty) {
+                            return "Earnings can't be zero";
+                          }
+                          return null;
+                        },
+                        onSaved: (_earningPm) {
+                          earningPm = int.parse(_earningPm);
+                        },
                         decoration: InputDecoration(
                           hintText: "How much do you earn monthly (in hand)?",
                           hintStyle: TextStyle(color: Colors.white),
@@ -512,16 +655,22 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                         child: Container(
                           height: 40,
                           child: TextFormField(
-                              keyboardType: TextInputType.datetime,
-                              inputFormatters: [
-                                MaskedTextInputFormatter(
-                                    mask: "--/--/----", separator: "/")
-                              ],
+                              keyboardType: TextInputType.number,
                               cursorColor: Colors.white,
                               style:
                                   Theme.of(context).primaryTextTheme.display4,
+                              validator: (_timePeriod) {
+                                if (_timePeriod.isEmpty) {
+                                  return "Please enter a time period";
+                                }
+                                return null;
+                              },
+                              onSaved: (_timePeriod) {
+                                timePeriod = int.parse(_timePeriod);
+                              },
                               decoration: InputDecoration(
-                                hintText: "Since when you are unemployed?",
+                                hintText:
+                                    "Since when you are unemployed (in months)?",
                                 hintStyle: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -591,7 +740,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                           data: ThemeData.dark(),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              value: occupation,
+                              value: employmentType,
                               icon: Icon(Icons.keyboard_arrow_down),
                               iconSize: 24,
                               elevation: 16,
@@ -599,7 +748,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                   Theme.of(context).primaryTextTheme.display3,
                               onChanged: (String newValue) {
                                 setState(() {
-                                  occupation = newValue;
+                                  employmentType = newValue;
                                 });
                               },
                               items: <String>[
@@ -631,6 +780,15 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                     child: TextFormField(
                         keyboardType: TextInputType.text,
                         style: Theme.of(context).primaryTextTheme.display3,
+                        validator: (_livesWith) {
+                          if (_livesWith.isEmpty) {
+                            return "Please enter whom you live with";
+                          }
+                          return null;
+                        },
+                        onSaved: (_livesWith) {
+                          livesWith = _livesWith;
+                        },
                         decoration: InputDecoration(
                             labelText: "You live with",
                             labelStyle: TextStyle(color: Colors.white),
@@ -657,9 +815,57 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                               style: new TextStyle(
                                   fontSize: 18.0, color: Colors.white)),
                         ),
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(context,
-                              '/aadharScreen', (Route<dynamic> route) => false);
+                        onPressed: () async {
+                          if (formKey.currentState.validate()) {
+                            formKey.currentState.save();
+                            AddKycDataResponse addKycResponse;
+                            switch (employmentType) {
+                              case "Salaried":
+                                {
+                                  addKycResponse = await addKycData(
+                                      currentUserId, 3,
+                                      employmentType: "salaried",
+                                      company: company,
+                                      joiningDate: joiningDate,
+                                      earningPm: earningPm,
+                                      salaryDepositType: salaryDepositType,
+                                      existingDebts: existingDebts);
+                                }
+                                break;
+                              case "Self Employed":
+                                {
+                                  addKycResponse = await addKycData(
+                                      currentUserId, 3,
+                                      employmentType: "self-employed",
+                                      profession: profession,
+                                      workExp: workExp,
+                                      earningPm: earningPm,
+                                      existingDebts: existingDebts);
+                                }
+                                break;
+                              case "Not Earning":
+                                {
+                                  addKycResponse = await addKycData(
+                                      currentUserId, 3,
+                                      employmentType: "unemployed",
+                                      type: type,
+                                      timePeriod: timePeriod);
+                                }
+                                break;
+                            }
+
+                            if (addKycResponse.updated) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/aadharScreen',
+                                  (Route<dynamic> route) => false);
+                            } else {
+                              Toast.show("Something Wrong Occured", context,
+                                  duration: Toast.LENGTH_SHORT,
+                                  gravity: Toast.BOTTOM,
+                                  backgroundColor: Colors.blueGrey);
+                            }
+                          }
                         },
                       ),
                     ),
