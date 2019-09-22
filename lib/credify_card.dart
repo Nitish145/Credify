@@ -85,6 +85,7 @@ class _CredifyCardState extends State<CredifyCard> {
               onTap: () async {
                 IsNewUser isNewUser =
                     await prefix0.isNewUser(currentUserMobileNumber);
+                print(isNewUser.id);
                 currentUserId = isNewUser.id;
                 UserData currentUserData = await getUserData(currentUserId);
                 if (!currentUserData.kycStatus) {

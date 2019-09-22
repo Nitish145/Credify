@@ -8,16 +8,29 @@ String url =
 var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
-Future<AddKycDataResponse> addKycData(String id, int stage,
-    {String name,
-    String dob,
-    String pan,
-    String aadhar,
-    int pincode,
-    String houseNumber,
-    String locality,
-    String city,
-    String liveWith}) async {
+Future<AddKycDataResponse> addKycData(
+  String id,
+  int stage, {
+  String name,
+  String dob,
+  String pan,
+  String aadhar,
+  int pincode,
+  String houseNumber,
+  String locality,
+  String city,
+  String liveWith,
+  String employmentType,
+  String company,
+  String joiningDate,
+  int earningPm,
+  String salaryDepositType,
+  List<String> existingDebts,
+  String profession,
+  String workExp,
+  String type,
+  int timePeriod,
+}) async {
   String endPoint = "/user/" + id + "/kyc/" + stage.toString();
   String uri = url + endPoint;
 
@@ -46,7 +59,48 @@ Future<AddKycDataResponse> addKycData(String id, int stage,
       break;
     case 3:
       {
-        json = {"live_with": liveWith};
+        switch (employmentType) {
+          case "Salaried":
+            {
+              json = {
+                "live_with": liveWith,
+                "employment_details": {
+                  "employment_type": employmentType,
+                  "company": company,
+                  "joining_date": joiningDate,
+                  "earning_pm": earningPm,
+                  "salary_deposit_type": salaryDepositType,
+                  "existing_debts": existingDebts
+                }
+              };
+            }
+            break;
+          case "Self Employed":
+            {
+              json = {
+                "live_with": liveWith,
+                "employment_details": {
+                  "employment_type": employmentType,
+                  "profession": profession,
+                  "work_exp": workExp,
+                  "earning_pm": earningPm,
+                  "existing_debts": existingDebts
+                }
+              };
+            }
+            break;
+          case "Not Earning":
+            {
+              json = {
+                "live_with": liveWith,
+                "employment_details": {
+                  "employment_type": employmentType,
+                  "type": type,
+                  "time_period": timePeriod,
+                }
+              };
+            }
+        }
       }
   }
 
