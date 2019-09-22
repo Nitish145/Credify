@@ -15,7 +15,7 @@ class UserData {
   int kycProgress;
   String kycId;
   bool bankingVerified;
-  String bankingId;
+  bool bankingId;
   int documentsProgress;
   bool documentsUploaded;
   String documentsId;

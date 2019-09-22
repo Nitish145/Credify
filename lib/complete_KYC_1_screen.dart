@@ -1,6 +1,10 @@
+import 'package:credify/Models/add_kyc_data_model.dart';
 import 'package:credify/complete_KYC_2_screen.dart';
+import 'package:credify/globals.dart';
+import 'package:credify/services/add_kyc_data.dart';
 import 'package:flutter/material.dart';
 import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
+import 'package:toast/toast.dart';
 
 class CompleteKYC1 extends StatefulWidget {
   @override
@@ -62,6 +66,15 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     child: TextFormField(
                         keyboardType: TextInputType.text,
                         style: Theme.of(context).primaryTextTheme.display3,
+                        onSaved: (_fullName) {
+                          fullName = _fullName;
+                        },
+                        validator: (_fullName) {
+                          if (_fullName.isEmpty) {
+                            return "Enter a Name";
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                             labelText: "Your Full Name",
                             labelStyle: TextStyle(color: Colors.white),
@@ -78,6 +91,15 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                               mask: "--/--/----", separator: "/")
                         ],
                         style: Theme.of(context).primaryTextTheme.display3,
+                        onSaved: (_dob) {
+                          dob = _dob;
+                        },
+                        validator: (_dob) {
+                          if (_dob.length < 10) {
+                            return "Inavlid DOB";
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                             labelText: "Date of Birth",
                             labelStyle: TextStyle(color: Colors.white),
@@ -91,6 +113,9 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.characters,
                       style: Theme.of(context).primaryTextTheme.display3,
+                      onSaved: (_panNumber) {
+                        panNumber = _panNumber;
+                      },
                       decoration: InputDecoration(
                           labelText: "Your PAN Card",
                           labelStyle: TextStyle(color: Colors.white),
@@ -117,6 +142,15 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                               mask: "---- ---- ----", separator: " ")
                         ],
                         style: Theme.of(context).primaryTextTheme.display3,
+                        onSaved: (_aadhar) {
+                          aadhar = _aadhar;
+                        },
+                        validator: (_aadhar) {
+                          if (_aadhar.length < 14) {
+                            return "Invalid Aadhar";
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                             labelText: "Your Aadhar Number",
                             labelStyle: TextStyle(color: Colors.white),
@@ -143,11 +177,27 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                               style: new TextStyle(
                                   fontSize: 18.0, color: Colors.white)),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CompleteKYC2()));
+                        onPressed: () async {
+                          if (formKey.currentState.validate()) {
+                            formKey.currentState.save();
+                            AddKycDataResponse addKycResponse =
+                                await addKycData(currentUserId, 1,
+                                    name: fullName,
+                                    dob: dob,
+                                    aadhar: aadhar,
+                                    pan: panNumber);
+                            if (addKycResponse.updated) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CompleteKYC2()));
+                            } else {
+                              Toast.show("Something Wrong Occured", context,
+                                  duration: Toast.LENGTH_SHORT,
+                                  gravity: Toast.BOTTOM,
+                                  backgroundColor: Colors.blueGrey);
+                            }
+                          }
                         },
                       ),
                     ),
