@@ -85,11 +85,17 @@ class _CredifyCardState extends State<CredifyCard> {
             ),
             GestureDetector(
               onTap: () async {
+                setState(() {
+                  isLoading = true;
+                });
                 IsNewUser isNewUser =
                     await prefix0.isNewUser(currentUserMobileNumber);
                 print(isNewUser.id);
                 currentUserId = isNewUser.id;
                 UserData currentUserData = await getUserData(currentUserId);
+                setState(() {
+                  isLoading = false;
+                });
                 if (!currentUserData.kycStatus) {
                   switch (currentUserData.kycProgress) {
                     case 0:

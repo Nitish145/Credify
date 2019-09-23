@@ -1,5 +1,6 @@
 import 'package:credify/Models/add_kyc_data_model.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
@@ -690,189 +691,215 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(3, 4, 5, 1),
       body: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: <Widget>[
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50, left: 30),
-                child: Text(
-                  "Credify",
-                  style: Theme.of(context).primaryTextTheme.display2,
+            Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50, left: 30),
+                    child: Text(
+                      "Credify",
+                      style: Theme.of(context).primaryTextTheme.display2,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20, left: 30),
-                child: Text(
-                  " Complete KYC",
-                  style: Theme.of(context).primaryTextTheme.display1,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 30),
+                    child: Text(
+                      " Complete KYC",
+                      style: Theme.of(context).primaryTextTheme.display1,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 0, left: 30),
-                child: Text(
-                  "  3/3",
-                  style: Theme.of(context).primaryTextTheme.display3,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0, left: 30),
+                    child: Text(
+                      "  3/3",
+                      style: Theme.of(context).primaryTextTheme.display3,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Form(
-              key: formKey,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Theme(
-                          data: ThemeData.dark(),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: employmentType,
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              iconSize: 24,
-                              elevation: 16,
-                              style:
-                                  Theme.of(context).primaryTextTheme.display3,
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  employmentType = newValue;
-                                });
-                              },
-                              items: <String>[
-                                'Choose your occupation',
-                                'Salaried',
-                                'Self Employed',
-                                'Not Earning'
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .display3,
-                                  ),
-                                );
-                              }).toList(),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Theme(
+                              data: ThemeData.dark(),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: employmentType,
+                                  icon: Icon(Icons.keyboard_arrow_down),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .display3,
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      employmentType = newValue;
+                                    });
+                                  },
+                                  items: <String>[
+                                    'Choose your occupation',
+                                    'Salaried',
+                                    'Self Employed',
+                                    'Not Earning'
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .display3,
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  occupationSubOptions(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, left: 30, right: 30, bottom: 30),
-                    child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        style: Theme.of(context).primaryTextTheme.display3,
-                        validator: (_livesWith) {
-                          if (_livesWith.isEmpty) {
-                            return "Please enter whom you live with";
-                          }
-                          return null;
-                        },
-                        onSaved: (_livesWith) {
-                          livesWith = _livesWith;
-                        },
-                        decoration: InputDecoration(
-                            labelText: "You live with",
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder())),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 30.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton(
-                        elevation: 5.0,
-                        color: Color.fromRGBO(45, 156, 219, 1),
-                        shape: new RoundedRectangleBorder(
-                            side: BorderSide(
-                              style: BorderStyle.solid,
-                              width: 2,
-                            ),
-                            borderRadius: new BorderRadius.circular(5)),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
-                          child: new Text('Continue',
-                              style: new TextStyle(
-                                  fontSize: 18.0, color: Colors.white)),
-                        ),
-                        onPressed: () async {
-                          if (formKey.currentState.validate()) {
-                            formKey.currentState.save();
-                            AddKycDataResponse addKycResponse;
-                            switch (employmentType) {
-                              case "Salaried":
-                                {
-                                  addKycResponse = await addKycData(
-                                      currentUserId, 3,
-                                      employmentType: "salaried",
-                                      company: company,
-                                      joiningDate: joiningDate,
-                                      earningPm: earningPm,
-                                      salaryDepositType: salaryDepositType,
-                                      existingDebts: existingDebts);
-                                }
-                                break;
-                              case "Self Employed":
-                                {
-                                  addKycResponse = await addKycData(
-                                      currentUserId, 3,
-                                      employmentType: "self-employed",
-                                      profession: profession,
-                                      workExp: workExp,
-                                      earningPm: earningPm,
-                                      existingDebts: existingDebts);
-                                }
-                                break;
-                              case "Not Earning":
-                                {
-                                  addKycResponse = await addKycData(
-                                      currentUserId, 3,
-                                      employmentType: "unemployed",
-                                      type: type,
-                                      timePeriod: timePeriod);
-                                }
-                                break;
-                            }
-
-                            if (addKycResponse.updated) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  '/aadharScreen',
-                                  (Route<dynamic> route) => false);
-                            } else {
-                              Toast.show("Something Wrong Occured", context,
-                                  duration: Toast.LENGTH_SHORT,
-                                  gravity: Toast.BOTTOM,
-                                  backgroundColor: Colors.blueGrey);
-                            }
-                          }
-                        },
+                      occupationSubOptions(),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, left: 30, right: 30, bottom: 30),
+                        child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            style: Theme.of(context).primaryTextTheme.display3,
+                            validator: (_livesWith) {
+                              if (_livesWith.isEmpty) {
+                                return "Please enter whom you live with";
+                              }
+                              return null;
+                            },
+                            onSaved: (_livesWith) {
+                              livesWith = _livesWith;
+                            },
+                            decoration: InputDecoration(
+                                labelText: "You live with",
+                                labelStyle: TextStyle(color: Colors.white),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder())),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            )
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 30.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: RaisedButton(
+                            elevation: 5.0,
+                            color: Color.fromRGBO(45, 156, 219, 1),
+                            shape: new RoundedRectangleBorder(
+                                side: BorderSide(
+                                  style: BorderStyle.solid,
+                                  width: 2,
+                                ),
+                                borderRadius: new BorderRadius.circular(5)),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  60.0, 20.0, 60.0, 20.0),
+                              child: new Text('Continue',
+                                  style: new TextStyle(
+                                      fontSize: 18.0, color: Colors.white)),
+                            ),
+                            onPressed: () async {
+                              if (formKey.currentState.validate()) {
+                                formKey.currentState.save();
+                                AddKycDataResponse addKycResponse;
+                                switch (employmentType) {
+                                  case "Salaried":
+                                    {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      addKycResponse = await addKycData(
+                                          currentUserId, 3,
+                                          employmentType: "salaried",
+                                          company: company,
+                                          joiningDate: joiningDate,
+                                          earningPm: earningPm,
+                                          salaryDepositType: salaryDepositType,
+                                          existingDebts: existingDebts);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                    break;
+                                  case "Self Employed":
+                                    {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      addKycResponse = await addKycData(
+                                          currentUserId, 3,
+                                          employmentType: "self-employed",
+                                          profession: profession,
+                                          workExp: workExp,
+                                          earningPm: earningPm,
+                                          existingDebts: existingDebts);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                    break;
+                                  case "Not Earning":
+                                    {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      addKycResponse = await addKycData(
+                                          currentUserId, 3,
+                                          employmentType: "unemployed",
+                                          type: type,
+                                          timePeriod: timePeriod);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                    break;
+                                }
+
+                                if (addKycResponse.updated) {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      '/aadharScreen',
+                                      (Route<dynamic> route) => false);
+                                } else {
+                                  Toast.show("Something Wrong Occured", context,
+                                      duration: Toast.LENGTH_SHORT,
+                                      gravity: Toast.BOTTOM,
+                                      backgroundColor: Colors.blueGrey);
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            UndismissableProgressBar()
           ],
         ),
       ),

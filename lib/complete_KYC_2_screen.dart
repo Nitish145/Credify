@@ -27,8 +27,6 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
   String locality;
   String city;
 
-  bool isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,13 +235,7 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                 )
               ],
             ),
-            isLoading
-                ? Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: UndismissableProgressBar(),
-                  )
-                : Container()
+            UndismissableProgressBar()
           ],
         ),
       ),
