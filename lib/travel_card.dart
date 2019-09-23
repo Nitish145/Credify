@@ -88,7 +88,8 @@ class _TravelCardState extends State<TravelCard> {
                           )));
             }
           } else {
-            Toast.show("This Travel location is locked", context);
+            Toast.show("This Travel location is locked", context,
+                duration: Toast.LENGTH_LONG);
           }
         },
         child: Container(
