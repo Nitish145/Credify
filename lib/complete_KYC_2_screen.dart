@@ -204,6 +204,9 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                             onPressed: () async {
                               if (formKey.currentState.validate()) {
                                 formKey.currentState.save();
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 AddKycDataResponse addKycResponse =
                                     await addKycData(
                                   currentUserId,
@@ -213,6 +216,9 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                                   locality: locality,
                                   city: city,
                                 );
+                                setState(() {
+                                  isLoading = false;
+                                });
                                 if (addKycResponse.updated) {
                                   Navigator.push(
                                       context,
