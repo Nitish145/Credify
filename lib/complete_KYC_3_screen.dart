@@ -28,7 +28,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
   int earningPm = 0;
   String salaryDepositType = "";
   String otherEmi = "";
-  List<String> existingDebts = [];
+  var existingDebts = [];
 
   String profession = "";
   String workExp = "";
@@ -833,7 +833,8 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                       });
                                       addKycResponse = await addKycData(
                                           currentUserId, 3,
-                                          employmentType: "salaried",
+                                          liveWith: livesWith,
+                                          employmentType: employmentType,
                                           company: company,
                                           joiningDate: joiningDate,
                                           earningPm: earningPm,
@@ -851,7 +852,8 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                       });
                                       addKycResponse = await addKycData(
                                           currentUserId, 3,
-                                          employmentType: "self-employed",
+                                          liveWith: livesWith,
+                                          employmentType: employmentType,
                                           profession: profession,
                                           workExp: workExp,
                                           earningPm: earningPm,
@@ -868,7 +870,8 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                       });
                                       addKycResponse = await addKycData(
                                           currentUserId, 3,
-                                          employmentType: "unemployed",
+                                          liveWith: livesWith,
+                                          employmentType: employmentType,
                                           type: type,
                                           timePeriod: timePeriod);
                                       setState(() {
