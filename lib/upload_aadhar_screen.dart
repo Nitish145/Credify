@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:archive/archive_io.dart';
+import 'package:credify/globals.dart';
+import 'package:credify/services/add_documents.dart';
 import 'package:credify/upload_pan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -188,7 +191,14 @@ class _UploadAadharState extends State<UploadAadhar> {
                             style: new TextStyle(
                                 fontSize: 18.0, color: Colors.white)),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        var encoder = ZipFileEncoder();
+                        encoder.create('aadhar.zip');
+                        encoder.addFile(_frontAadharImage);
+                        encoder.addFile(_backAadharImage);
+                        encoder.close();
+                        await addDocumentsService(
+                            currentUserId, "aadhaar", 1, _frontAadharImage);
                         Navigator.push(
                             context,
                             MaterialPageRoute(

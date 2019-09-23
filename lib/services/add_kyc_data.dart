@@ -65,7 +65,7 @@ Future<AddKycDataResponse> addKycData(
               json = {
                 "live_with": liveWith,
                 "employment_details": {
-                  "employment_type": employmentType,
+                  "employment_type": "salaried",
                   "company": company,
                   "joining_date": joiningDate,
                   "earning_pm": earningPm,
@@ -80,7 +80,7 @@ Future<AddKycDataResponse> addKycData(
               json = {
                 "live_with": liveWith,
                 "employment_details": {
-                  "employment_type": employmentType,
+                  "employment_type": "self-employed",
                   "profession": profession,
                   "work_exp": workExp,
                   "earning_pm": earningPm,
@@ -94,7 +94,7 @@ Future<AddKycDataResponse> addKycData(
               json = {
                 "live_with": liveWith,
                 "employment_details": {
-                  "employment_type": employmentType,
+                  "employment_type": "unemployed",
                   "type": type,
                   "time_period": timePeriod,
                 }

@@ -1,6 +1,8 @@
 import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/complete_KYC_1_screen.dart';
+import 'package:credify/complete_KYC_2_screen.dart';
+import 'package:credify/complete_KYC_3_screen.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/services/is_new_user.dart' as prefix0;
 import 'package:credify/services/user_data.dart';
@@ -89,8 +91,31 @@ class _CredifyCardState extends State<CredifyCard> {
                 currentUserId = isNewUser.id;
                 UserData currentUserData = await getUserData(currentUserId);
                 if (!currentUserData.kycStatus) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => CompleteKYC1()));
+                  switch (currentUserData.kycProgress) {
+                    case 0:
+                      {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CompleteKYC1()));
+                      }
+                      break;
+                    case 1:
+                      {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CompleteKYC2()));
+                      }
+                      break;
+                    case 2:
+                      {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CompleteKYC3()));
+                      }
+                  }
                 }
               },
               child: Align(

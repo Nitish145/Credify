@@ -1,4 +1,10 @@
+import 'package:credify/Models/is_new_user_model.dart';
+import 'package:credify/Models/travel_loan_response_model.dart';
+import 'package:credify/globals.dart';
+import 'package:credify/services/is_new_user.dart';
+import 'package:credify/services/travel_loan.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 class TravelDetailScreen extends StatefulWidget {
   final String imageLocation;
@@ -23,7 +29,42 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
   String dropdownValue = "Iteneary";
   DateTime initialSelectedDate = DateTime.now();
   DateTime finalSelectedDate = DateTime.now().add(Duration(days: 3));
+
+  int numberOfTravellers = 2;
+
+  List<String> listOfTravellers = [];
+  List<Widget> travellersInputList = [];
+
+  String commuteType = "";
   var formKey = new GlobalKey<FormState>();
+
+  Widget getTraveller(int n) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 10),
+      child: Container(
+        height: 40,
+        child: TextFormField(
+            keyboardType: TextInputType.text,
+            cursorColor: Colors.black,
+            style: Theme.of(context).accentTextTheme.display4,
+            validator: (_traveller) {
+              if (_traveller.isEmpty) {
+                return "Traveller Name can't be empty";
+              }
+              return null;
+            },
+            onSaved: (_traveller) {
+              listOfTravellers[n - 1] = _traveller;
+            },
+            decoration: InputDecoration(
+              labelText: "Person $n",
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(),
+              labelStyle: TextStyle(color: Colors.black),
+            )),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -253,40 +294,7 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
               key: formKey,
               child: Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, left: 30, right: 30, bottom: 10),
-                    child: Container(
-                      height: 40,
-                      child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          cursorColor: Colors.black,
-                          style: Theme.of(context).accentTextTheme.display4,
-                          decoration: InputDecoration(
-                            labelText: "Person 1",
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(),
-                            labelStyle: TextStyle(color: Colors.black),
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, left: 30, right: 30, bottom: 10),
-                    child: Container(
-                      height: 40,
-                      child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          cursorColor: Colors.black,
-                          style: Theme.of(context).accentTextTheme.display4,
-                          decoration: InputDecoration(
-                            labelText: "Person 2",
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(),
-                            labelStyle: TextStyle(color: Colors.black),
-                          )),
-                    ),
-                  ),
+                  Column(children: travellersInputList),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
                     child: SizedBox(
@@ -322,56 +330,97 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Container(
-                          height: 120,
-                          width: MediaQuery.of(context).size.width / 2.5,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Image.asset(
-                                  "assets/images/car.png",
-                                  width: 50,
-                                ),
-                                Text(
-                                  "Car",
-                                  style: Theme.of(context)
-                                      .accentTextTheme
-                                      .display3,
-                                )
-                              ],
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            commuteType = "car";
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Container(
+                            height: 120,
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: commuteType == "car"
+                                      ? Colors.white
+                                      : Colors.black),
+                              borderRadius: BorderRadius.circular(10),
+                              color: commuteType == "car"
+                                  ? Color.fromRGBO(45, 156, 219, 1)
+                                  : Colors.white,
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Image.asset(
+                                    "assets/images/car.png",
+                                    width: 50,
+                                    color: commuteType == "car"
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                  Text(
+                                    "Car",
+                                    style: commuteType == "car"
+                                        ? Theme.of(context)
+                                            .primaryTextTheme
+                                            .display3
+                                        : Theme.of(context)
+                                            .accentTextTheme
+                                            .display3,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Container(
-                          height: 120,
-                          width: MediaQuery.of(context).size.width / 2.5,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Image.asset(
-                                  "assets/images/train.png",
-                                  width: 50,
-                                ),
-                                Text(
-                                  "Train",
-                                  style: Theme.of(context)
-                                      .accentTextTheme
-                                      .display3,
-                                )
-                              ],
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            commuteType = "train";
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Container(
+                            height: 120,
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: commuteType == "train"
+                                        ? Colors.white
+                                        : Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                                color: commuteType == "train"
+                                    ? Color.fromRGBO(45, 156, 219, 1)
+                                    : Colors.white),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Image.asset("assets/images/train.png",
+                                      width: 50,
+                                      color: commuteType == "train"
+                                          ? Colors.white
+                                          : Colors.black),
+                                  Text(
+                                    "Train",
+                                    style: commuteType == "train"
+                                        ? Theme.of(context)
+                                            .primaryTextTheme
+                                            .display3
+                                        : Theme.of(context)
+                                            .accentTextTheme
+                                            .display3,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -394,7 +443,36 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                               style: new TextStyle(
                                   fontSize: 18.0, color: Colors.white)),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          IsNewUser isNewUserResponse =
+                              await isNewUser(currentUserMobileNumber);
+                          currentUserId = isNewUserResponse.id;
+                          TravelLoan travelLoanResponse =
+                              await travelLoanService(
+                                  currentUserId,
+                                  initialSelectedDate
+                                      .toLocal()
+                                      .toIso8601String()
+                                      .substring(0, 10),
+                                  finalSelectedDate
+                                      .toLocal()
+                                      .toIso8601String()
+                                      .substring(0, 10),
+                                  commuteType,
+                                  commuteType == "car" ? 1 : 2,
+                                  listOfTravellers,
+                                  true,
+                                  0,
+                                  (widget.place + widget.daysNights).toString(),
+                                  "");
+
+                          if (travelLoanResponse.updated) {
+                            Toast.show("Loan Request Submitted!", context,
+                                duration: Toast.LENGTH_SHORT,
+                                gravity: Toast.BOTTOM,
+                                backgroundColor: Colors.blueGrey);
+                          }
+                        },
                       ),
                     ),
                   ),
