@@ -86,6 +86,7 @@ class _TravelScreenState extends State<TravelScreen> {
                 daysNights: "3Days 4Nights",
                 price: "9,900/-",
                 timeSpan: "per month",
+                isLocked: false,
               ),
               SizedBox(height: 20),
               TravelCard(
@@ -94,6 +95,7 @@ class _TravelScreenState extends State<TravelScreen> {
                 daysNights: "3Days 4Nights",
                 price: "8,900/-",
                 timeSpan: "per month",
+                isLocked: false,
               ),
               SizedBox(height: 20),
               TravelCard(
@@ -102,6 +104,7 @@ class _TravelScreenState extends State<TravelScreen> {
                 daysNights: "3Days 4Nights",
                 price: "12,900/-",
                 timeSpan: "per month",
+                isLocked: true,
               ),
               SizedBox(height: 20),
             ],
