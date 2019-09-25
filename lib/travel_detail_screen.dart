@@ -552,6 +552,11 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                               "Select Group",
                               style: Theme.of(context).accentTextTheme.display2,
                             ),
+                          ),
+                          ListView(
+                            children: <Widget>[
+
+                            ],
                           )
                         ],
                       ),

@@ -23,7 +23,7 @@ class _GroupState extends State<Group> {
   generateGroupMembersWidget() {
     widget.groupMembersNames.forEach((contactGroup) {
       groupMemberNamesWidget.add(Padding(
-        padding: const EdgeInsets.fromLTRB(80, 10, 30, 10),
+        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
         child: Container(
           child: Text(
             contactGroup.contactName,
@@ -36,29 +36,26 @@ class _GroupState extends State<Group> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-              child: Text(
-                widget.groupName,
-                style: Theme.of(context)
-                    .accentTextTheme
-                    .display2
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+            child: Text(
+              widget.groupName,
+              style: Theme.of(context)
+                  .accentTextTheme
+                  .display2
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
-            Column(
-              children: groupMemberNamesWidget,
-            ),
-            Divider(
-              color: Colors.blueGrey,
-            )
-          ],
-        ),
+          ),
+          Column(
+            children: groupMemberNamesWidget,
+          ),
+          Divider(
+            color: Colors.blueGrey,
+          )
+        ],
       ),
     );
   }

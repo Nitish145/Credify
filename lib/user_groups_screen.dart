@@ -1,8 +1,10 @@
-import 'package:credify/contacts_model.dart';
 import 'package:credify/group_UI.dart';
 import 'package:flutter/material.dart';
 
 class UserGroupsScreen extends StatefulWidget {
+  final List<Group> groupList;
+
+  const UserGroupsScreen({Key key, this.groupList}) : super(key: key);
   @override
   _UserGroupsScreenState createState() => _UserGroupsScreenState();
 }
@@ -19,24 +21,8 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
           backgroundColor: Colors.black,
           iconTheme: IconThemeData(color: Colors.white),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Group(
-                groupName: "Random",
-                groupMembersNames: [
-                  ContactsModel(
-                    contactName: "Afhjdsvdzjv",
-                    contactNumber: "jjbajc",
-                  ),
-                  ContactsModel(
-                    contactName: "Afhjdsvdzjv",
-                    contactNumber: "jjbajc",
-                  )
-                ],
-              )
-            ],
-          ),
+        body: ListView(
+          children: widget.groupList,
         ));
   }
 }

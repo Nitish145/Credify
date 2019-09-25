@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:contacts_service/contacts_service.dart';
+import 'package:credify/Models/get_groups.dart';
 import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/contacts_model.dart';
@@ -6,7 +9,9 @@ import 'package:credify/contacts_screen.dart';
 import 'package:credify/credify_card.dart';
 import 'package:credify/dashboard_card.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/group_UI.dart';
 import 'package:credify/progress_bar.dart';
+import 'package:credify/services/get_groups_service.dart';
 import 'package:credify/services/is_new_user.dart';
 import 'package:credify/services/user_data.dart';
 import 'package:credify/travel_screen.dart';
@@ -98,14 +103,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       print(currentUserId);
                                       UserData currentUserData =
                                           await getUserData(currentUserId);
-                                      setState(() {
-                                        isLoading = false;
+                                      List<String> groupIds =
+                                          currentUserData.groupId;
+                                      List<Group> groupList = [];
+                                      groupIds.forEach((groupId) async {
+                                        GroupData groupData =
+                                            await getGroupData(groupId);
+                                        String groupName = groupData.groupName;
+                                        List<ContactsModel> contactsGroupData =
+                                            [];
+                                        groupData.friends.forEach((friend) {
+                                          contactsGroupData.add(ContactsModel(
+                                            contactName: friend.name,
+                                            contactNumber: friend.mobileNumber,
+                                          ));
+                                        });
+                                        groupList.add(Group(
+                                          groupName: groupName,
+                                          groupMembersNames: contactsGroupData,
+                                        ));
                                       });
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  UserGroupsScreen()));
+                                      Future.delayed(const Duration(seconds: 3),
+                                          () {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserGroupsScreen(
+                                                      groupList: groupList,
+                                                    )));
+                                      });
                                     },
                                   ),
                                 ),
