@@ -30,6 +30,8 @@ dependencies:
   video_player:
   path_provider:
   archive:
+  contacts_service:
+  permission_handler:
 
 dev_dependencies:
   flutter_test:
@@ -47,10 +49,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/topBackground.png
-    - assets/images/C.png
-    - assets/images/bikeRide.png
-    - assets/images/travel.png
     - assets/images/
 
   fonts:

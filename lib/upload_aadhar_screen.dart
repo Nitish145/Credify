@@ -6,6 +6,7 @@ import 'package:credify/services/add_documents.dart';
 import 'package:credify/upload_pan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 
 class UploadAadhar extends StatefulWidget {
   @override
@@ -197,12 +198,19 @@ class _UploadAadharState extends State<UploadAadhar> {
                         encoder.addFile(_frontAadharImage);
                         encoder.addFile(_backAadharImage);
                         encoder.close();
-                        await addDocumentsService(
+                        bool isUploaded = await addDocumentsService(
                             currentUserId, "aadhaar", 1, _frontAadharImage);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UploadPan()));
+                        if (isUploaded) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UploadPan()));
+                        } else {
+                          Toast.show("Something Wrong Occured", context,
+                              duration: Toast.LENGTH_LONG,
+                              gravity: Toast.BOTTOM,
+                              backgroundColor: Colors.blueGrey);
+                        }
                       },
                     ),
                   ),

@@ -1,9 +1,15 @@
+import 'package:contacts_service/contacts_service.dart';
+import 'package:credify/contacts_model.dart';
+import 'package:credify/contacts_screen.dart';
 import 'package:credify/credify_card.dart';
 import 'package:credify/dashboard_card.dart';
+import 'package:credify/globals.dart';
 import 'package:credify/progress_bar.dart';
 import 'package:credify/travel_screen.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -11,6 +17,43 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  Future<List<Contact>> getContacts() async {
+    List<Contact> _contacts;
+    PermissionStatus permissionStatus = await _getPermission();
+    if (permissionStatus == PermissionStatus.granted) {
+      setState(() {
+        isLoading = true;
+      });
+      var contacts = await ContactsService.getContacts();
+      _contacts = contacts.toList();
+      setState(() {
+        isLoading = false;
+      });
+      return _contacts;
+    } else {
+      throw PlatformException(
+        code: 'PERMISSION_DENIED',
+        message: 'Access to contacts denied',
+        details: null,
+      );
+    }
+  }
+
+  Future<PermissionStatus> _getPermission() async {
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.contacts);
+    if (permission != PermissionStatus.granted &&
+        permission != PermissionStatus.disabled) {
+      Map<PermissionGroup, PermissionStatus> permissionStatus =
+          await PermissionHandler()
+              .requestPermissions([PermissionGroup.contacts]);
+      return permissionStatus[PermissionGroup.contacts] ??
+          PermissionStatus.unknown;
+    } else {
+      return permission;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,6 +155,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      List<Contact> listOfContacts = await getContacts();
+                      List<ContactsModel> allContacts = [];
+                      listOfContacts.forEach((contact) {
+                        allContacts.add(ContactsModel(
+                          contactNumber: contact.phones.toList().isEmpty
+                              ? ""
+                              : contact.phones.toList()[0].value,
+                          contactName: contact?.displayName,
+                        ));
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ContactsScreen(
+                                    allContacts: allContacts,
+                                  )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(36, 8, 36, 16),
+                      child: Container(
+                          height: 150,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color.fromRGBO(47, 128, 237, .8)),
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Image.asset(
+                                    "assets/images/addContactsBackground.png",
+                                    height: 150,
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        22, 15, 22, 10),
+                                    child: Text(
+                                      "Create and travel as a group",
+                                      style: Theme.of(context)
+                                          .accentTextTheme
+                                          .display3
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          25, 0, 22, 5),
+                                      child: Text(
+                                          "- Lower Interest rates nd Prices",
+                                          style: Theme.of(context)
+                                              .accentTextTheme
+                                              .display4),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          25, 0, 22, 5),
+                                      child: Text("- Better experience",
+                                          style: Theme.of(context)
+                                              .accentTextTheme
+                                              .display4),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )),
                     ),
                   ),
                   Padding(
