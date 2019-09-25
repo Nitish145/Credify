@@ -1,5 +1,10 @@
+import 'package:credify/Models/add_group_response.dart';
+import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/contacts_model.dart';
+import 'package:credify/services/add_group.dart';
+import 'package:credify/services/is_new_user.dart';
 import 'package:flutter/material.dart';
+import 'globals.dart';
 
 class ContactsScreen extends StatefulWidget {
   final List<ContactsModel> allContacts;
@@ -10,10 +15,47 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
-  List<ContactsModel> selectedContacts = [];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(selectedContacts);
+    Widget _createGroupButton() {
+      return Align(
+        alignment: Alignment.bottomCenter,
+        child: SafeArea(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 60,
+            child: RaisedButton(
+              elevation: 10.0,
+              color: Color.fromRGBO(45, 156, 219, 1),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: new Text('Create Group',
+                    style: new TextStyle(fontSize: 22.0, color: Colors.white)),
+              ),
+              onPressed: () async {
+                IsNewUser isNewUserResponse =
+                    await isNewUser(currentUserMobileNumber);
+                print(isNewUserResponse.id);
+                currentUserId = isNewUserResponse.id;
+                AddGroup addGroupResponse =
+                    await addGroupService(selectedContacts, currentUserId);
+                if (addGroupResponse.updated) {
+                  Navigator.pop(context);
+                  selectedContacts = [];
+                }
+              },
+            ),
+          ),
+        ),
+      );
+    }
+
     Widget customAppBar() {
       return Container(
         color: Colors.black,
@@ -28,6 +70,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   color: Colors.white,
                   onPressed: () {
                     Navigator.pop(context);
+                    selectedContacts = [];
                   },
                 ),
                 Padding(
@@ -98,20 +141,19 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            customAppBar(),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  getSelectedContacts(),
-                  getAllContacts(),
-                ],
-              ),
+      body: Stack(
+        children: <Widget>[
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                customAppBar(),
+                getSelectedContacts(),
+                getAllContacts(),
+              ],
             ),
-          ],
-        ),
+          ),
+          _createGroupButton()
+        ],
       ),
     );
   }

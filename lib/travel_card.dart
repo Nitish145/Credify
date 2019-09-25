@@ -41,6 +41,8 @@ class _TravelCardState extends State<TravelCard> {
             setState(() {
               isLoading = true;
             });
+            Toast.show("Hold On! Loading your travel location", context,
+                duration: Toast.LENGTH_LONG);
             IsNewUser isNewUserResponse =
                 await isNewUser(currentUserMobileNumber);
             print(isNewUserResponse.id);

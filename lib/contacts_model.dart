@@ -1,3 +1,4 @@
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 
 class ContactsModel extends StatefulWidget {
@@ -12,13 +13,33 @@ class ContactsModel extends StatefulWidget {
 
 class _ContactsModelState extends State<ContactsModel> {
   bool isChecked = false;
+  bool isAlreadyPresent = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         setState(() {
-          !isChecked ? isChecked = true : isChecked = false;
+          if (!isChecked) {
+            isChecked = true;
+          }
         });
+        if (isChecked) {
+          if (!isAlreadyPresent) {
+            selectedContacts.add(ContactsModel(
+              contactName: widget.contactName,
+              contactNumber: widget.contactNumber,
+            ));
+            isAlreadyPresent = true;
+          }
+        }
+        if (!isChecked && isAlreadyPresent) {
+          print("hello");
+          selectedContacts.remove(ContactsModel(
+            contactName: widget.contactName,
+            contactNumber: widget.contactNumber,
+          ));
+        }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -35,8 +56,12 @@ class _ContactsModelState extends State<ContactsModel> {
             ),
             isChecked
                 ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset("assets/images/selected.png"),
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Image.asset(
+                      "assets/images/selected.png",
+                      height: 20,
+                      width: 20,
+                    ),
                   )
                 : Container()
           ],

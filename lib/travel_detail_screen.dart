@@ -302,30 +302,54 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
               child: Column(
                 children: <Widget>[
                   Column(children: travellersInputList),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton(
-                        elevation: 5.0,
-                        color: Color.fromRGBO(45, 156, 219, 1),
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: new Text('+ Add More',
-                              style: new TextStyle(
-                                  fontSize: 18.0, color: Colors.white)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30.0, 5.0, 5.0, 5.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 2.5,
+                          child: RaisedButton(
+                            elevation: 5.0,
+                            color: Color.fromRGBO(45, 156, 219, 1),
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: new Text('+ Add More',
+                                  style: new TextStyle(
+                                      fontSize: 15.0, color: Colors.white)),
+                            ),
+                            onPressed: () {
+                              numberOfTravellers = numberOfTravellers + 1;
+                              setState(() {
+                                travellersInputList
+                                    .add(getTraveller(numberOfTravellers));
+                              });
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          numberOfTravellers = numberOfTravellers + 1;
-                          setState(() {
-                            travellersInputList
-                                .add(getTraveller(numberOfTravellers));
-                          });
-                        },
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 5.0, 30.0, 5.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 2.5,
+                          child: RaisedButton(
+                            elevation: 5.0,
+                            color: Color.fromRGBO(45, 156, 219, 1),
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: new Text('Choose Group',
+                                  style: new TextStyle(
+                                      fontSize: 15.0, color: Colors.white)),
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
