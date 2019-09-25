@@ -36,6 +36,8 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
   List<String> listOfTravellers = [];
   List<Widget> travellersInputList = [];
 
+  bool isChooseGroupTapped = false;
+
   String commuteType = "";
   var formKey = new GlobalKey<FormState>();
 
@@ -192,338 +194,372 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
     }
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            detailedScreenAppBar(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 20, 30, 5),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color.fromRGBO(45, 156, 219, 1)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: dropdownValue,
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: Theme.of(context).accentTextTheme.display3,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownValue = newValue;
-                        });
-                      },
-                      items: <String>['Iteneary']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              value,
+      body: Stack(
+        children: <Widget>[
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                detailedScreenAppBar(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 20, 30, 5),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Color.fromRGBO(45, 156, 219, 1)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: Theme.of(context).accentTextTheme.display3,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                            });
+                          },
+                          items: <String>['Iteneary']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  value,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Select Dates",
+                      style: Theme.of(context)
+                          .accentTextTheme
+                          .display3
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                      child: GestureDetector(
+                        child: Text(
+                          initialSelectedDate
+                              .toLocal()
+                              .toIso8601String()
+                              .substring(0, 10),
+                          style: Theme.of(context)
+                              .accentTextTheme
+                              .display3
+                              .copyWith(color: Colors.black45),
+                        ),
+                        onTap: () => _selectInitialDate(context),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 50, 5),
+                      child: GestureDetector(
+                        child: Text(
+                          finalSelectedDate
+                              .toLocal()
+                              .toIso8601String()
+                              .substring(0, 10),
+                          style: Theme.of(context)
+                              .accentTextTheme
+                              .display3
+                              .copyWith(color: Colors.black45),
+                        ),
+                        onTap: () => _selectFinalDate(context),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Add People",
+                      style: Theme.of(context)
+                          .accentTextTheme
+                          .display3
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Column(children: travellersInputList),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(30.0, 5.0, 5.0, 5.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              child: RaisedButton(
+                                elevation: 5.0,
+                                color: Color.fromRGBO(45, 156, 219, 1),
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius: new BorderRadius.circular(5)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: new Text('+ Add More',
+                                      style: new TextStyle(
+                                          fontSize: 15.0, color: Colors.white)),
+                                ),
+                                onPressed: () {
+                                  numberOfTravellers = numberOfTravellers + 1;
+                                  setState(() {
+                                    travellersInputList
+                                        .add(getTraveller(numberOfTravellers));
+                                  });
+                                },
+                              ),
                             ),
                           ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Select Dates",
-                  style: Theme.of(context)
-                      .accentTextTheme
-                      .display3
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: GestureDetector(
-                    child: Text(
-                      initialSelectedDate
-                          .toLocal()
-                          .toIso8601String()
-                          .substring(0, 10),
-                      style: Theme.of(context)
-                          .accentTextTheme
-                          .display3
-                          .copyWith(color: Colors.black45),
-                    ),
-                    onTap: () => _selectInitialDate(context),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 50, 5),
-                  child: GestureDetector(
-                    child: Text(
-                      finalSelectedDate
-                          .toLocal()
-                          .toIso8601String()
-                          .substring(0, 10),
-                      style: Theme.of(context)
-                          .accentTextTheme
-                          .display3
-                          .copyWith(color: Colors.black45),
-                    ),
-                    onTap: () => _selectFinalDate(context),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Add People",
-                  style: Theme.of(context)
-                      .accentTextTheme
-                      .display3
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Form(
-              key: formKey,
-              child: Column(
-                children: <Widget>[
-                  Column(children: travellersInputList),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(0.0, 5.0, 30.0, 5.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              child: RaisedButton(
+                                elevation: 5.0,
+                                color: Color.fromRGBO(45, 156, 219, 1),
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius: new BorderRadius.circular(5)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: new Text('Choose Group',
+                                      style: new TextStyle(
+                                          fontSize: 15.0, color: Colors.white)),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isChooseGroupTapped = true;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(30.0, 5.0, 5.0, 5.0),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Preferred Commute",
+                            style: Theme.of(context)
+                                .accentTextTheme
+                                .display3
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                commuteType = "car";
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Container(
+                                height: 120,
+                                width: MediaQuery.of(context).size.width / 2.5,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: commuteType == "car"
+                                          ? Colors.white
+                                          : Colors.black),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: commuteType == "car"
+                                      ? Color.fromRGBO(45, 156, 219, 1)
+                                      : Colors.white,
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Image.asset(
+                                        "assets/images/car.png",
+                                        width: 50,
+                                        color: commuteType == "car"
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                      Text(
+                                        "Car",
+                                        style: commuteType == "car"
+                                            ? Theme.of(context)
+                                                .primaryTextTheme
+                                                .display3
+                                            : Theme.of(context)
+                                                .accentTextTheme
+                                                .display3,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                commuteType = "train";
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Container(
+                                height: 120,
+                                width: MediaQuery.of(context).size.width / 2.5,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: commuteType == "train"
+                                            ? Colors.white
+                                            : Colors.black),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: commuteType == "train"
+                                        ? Color.fromRGBO(45, 156, 219, 1)
+                                        : Colors.white),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Image.asset("assets/images/train.png",
+                                          width: 50,
+                                          color: commuteType == "train"
+                                              ? Colors.white
+                                              : Colors.black),
+                                      Text(
+                                        "Train",
+                                        style: commuteType == "train"
+                                            ? Theme.of(context)
+                                                .primaryTextTheme
+                                                .display3
+                                            : Theme.of(context)
+                                                .accentTextTheme
+                                                .display3,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(80.0, 5.0, 80.0, 50.0),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 2.5,
+                          width: MediaQuery.of(context).size.width,
                           child: RaisedButton(
                             elevation: 5.0,
                             color: Color.fromRGBO(45, 156, 219, 1),
                             shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(5)),
                             child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: new Text('+ Add More',
+                              padding: const EdgeInsets.fromLTRB(
+                                  10.0, 15.0, 10.0, 15.0),
+                              child: new Text('Confirm Tickets',
                                   style: new TextStyle(
-                                      fontSize: 15.0, color: Colors.white)),
+                                      fontSize: 18.0, color: Colors.white)),
                             ),
-                            onPressed: () {
-                              numberOfTravellers = numberOfTravellers + 1;
-                              setState(() {
-                                travellersInputList
-                                    .add(getTraveller(numberOfTravellers));
-                              });
+                            onPressed: () async {
+                              if (commuteType == "") {
+                                Toast.show(
+                                    "Please select a commute type", context,
+                                    duration: Toast.LENGTH_LONG);
+                              } else {
+                                IsNewUser isNewUserResponse =
+                                    await isNewUser(currentUserMobileNumber);
+                                currentUserId = isNewUserResponse.id;
+                                TravelLoan travelLoanResponse =
+                                    await travelLoanService(
+                                        currentUserId,
+                                        initialSelectedDate
+                                            .toLocal()
+                                            .toIso8601String()
+                                            .substring(0, 10),
+                                        finalSelectedDate
+                                            .toLocal()
+                                            .toIso8601String()
+                                            .substring(0, 10),
+                                        commuteType,
+                                        commuteType == "car" ? 1 : 2,
+                                        listOfTravellers,
+                                        true,
+                                        0,
+                                        (widget.place + widget.daysNights)
+                                            .toString(),
+                                        "");
+
+                                if (travelLoanResponse.updated) {
+                                  Toast.show("Loan Request Submitted!", context,
+                                      duration: Toast.LENGTH_SHORT,
+                                      gravity: Toast.BOTTOM,
+                                      backgroundColor: Colors.blueGrey);
+                                }
+                              }
                             },
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 5.0, 30.0, 5.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 2.5,
-                          child: RaisedButton(
-                            elevation: 5.0,
-                            color: Color.fromRGBO(45, 156, 219, 1),
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(5)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: new Text('Choose Group',
-                                  style: new TextStyle(
-                                      fontSize: 15.0, color: Colors.white)),
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Preferred Commute",
-                        style: Theme.of(context)
-                            .accentTextTheme
-                            .display3
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            commuteType = "car";
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Container(
-                            height: 120,
-                            width: MediaQuery.of(context).size.width / 2.5,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: commuteType == "car"
-                                      ? Colors.white
-                                      : Colors.black),
-                              borderRadius: BorderRadius.circular(10),
-                              color: commuteType == "car"
-                                  ? Color.fromRGBO(45, 156, 219, 1)
-                                  : Colors.white,
-                            ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Image.asset(
-                                    "assets/images/car.png",
-                                    width: 50,
-                                    color: commuteType == "car"
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                  Text(
-                                    "Car",
-                                    style: commuteType == "car"
-                                        ? Theme.of(context)
-                                            .primaryTextTheme
-                                            .display3
-                                        : Theme.of(context)
-                                            .accentTextTheme
-                                            .display3,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            commuteType = "train";
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Container(
-                            height: 120,
-                            width: MediaQuery.of(context).size.width / 2.5,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: commuteType == "train"
-                                        ? Colors.white
-                                        : Colors.black),
-                                borderRadius: BorderRadius.circular(10),
-                                color: commuteType == "train"
-                                    ? Color.fromRGBO(45, 156, 219, 1)
-                                    : Colors.white),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Image.asset("assets/images/train.png",
-                                      width: 50,
-                                      color: commuteType == "train"
-                                          ? Colors.white
-                                          : Colors.black),
-                                  Text(
-                                    "Train",
-                                    style: commuteType == "train"
-                                        ? Theme.of(context)
-                                            .primaryTextTheme
-                                            .display3
-                                        : Theme.of(context)
-                                            .accentTextTheme
-                                            .display3,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(80.0, 5.0, 80.0, 50.0),
-                    child: SizedBox(
+                )
+              ],
+            ),
+          ),
+          isChooseGroupTapped
+              ? Center(
+                  child: SafeArea(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
-                      child: RaisedButton(
-                        elevation: 5.0,
-                        color: Color.fromRGBO(45, 156, 219, 1),
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(5)),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
-                          child: new Text('Confirm Tickets',
-                              style: new TextStyle(
-                                  fontSize: 18.0, color: Colors.white)),
-                        ),
-                        onPressed: () async {
-                          if (commuteType == "") {
-                            Toast.show("Please select a commute type", context,
-                                duration: Toast.LENGTH_LONG);
-                          } else {
-                            IsNewUser isNewUserResponse =
-                                await isNewUser(currentUserMobileNumber);
-                            currentUserId = isNewUserResponse.id;
-                            TravelLoan travelLoanResponse =
-                                await travelLoanService(
-                                    currentUserId,
-                                    initialSelectedDate
-                                        .toLocal()
-                                        .toIso8601String()
-                                        .substring(0, 10),
-                                    finalSelectedDate
-                                        .toLocal()
-                                        .toIso8601String()
-                                        .substring(0, 10),
-                                    commuteType,
-                                    commuteType == "car" ? 1 : 2,
-                                    listOfTravellers,
-                                    true,
-                                    0,
-                                    (widget.place + widget.daysNights)
-                                        .toString(),
-                                    "");
-
-                            if (travelLoanResponse.updated) {
-                              Toast.show("Loan Request Submitted!", context,
-                                  duration: Toast.LENGTH_SHORT,
-                                  gravity: Toast.BOTTOM,
-                                  backgroundColor: Colors.blueGrey);
-                            }
-                          }
-                        },
+                      color: Colors.white,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              "Select Group",
+                              style: Theme.of(context).accentTextTheme.display2,
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              : Container()
+        ],
       ),
     );
   }

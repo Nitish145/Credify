@@ -20,6 +20,7 @@ class UserData {
   bool documentsUploaded;
   String documentsId;
   List<String> packages;
+  List<String> groupIds;
 
   UserData({
     this.id,
@@ -33,6 +34,7 @@ class UserData {
     this.documentsUploaded,
     this.documentsId,
     this.packages,
+    this.groupIds,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
@@ -47,6 +49,7 @@ class UserData {
         documentsUploaded: json["documents_uploaded"],
         documentsId: json["documents_id"],
         packages: List<String>.from(json["packages"].map((x) => x)),
+        groupIds: List<String>.from(json["group_id"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,5 +64,6 @@ class UserData {
         "documents_uploaded": documentsUploaded,
         "documents_id": documentsId,
         "packages": List<dynamic>.from(packages.map((x) => x)),
+        "group_id": List<dynamic>.from(groupIds.map((x) => x)),
       };
 }
