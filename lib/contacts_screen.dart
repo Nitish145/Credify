@@ -57,33 +57,22 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
 
     Widget customAppBar() {
-      return Container(
-        color: Colors.black,
-        child: SafeArea(
-          child: Container(
-            height: 70,
-            color: Colors.black,
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.pop(context);
-                    selectedContacts = [];
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Create Group",
-                    style: Theme.of(context).primaryTextTheme.display2,
-                  ),
-                )
-              ],
-            ),
-          ),
+      return AppBar(
+        title: Text(
+          "Your Groups",
+          style: Theme.of(context).primaryTextTheme.display3,
         ),
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            selectedContacts = [];
+          },
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       );
     }
 
@@ -141,12 +130,12 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
 
     return Scaffold(
+      appBar: customAppBar(),
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                customAppBar(),
                 getSelectedContacts(),
                 getAllContacts(),
               ],

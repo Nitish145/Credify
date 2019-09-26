@@ -1,4 +1,5 @@
 import 'package:credify/contacts_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Group extends StatefulWidget {
@@ -28,6 +29,7 @@ class _GroupState extends State<Group> {
           child: Text(
             contactGroup.contactName,
             style: TextStyle(fontSize: 18),
+            textAlign: TextAlign.center,
           ),
         ),
       ));

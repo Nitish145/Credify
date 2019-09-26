@@ -19,6 +19,12 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
             style: Theme.of(context).primaryTextTheme.display3,
           ),
           backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           iconTheme: IconThemeData(color: Colors.white),
         ),
         body: ListView(

@@ -1,8 +1,16 @@
+import 'package:credify/Models/get_groups.dart';
 import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/Models/travel_loan_response_model.dart';
+import 'package:credify/Models/user_data_model.dart';
+import 'package:credify/choose_group_screen.dart';
+import 'package:credify/contacts_model.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/group_UI.dart';
+import 'package:credify/services/get_groups_service.dart';
 import 'package:credify/services/is_new_user.dart';
 import 'package:credify/services/travel_loan.dart';
+import 'package:credify/services/user_data.dart';
+import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
@@ -351,9 +359,63 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                       style: new TextStyle(
                                           fontSize: 15.0, color: Colors.white)),
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
                                   setState(() {
-                                    isChooseGroupTapped = true;
+                                    isLoading = true;
+                                  });
+                                  IsNewUser isNewUserResponse =
+                                      await isNewUser(currentUserMobileNumber);
+                                  print(isNewUserResponse.id);
+                                  currentUserId = isNewUserResponse.id;
+                                  print(currentUserId);
+                                  UserData currentUserData =
+                                      await getUserData(currentUserId);
+                                  List<String> groupIds =
+                                      currentUserData.groupId;
+                                  List<Group> groupList = [];
+                                  groupIds.forEach((groupId) async {
+                                    GroupData groupData =
+                                        await getGroupData(groupId);
+                                    String groupName = groupData.groupName;
+                                    List<ContactsModel> contactsGroupData = [];
+                                    groupData.friends.forEach((friend) {
+                                      contactsGroupData.add(ContactsModel(
+                                        contactName: friend.name,
+                                        contactNumber: friend.mobileNumber,
+                                      ));
+                                    });
+                                    groupList.add(Group(
+                                      groupName: groupName,
+                                      groupMembersNames: contactsGroupData,
+                                    ));
+                                  });
+
+//                                  groupList.forEach((group) {
+//                                    chooseGroupTappedGroupList
+//                                        .add(GestureDetector(
+//                                            onTap: () {
+//                                              group.groupMembersNames
+//                                                  .forEach((groupMemberName) {
+//                                                listOfTravellers.add(
+//                                                    groupMemberName
+//                                                        .contactName);
+//                                              });
+//                                              Navigator.pop(context);
+//                                            },
+//                                            child: group));
+//                                  });
+                                  Future.delayed(const Duration(seconds: 3),
+                                      () {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ChooseGroupScreen(
+                                                  groupList: groupList,
+                                                )));
                                   });
                                 },
                               ),
@@ -537,33 +599,7 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
               ],
             ),
           ),
-          isChooseGroupTapped
-              ? Center(
-                  child: SafeArea(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              "Select Group",
-                              style: Theme.of(context).accentTextTheme.display2,
-                            ),
-                          ),
-                          ListView(
-                            children: <Widget>[
-
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : Container()
+          UndismissableProgressBar()
         ],
       ),
     );
