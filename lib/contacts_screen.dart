@@ -4,6 +4,7 @@ import 'package:credify/contacts_model.dart';
 import 'package:credify/services/add_group.dart';
 import 'package:credify/services/is_new_user.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import 'globals.dart';
 
 class ContactsScreen extends StatefulWidget {
@@ -39,15 +40,20 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     style: new TextStyle(fontSize: 22.0, color: Colors.white)),
               ),
               onPressed: () async {
-                IsNewUser isNewUserResponse =
-                    await isNewUser(currentUserMobileNumber);
-                print(isNewUserResponse.id);
-                currentUserId = isNewUserResponse.id;
-                AddGroup addGroupResponse =
-                    await addGroupService(selectedContacts, currentUserId);
-                if (addGroupResponse.updated) {
-                  Navigator.pop(context);
-                  selectedContacts = [];
+                if (selectedContacts.length >= 2) {
+                  IsNewUser isNewUserResponse =
+                      await isNewUser(currentUserMobileNumber);
+                  print(isNewUserResponse.id);
+                  currentUserId = isNewUserResponse.id;
+                  AddGroup addGroupResponse =
+                      await addGroupService(selectedContacts, currentUserId);
+                  if (addGroupResponse.updated) {
+                    Navigator.pop(context);
+                    selectedContacts = [];
+                  }
+                } else {
+                  Toast.show("Please select at least two Contacts", context,
+                      duration: Toast.LENGTH_LONG);
                 }
               },
             ),
