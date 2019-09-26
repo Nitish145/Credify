@@ -543,34 +543,42 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                     "Please select a commute type", context,
                                     duration: Toast.LENGTH_LONG);
                               } else {
-                                IsNewUser isNewUserResponse =
-                                    await isNewUser(currentUserMobileNumber);
-                                currentUserId = isNewUserResponse.id;
-                                TravelLoan travelLoanResponse =
-                                    await travelLoanService(
-                                        currentUserId,
-                                        initialSelectedDate
-                                            .toLocal()
-                                            .toIso8601String()
-                                            .substring(0, 10),
-                                        finalSelectedDate
-                                            .toLocal()
-                                            .toIso8601String()
-                                            .substring(0, 10),
-                                        commuteType,
-                                        commuteType == "car" ? 1 : 2,
-                                        listOfTravellers,
-                                        true,
-                                        0,
-                                        (widget.place + widget.daysNights)
-                                            .toString(),
-                                        "");
+                                if (listOfTravellers.isNotEmpty) {
+                                  IsNewUser isNewUserResponse =
+                                      await isNewUser(currentUserMobileNumber);
+                                  currentUserId = isNewUserResponse.id;
+                                  TravelLoan travelLoanResponse =
+                                      await travelLoanService(
+                                          currentUserId,
+                                          initialSelectedDate
+                                              .toLocal()
+                                              .toIso8601String()
+                                              .substring(0, 10),
+                                          finalSelectedDate
+                                              .toLocal()
+                                              .toIso8601String()
+                                              .substring(0, 10),
+                                          commuteType,
+                                          commuteType == "car" ? 1 : 2,
+                                          listOfTravellers,
+                                          true,
+                                          0,
+                                          (widget.place + widget.daysNights)
+                                              .toString(),
+                                          "");
 
-                                if (travelLoanResponse.updated) {
-                                  Toast.show("Loan Request Submitted!", context,
-                                      duration: Toast.LENGTH_SHORT,
-                                      gravity: Toast.BOTTOM,
-                                      backgroundColor: Colors.blueGrey);
+                                  if (travelLoanResponse.updated) {
+                                    Toast.show(
+                                        "Loan Request Submitted!", context,
+                                        duration: Toast.LENGTH_SHORT);
+                                    Navigator.pop(context);
+                                    listOfTravellers = [];
+                                  }
+                                } else {
+                                  Toast.show(
+                                      "Please select a group or enter travellers",
+                                      context,
+                                      duration: Toast.LENGTH_LONG);
                                 }
                               }
                             },
