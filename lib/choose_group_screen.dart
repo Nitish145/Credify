@@ -1,7 +1,7 @@
+import 'package:credify/globals.dart';
+import 'package:credify/group_UI.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
-import 'group_UI.dart';
 
 class ChooseGroupScreen extends StatefulWidget {
   final List<Group> groupList;
@@ -34,14 +34,21 @@ class _ChooseGroupScreenState extends State<ChooseGroupScreen> {
         body: Center(
           child: SafeArea(
             child: SingleChildScrollView(
-              child: GestureDetector(
-                onTap: () {
-                  Toast.show("Your Group has been selected!", context,
-                      duration: Toast.LENGTH_LONG);
-                },
-                child: Column(
-                  children: widget.groupList,
-                ),
+              child: Column(
+                children: widget.groupList.map((group) {
+                  return InkWell(
+                    child: group,
+                    onTap: () {
+                      Toast.show(
+                          "You have selected ${group.groupName}", context,
+                          duration: Toast.LENGTH_LONG);
+                      group.groupMembersNames.forEach((groupMemberName) {
+                        listOfTravellers.add(groupMemberName.contactName);
+                      });
+                      Navigator.pop(context);
+                    },
+                  );
+                }).toList(),
               ),
             ),
           ),

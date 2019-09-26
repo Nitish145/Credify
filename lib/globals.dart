@@ -5,3 +5,4 @@ String currentUserMobileNumber = "";
 bool isLoading = false;
 
 List<ContactsModel> selectedContacts = [];
+List<String> listOfTravellers = [];

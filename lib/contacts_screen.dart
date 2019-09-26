@@ -65,7 +65,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     Widget customAppBar() {
       return AppBar(
         title: Text(
-          "Your Groups",
+          "Create Group",
           style: Theme.of(context).primaryTextTheme.display3,
         ),
         backgroundColor: Colors.black,

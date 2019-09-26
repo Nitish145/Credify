@@ -41,7 +41,6 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
 
   int numberOfTravellers = 2;
 
-  List<String> listOfTravellers = [];
   List<Widget> travellersInputList = [];
 
   bool isChooseGroupTapped = false;
@@ -385,25 +384,10 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                       ));
                                     });
                                     groupList.add(Group(
-                                      groupName: groupName,
+                                      groupName: groupName.toUpperCase(),
                                       groupMembersNames: contactsGroupData,
                                     ));
                                   });
-
-//                                  groupList.forEach((group) {
-//                                    chooseGroupTappedGroupList
-//                                        .add(GestureDetector(
-//                                            onTap: () {
-//                                              group.groupMembersNames
-//                                                  .forEach((groupMemberName) {
-//                                                listOfTravellers.add(
-//                                                    groupMemberName
-//                                                        .contactName);
-//                                              });
-//                                              Navigator.pop(context);
-//                                            },
-//                                            child: group));
-//                                  });
                                   Future.delayed(const Duration(seconds: 3),
                                       () {
                                     setState(() {

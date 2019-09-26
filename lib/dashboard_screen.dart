@@ -119,7 +119,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           ));
                                         });
                                         groupList.add(Group(
-                                          groupName: groupName,
+                                          groupName: groupName.toUpperCase(),
                                           groupMembersNames: contactsGroupData,
                                         ));
                                       });
