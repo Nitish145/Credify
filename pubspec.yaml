@@ -26,7 +26,6 @@ dependencies:
   http:
   toast: ^0.1.5
   cupertino_icons: ^0.1.2
-  camera:
   video_player:
   path_provider:
   archive:
