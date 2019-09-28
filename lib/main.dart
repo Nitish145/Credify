@@ -1,6 +1,7 @@
 import 'package:credify/bank_1_screen.dart';
 import 'package:credify/bank_2_screen.dart';
 import 'package:credify/confirmed_screen.dart';
+import 'package:credify/dashboard_screen.dart';
 import 'package:credify/mobile_number_screen.dart';
 import 'package:credify/upload_aadhar_screen.dart';
 import 'package:credify/upload_pan_screen.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
           "/panScreen": (context) => UploadPan(),
           "/bankScreen1": (context) => BankScreen(),
           "/bankScreen2": (context) => BankScreen2(),
+          "/dashboard": (context) => DashboardScreen()
         },
         title: 'CREDIFY',
         theme: ThemeData(

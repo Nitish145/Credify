@@ -887,7 +887,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                   print(currentUserCardNumber);
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      '/aadharScreen',
+                                      '/dashboard',
                                       (Route<dynamic> route) => false);
                                 } else {
                                   Toast.show("Something Wrong Occured", context,
