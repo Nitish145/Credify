@@ -146,18 +146,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           });
                           IsNewUser isNewUserResponse =
                               await isNewUser(currentUserMobileNumber);
-                          Future.delayed(Duration(seconds: 2), () async {
-                            print(isNewUserResponse.id);
-                            currentUserId = isNewUserResponse.id;
-                            currentUserData = await getUserData(currentUserId);
-                            setState(() {
-                              isLoading = false;
-                            });
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DashboardScreen()));
+                          print(isNewUserResponse.id);
+                          currentUserId = isNewUserResponse.id;
+                          currentUserData = await getUserData(currentUserId);
+                          setState(() {
+                            isLoading = false;
                           });
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DashboardScreen()));
                         } else {
                           Toast.show("Wrong OTP entered", context,
                               duration: Toast.LENGTH_SHORT,

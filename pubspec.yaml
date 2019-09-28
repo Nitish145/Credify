@@ -31,6 +31,7 @@ dependencies:
   archive:
   contacts_service:
   permission_handler:
+  dio:
 
 dev_dependencies:
   flutter_test:

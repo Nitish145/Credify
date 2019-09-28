@@ -1,8 +1,13 @@
 import 'dart:io';
 
+import 'package:archive/archive_io.dart';
+import 'package:credify/globals.dart';
+import 'package:credify/services/add_documents.dart';
 import 'package:credify/video_selfie_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:toast/toast.dart';
 
 class UploadPan extends StatefulWidget {
   @override
@@ -188,11 +193,44 @@ class _UploadPanState extends State<UploadPan> {
                             style: new TextStyle(
                                 fontSize: 18.0, color: Colors.white)),
                       ),
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        if (_frontPanImage != null && _backPanImage != null) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          Directory tempDir =
+                              await getApplicationDocumentsDirectory();
+                          String tempPath = tempDir.path;
+                          var encoder = ZipFileEncoder();
+                          encoder.create(tempPath + "/pan.zip");
+                          encoder.addFile(_frontPanImage);
+                          encoder.addFile(_backPanImage);
+                          encoder.close();
+                          bool isUploaded = await addDocumentsService(
+                              currentUserId, "pan", 1, encoder);
+                          print(isUploaded);
+                          if (isUploaded) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => VideoSelfieScreen()));
+                          } else {
+                            Toast.show(
+                              "Something Wrong Occured",
+                              context,
+                              duration: Toast.LENGTH_LONG,
+                            );
+                          }
+                        } else {
+                          Toast.show(
+                            "You have not choosen one or more images",
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => VideoSelfieScreen()));
+                            duration: Toast.LENGTH_LONG,
+                          );
+                        }
                       },
                     ),
                   ),

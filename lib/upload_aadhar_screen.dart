@@ -6,6 +6,7 @@ import 'package:credify/services/add_documents.dart';
 import 'package:credify/upload_pan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:toast/toast.dart';
 
 class UploadAadhar extends StatefulWidget {
@@ -193,23 +194,43 @@ class _UploadAadharState extends State<UploadAadhar> {
                                 fontSize: 18.0, color: Colors.white)),
                       ),
                       onPressed: () async {
-                        var encoder = ZipFileEncoder();
-                        encoder.create('aadhar.zip');
-                        encoder.addFile(_frontAadharImage);
-                        encoder.addFile(_backAadharImage);
-                        encoder.close();
-                        bool isUploaded = await addDocumentsService(
-                            currentUserId, "aadhaar", 1, _frontAadharImage);
-                        if (isUploaded) {
-                          Navigator.push(
+                        if (_frontAadharImage != null &&
+                            _backAadharImage != null) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          Directory tempDir =
+                              await getApplicationDocumentsDirectory();
+                          String tempPath = tempDir.path;
+                          var encoder = ZipFileEncoder();
+                          encoder.create(tempPath + "/aadhar.zip");
+                          encoder.addFile(_frontAadharImage);
+                          encoder.addFile(_backAadharImage);
+                          encoder.close();
+                          bool isUploaded = await addDocumentsService(
+                              currentUserId, "aadhaar", 1, encoder);
+                          print(isUploaded);
+                          if (isUploaded) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UploadPan()));
+                          } else {
+                            Toast.show(
+                              "Something Wrong Occured",
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => UploadPan()));
-                        } else {
-                          Toast.show("Something Wrong Occured", context,
                               duration: Toast.LENGTH_LONG,
-                              gravity: Toast.BOTTOM,
-                              backgroundColor: Colors.blueGrey);
+                            );
+                          }
+                        } else {
+                          Toast.show(
+                            "You have not choosen one or more images",
+                            context,
+                            duration: Toast.LENGTH_LONG,
+                          );
                         }
                       },
                     ),
