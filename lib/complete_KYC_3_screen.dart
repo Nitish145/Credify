@@ -1,4 +1,5 @@
 import 'package:credify/Models/add_kyc_data_model.dart';
+import 'package:credify/generate_card_number.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
   int earningPm = 0;
   String salaryDepositType = "";
   String otherEmi = "";
-  var existingDebts = [];
+  List<String> existingDebts = [];
 
   String profession = "";
   String workExp = "";
@@ -882,6 +883,8 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                 }
 
                                 if (addKycResponse.updated) {
+                                  currentUserCardNumber = generateCardNumber();
+                                  print(currentUserCardNumber);
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       '/aadharScreen',

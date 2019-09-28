@@ -31,25 +31,22 @@ class _ChooseGroupScreenState extends State<ChooseGroupScreen> {
           ),
           iconTheme: IconThemeData(color: Colors.white),
         ),
-        body: Center(
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: widget.groupList.map((group) {
-                  return InkWell(
-                    child: group,
-                    onTap: () {
-                      Toast.show(
-                          "You have selected ${group.groupName}", context,
-                          duration: Toast.LENGTH_LONG);
-                      group.groupMembersNames.forEach((groupMemberName) {
-                        listOfTravellers.add(groupMemberName.contactName);
-                      });
-                      Navigator.pop(context);
-                    },
-                  );
-                }).toList(),
-              ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: widget.groupList.map((group) {
+                return InkWell(
+                  child: group,
+                  onTap: () {
+                    Toast.show("You have selected ${group.groupName}", context,
+                        duration: Toast.LENGTH_LONG);
+                    group.groupMembersNames.forEach((groupMemberName) {
+                      listOfTravellers.add(groupMemberName.contactName);
+                    });
+                    Navigator.pop(context);
+                  },
+                );
+              }).toList(),
             ),
           ),
         ));

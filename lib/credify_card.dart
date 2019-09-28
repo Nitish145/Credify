@@ -1,11 +1,7 @@
-import 'package:credify/Models/is_new_user_model.dart';
-import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/complete_KYC_1_screen.dart';
 import 'package:credify/complete_KYC_2_screen.dart';
 import 'package:credify/complete_KYC_3_screen.dart';
 import 'package:credify/globals.dart';
-import 'package:credify/services/is_new_user.dart' as prefix0;
-import 'package:credify/services/user_data.dart';
 import 'package:flutter/material.dart';
 
 class CredifyCard extends StatefulWidget {
@@ -185,18 +181,6 @@ class _CredifyCardState extends State<CredifyCard> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          IsNewUser isNewUser =
-                              await prefix0.isNewUser(currentUserMobileNumber);
-                          print(isNewUser.id);
-                          currentUserId = isNewUser.id;
-                          UserData currentUserData =
-                              await getUserData(currentUserId);
-                          setState(() {
-                            isLoading = false;
-                          });
                           if (!currentUserData.kycStatus) {
                             switch (currentUserData.kycProgress) {
                               case 0:

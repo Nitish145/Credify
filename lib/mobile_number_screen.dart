@@ -145,6 +145,7 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                         });
                         print(otp);
                         if (otpResponse.isSent) {
+                          currentUserMobileNumber = mobileNumber;
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:credify/Models/get_groups.dart';
-import 'package:credify/Models/is_new_user_model.dart';
-import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/contacts_model.dart';
 import 'package:credify/contacts_screen.dart';
 import 'package:credify/credify_card.dart';
@@ -12,8 +10,6 @@ import 'package:credify/globals.dart';
 import 'package:credify/group_UI.dart';
 import 'package:credify/progress_bar.dart';
 import 'package:credify/services/get_groups_service.dart';
-import 'package:credify/services/is_new_user.dart';
-import 'package:credify/services/user_data.dart';
 import 'package:credify/travel_screen.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:credify/user_groups_screen.dart';
@@ -65,6 +61,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    print(currentUserCardNumber);
+    print(currentUserName);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -95,14 +98,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      IsNewUser isNewUserResponse =
-                                          await isNewUser(
-                                              currentUserMobileNumber);
-                                      print(isNewUserResponse.id);
-                                      currentUserId = isNewUserResponse.id;
-                                      print(currentUserId);
-                                      UserData currentUserData =
-                                          await getUserData(currentUserId);
                                       List<String> groupIds =
                                           currentUserData.groupId;
                                       List<Group> groupList = [];
@@ -147,8 +142,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           padding: const EdgeInsets.only(top: 100, bottom: 40),
                           child: CredifyCard(
                             cardLevel: "Silver",
-                            cardNumber: "1234 5678 9123 4567",
-                            name: "Tanmay Joshi",
+                            cardNumber: currentUserCardNumber,
+                            name: currentUserName,
+                            kycStage: currentUserData.kycProgress,
                           ),
                         )
                       ],
@@ -273,7 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       padding: const EdgeInsets.fromLTRB(
                                           25, 0, 22, 5),
                                       child: Text(
-                                          "- Lower Interest rates nd Prices",
+                                          "- Lower Interest rates and Prices",
                                           style: Theme.of(context)
                                               .accentTextTheme
                                               .display4),
@@ -296,50 +292,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           )),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(36, 8, 36, 16),
-                    child: Container(
-                      height: 130,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color.fromRGBO(47, 128, 237, .8)),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-                              child: Text(
-                                  "Add friends and increase your score"
-                                      .toUpperCase(),
-                                  softWrap: true,
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .display3
-                                      .copyWith(
-                                          fontSize: 19, letterSpacing: 3)),
-                            ),
-                            width: MediaQuery.of(context).size.width / 2,
-                          ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Container(
-                                child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 30,
-                                    child: Image.asset(
-                                      "assets/images/addFriend.png",
-                                      height: 40,
-                                      width: 40,
-                                    )),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -359,17 +311,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 30),
-                    child: DashboardCard(
-                      isAtBottom: true,
-                      heading: "Your Ride. Your Bike",
-                      subheading:
-                          "Get your bike of dreams. Easy installments. Ride away.",
-                      isDark: false,
-                      imageLocation: "assets/images/bikeRide.png",
-                    ),
-                  )
                 ],
               ),
               UndismissableProgressBar()

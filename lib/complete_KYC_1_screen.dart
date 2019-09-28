@@ -197,6 +197,8 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                   isLoading = false;
                                 });
                                 if (addKycResponse.updated) {
+                                  currentUserName = fullName;
+                                  print(currentUserName);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

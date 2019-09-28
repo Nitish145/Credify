@@ -7,12 +7,12 @@ String url =
 http.Client client = new http.Client();
 
 Future<bool> addDocumentsService(
-    String id, String documentName, int stage, File zipFile) async {
+    String id, String documentName, int stage, File file) async {
   String endPoint = "/user/$id/document/$documentName/$stage";
   Uri uri = Uri.parse(url + endPoint);
   var request = new http.MultipartRequest("POST", uri);
-  request.files.add(
-      new http.MultipartFile('file', zipFile.openRead(), zipFile.lengthSync()));
+  request.files
+      .add(new http.MultipartFile('file', file.openRead(), file.lengthSync()));
 
   try {
     var response = await request.send();
