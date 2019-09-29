@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:credify/Models/get_groups.dart';
+import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/contacts_model.dart';
 import 'package:credify/contacts_screen.dart';
 import 'package:credify/credify_card.dart';
@@ -10,6 +11,8 @@ import 'package:credify/globals.dart';
 import 'package:credify/group_UI.dart';
 import 'package:credify/progress_bar.dart';
 import 'package:credify/services/get_groups_service.dart';
+import 'package:credify/services/is_new_user.dart';
+import 'package:credify/services/user_data.dart';
 import 'package:credify/travel_screen.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:credify/user_groups_screen.dart';
@@ -98,6 +101,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       setState(() {
                                         isLoading = true;
                                       });
+                                      IsNewUser isNewUserResponse =
+                                          await isNewUser(
+                                              currentUserMobileNumber);
+                                      currentUserId = isNewUserResponse.id;
+                                      currentUserData =
+                                          await getUserData(currentUserId);
                                       List<String> groupIds =
                                           currentUserData.groupId;
                                       List<Group> groupList = [];
