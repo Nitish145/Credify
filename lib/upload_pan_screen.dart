@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UploadPan extends StatefulWidget {
   @override
@@ -200,6 +201,8 @@ class _UploadPanState extends State<UploadPan> {
                                     fontSize: 18.0, color: Colors.white)),
                           ),
                           onPressed: () async {
+                            SharedPreferences sharedPrefs =
+                                await SharedPreferences.getInstance();
                             if (_frontPanImage != null &&
                                 _backPanImage != null) {
                               setState(() {
@@ -214,7 +217,10 @@ class _UploadPanState extends State<UploadPan> {
                               encoder.addFile(_backPanImage);
                               encoder.close();
                               bool isUploaded = await addDocumentsService(
-                                  currentUserId, "pan", 1, encoder);
+                                  sharedPrefs.getString("currentUserId"),
+                                  "pan",
+                                  1,
+                                  encoder);
                               print(isUploaded);
                               if (isUploaded) {
                                 setState(() {

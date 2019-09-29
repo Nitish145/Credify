@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:credify/Models/get_groups.dart';
-import 'package:credify/Models/is_new_user_model.dart';
+import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/contacts_model.dart';
 import 'package:credify/contacts_screen.dart';
 import 'package:credify/credify_card.dart';
@@ -12,7 +12,6 @@ import 'package:credify/group_UI.dart';
 import 'package:credify/logout_model_sheet.dart';
 import 'package:credify/progress_bar.dart';
 import 'package:credify/services/get_groups_service.dart';
-import 'package:credify/services/is_new_user.dart';
 import 'package:credify/services/user_data.dart';
 import 'package:credify/travel_screen.dart';
 import 'package:credify/undismissable_progress_bar.dart';
@@ -20,6 +19,7 @@ import 'package:credify/user_groups_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -29,6 +29,9 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   bool isGroupLoading = false;
   bool areContactsLoading = false;
+  UserData currentUserData;
+  String currentUserName = "";
+  String currentUserCardNumber = "";
 
   Future<List<Contact>> getContacts() async {
     List<Contact> _contacts;
@@ -72,8 +75,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    print(currentUserCardNumber);
-    print(currentUserName);
+    SharedPreferences.getInstance().then((sharedPrefs) {
+      currentUserName = sharedPrefs.getString("currentUserName");
+      currentUserCardNumber = sharedPrefs.getString("currentUserCardNumber");
+      getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
+        setState(() {
+          currentUserData = userData;
+        });
+      });
+    });
   }
 
   @override
@@ -116,12 +126,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         isLoading = true;
                                         isGroupLoading = true;
                                       });
-                                      IsNewUser isNewUserResponse =
-                                          await isNewUser(
-                                              currentUserMobileNumber);
-                                      currentUserId = isNewUserResponse.id;
-                                      currentUserData =
-                                          await getUserData(currentUserId);
+                                      SharedPreferences sharedPrefs =
+                                          await SharedPreferences.getInstance();
+                                      UserData currentUserData =
+                                          await getUserData(sharedPrefs
+                                              .getString("currentUserId"));
                                       List<String> groupIds =
                                           currentUserData.groupId;
                                       List<Group> groupList = [];
@@ -169,7 +178,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             cardLevel: "Silver",
                             cardNumber: currentUserCardNumber,
                             name: currentUserName,
-                            kycStage: currentUserData.kycProgress,
+                            kycStage: currentUserData == null
+                                ? 0
+                                : currentUserData.kycProgress,
+                            isUserDataNull:
+                                (currentUserData == null) ? true : false,
                           ),
                         )
                       ],

@@ -6,6 +6,7 @@ import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompleteKYC1 extends StatefulWidget {
   @override
@@ -187,8 +188,12 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                 setState(() {
                                   isLoading = true;
                                 });
+                                SharedPreferences sharedPrefs =
+                                    await SharedPreferences.getInstance();
                                 AddKycDataResponse addKycResponse =
-                                    await addKycData(currentUserId, 1,
+                                    await addKycData(
+                                        sharedPrefs.getString("currentUserId"),
+                                        1,
                                         name: fullName,
                                         dob: dob,
                                         aadhar: aadhar,
@@ -197,8 +202,8 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                   isLoading = false;
                                 });
                                 if (addKycResponse.updated) {
-                                  currentUserName = fullName;
-                                  print(currentUserName);
+                                  sharedPrefs.setString(
+                                      "currentUserName", fullName);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

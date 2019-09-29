@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:credify/services/pin_info.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompleteKYC2 extends StatefulWidget {
   @override
@@ -211,9 +212,11 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                                 setState(() {
                                   isLoading = true;
                                 });
+                                SharedPreferences sharedPrefs =
+                                    await SharedPreferences.getInstance();
                                 AddKycDataResponse addKycResponse =
                                     await addKycData(
-                                  currentUserId,
+                                  sharedPrefs.getString("currentUserId"),
                                   2,
                                   pincode: pincode,
                                   houseNumber: houseNumber,

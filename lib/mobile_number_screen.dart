@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class MobileNumberScreen extends StatefulWidget {
   @override
   _MobileNumberScreenState createState() => _MobileNumberScreenState();
@@ -140,12 +142,15 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                         });
                         OtpResponse otpResponse =
                             await otpResponseService(mobileNumber, "otp", otp);
-                        setState(() {
-                          isLoading = false;
-                        });
                         print(otp);
                         if (otpResponse.isSent) {
-                          currentUserMobileNumber = mobileNumber;
+                          SharedPreferences sharedPrefs =
+                              await SharedPreferences.getInstance();
+                          setState(() {
+                            isLoading = false;
+                          });
+                          sharedPrefs.setString(
+                              "currentUserMobileNumber", mobileNumber);
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -161,7 +166,9 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
               )
             ],
           ),
-          UndismissableProgressBar(message: "Sending OTP",)
+          UndismissableProgressBar(
+            message: "Sending OTP",
+          )
         ],
       )),
     );

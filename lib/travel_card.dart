@@ -1,10 +1,13 @@
+import 'dart:convert';
+
+import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/complete_KYC_1_screen.dart';
 import 'package:credify/complete_KYC_2_screen.dart';
 import 'package:credify/complete_KYC_3_screen.dart';
-import 'package:credify/globals.dart';
 import 'package:credify/travel_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TravelCard extends StatefulWidget {
   final bool isLocked;
@@ -33,6 +36,9 @@ class _TravelCardState extends State<TravelCard> {
     return Center(
       child: GestureDetector(
         onTap: () async {
+          SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+          Map map = jsonDecode(sharedPrefs.getString("currentUserData"));
+          UserData currentUserData = UserData.fromJson(map);
           if (!widget.isLocked) {
             if (!currentUserData.kycStatus) {
               switch (currentUserData.kycProgress) {

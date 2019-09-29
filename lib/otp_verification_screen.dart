@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:credify/Models/is_new_user_model.dart';
+import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/dashboard_screen.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/services/is_new_user.dart';
@@ -7,6 +10,7 @@ import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String mobileNumber;
@@ -140,18 +144,24 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
                         if (otp == widget.otp) {
-                          currentUserMobileNumber = widget.mobileNumber;
                           setState(() {
                             isLoading = true;
                           });
-                          IsNewUser isNewUserResponse =
-                              await isNewUser(currentUserMobileNumber);
+                          SharedPreferences sharedPrefs =
+                              await SharedPreferences.getInstance();
+                          IsNewUser isNewUserResponse = await isNewUser(
+                              sharedPrefs.getString("currentUserMobileNumber"));
                           print(isNewUserResponse.id);
-                          currentUserId = isNewUserResponse.id;
-                          currentUserData = await getUserData(currentUserId);
+                          await sharedPrefs.setString(
+                              "currentUserId", isNewUserResponse.id);
+                          UserData currentUserData = await getUserData(
+                              sharedPrefs.getString("currentUserId"));
+                          sharedPrefs.setString(
+                              "currentUserData", jsonEncode(currentUserData));
                           setState(() {
                             isLoading = false;
                           });
+                          sharedPrefs.setBool("isLoggedIn", true);
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

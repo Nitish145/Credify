@@ -1,5 +1,5 @@
-import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> showLogoutModalBottomSheet(BuildContext context) {
   return showModalBottomSheet<void>(
@@ -52,12 +52,16 @@ Future<void> showLogoutModalBottomSheet(BuildContext context) {
                             style: new TextStyle(
                                 fontSize: 18.0, color: Colors.white)),
                       ),
-                      onPressed: () {
-                        currentUserId = "";
-                        currentUserName = "";
-                        currentUserCardNumber = "";
-                        currentUserData = null;
-                        currentUserMobileNumber = "";
+                      onPressed: () async {
+                        SharedPreferences sharedPrefs =
+                            await SharedPreferences.getInstance();
+                        sharedPrefs.setBool("isLoggedIn", false);
+                        sharedPrefs.remove("currentUserId");
+                        sharedPrefs.remove("currentUserName");
+                        sharedPrefs.remove("currentuserCardNumber");
+                        sharedPrefs.remove("currentUserMobileNumber");
+                        sharedPrefs.remove("currentUserData");
+
                         Navigator.pushNamedAndRemoveUntil(context,
                             "/mobileNumber", (Route<dynamic> route) => false);
                       },

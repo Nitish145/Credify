@@ -1,17 +1,17 @@
 import 'package:credify/Models/get_groups.dart';
-import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/Models/travel_loan_response_model.dart';
+import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/choose_group_screen.dart';
 import 'package:credify/contacts_model.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/group_UI.dart';
 import 'package:credify/services/get_groups_service.dart';
-import 'package:credify/services/is_new_user.dart';
 import 'package:credify/services/travel_loan.dart';
 import 'package:credify/services/user_data.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TravelDetailScreen extends StatefulWidget {
   final String imageLocation;
@@ -360,15 +360,14 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                           fontSize: 15.0, color: Colors.white)),
                                 ),
                                 onPressed: () async {
+                                  SharedPreferences sharedPrefs =
+                                      await SharedPreferences.getInstance();
                                   setState(() {
                                     isLoading = true;
                                     isChoosingGroup = true;
                                   });
-                                  IsNewUser isNewUserResponse =
-                                      await isNewUser(currentUserMobileNumber);
-                                  currentUserId = isNewUserResponse.id;
-                                  currentUserData =
-                                      await getUserData(currentUserId);
+                                  UserData currentUserData = await getUserData(
+                                      sharedPrefs.getString("currentUserId"));
                                   List<String> groupIds =
                                       currentUserData.groupId;
                                   List<Group> groupList = [];
@@ -539,6 +538,8 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                       fontSize: 18.0, color: Colors.white)),
                             ),
                             onPressed: () async {
+                              SharedPreferences sharedPrefs =
+                                  await SharedPreferences.getInstance();
                               if (commuteType == "") {
                                 Fluttertoast.showToast(
                                     msg: "Please select a commute type",
@@ -550,7 +551,8 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                   });
                                   TravelLoan travelLoanResponse =
                                       await travelLoanService(
-                                          currentUserId,
+                                          sharedPrefs
+                                              .getString("currentUserId"),
                                           initialSelectedDate
                                               .toLocal()
                                               .toIso8601String()

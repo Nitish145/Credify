@@ -4,6 +4,7 @@ import 'package:credify/globals.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'services/add_kyc_data.dart';
 
@@ -826,6 +827,8 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                               if (formKey.currentState.validate()) {
                                 formKey.currentState.save();
                                 AddKycDataResponse addKycResponse;
+                                SharedPreferences sharedPrefs =
+                                    await SharedPreferences.getInstance();
                                 switch (employmentType) {
                                   case "Salaried":
                                     {
@@ -833,7 +836,9 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                         isLoading = true;
                                       });
                                       addKycResponse = await addKycData(
-                                          currentUserId, 3,
+                                          sharedPrefs
+                                              .getString("currentUserId"),
+                                          3,
                                           liveWith: livesWith,
                                           employmentType: employmentType,
                                           company: company,
@@ -852,7 +857,9 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                         isLoading = true;
                                       });
                                       addKycResponse = await addKycData(
-                                          currentUserId, 3,
+                                          sharedPrefs
+                                              .getString("currentUserId"),
+                                          3,
                                           liveWith: livesWith,
                                           employmentType: employmentType,
                                           profession: profession,
@@ -870,7 +877,9 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                         isLoading = true;
                                       });
                                       addKycResponse = await addKycData(
-                                          currentUserId, 3,
+                                          sharedPrefs
+                                              .getString("currentUserId"),
+                                          3,
                                           liveWith: livesWith,
                                           employmentType: employmentType,
                                           type: type,
@@ -883,8 +892,8 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                 }
 
                                 if (addKycResponse.updated) {
-                                  currentUserCardNumber = generateCardNumber();
-                                  print(currentUserCardNumber);
+                                  sharedPrefs.setString("currentUserCardNumber",
+                                      generateCardNumber());
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       '/dashboard',
@@ -905,7 +914,9 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                 )
               ],
             ),
-            UndismissableProgressBar(message: "Saving",)
+            UndismissableProgressBar(
+              message: "Saving",
+            )
           ],
         ),
       ),

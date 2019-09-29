@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UploadAadhar extends StatefulWidget {
   @override
@@ -200,6 +201,8 @@ class _UploadAadharState extends State<UploadAadhar> {
                                     fontSize: 18.0, color: Colors.white)),
                           ),
                           onPressed: () async {
+                            SharedPreferences sharedPrefs =
+                                await SharedPreferences.getInstance();
                             if (_frontAadharImage != null &&
                                 _backAadharImage != null) {
                               setState(() {
@@ -214,7 +217,10 @@ class _UploadAadharState extends State<UploadAadhar> {
                               encoder.addFile(_backAadharImage);
                               encoder.close();
                               bool isUploaded = await addDocumentsService(
-                                  currentUserId, "aadhaar", 1, encoder);
+                                  sharedPrefs.getString("currentUserId"),
+                                  "aadhaar",
+                                  1,
+                                  encoder);
                               print(isUploaded);
                               if (isUploaded) {
                                 setState(() {
@@ -232,7 +238,7 @@ class _UploadAadharState extends State<UploadAadhar> {
                               }
                             } else {
                               Fluttertoast.showToast(
-                                msg : "You have not choosen one or more images",
+                                msg: "You have not choosen one or more images",
                                 toastLength: Toast.LENGTH_LONG,
                               );
                             }
