@@ -16,9 +16,71 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
-  @override
-  void initState() {
-    super.initState();
+  bool _isGroupNameAdded = false;
+  bool _isDialogShown = false;
+  String groupName = "";
+
+  var formKey = new GlobalKey<FormState>();
+
+  _displayDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Choose a Group Name',
+              style: TextStyle(fontWeight: FontWeight.bold)
+                  .copyWith(color: Color.fromRGBO(45, 156, 219, 1)),
+            ),
+            content: Theme(
+              data: ThemeData(
+                primaryColor: Color.fromRGBO(45, 156, 219, 0.5),
+              ),
+              child: Form(
+                key: formKey,
+                child: TextFormField(
+                  style: Theme.of(context).accentTextTheme.display3,
+                  onSaved: (_groupName) {
+                    groupName = _groupName;
+                  },
+                  validator: (_groupName) {
+                    if (_groupName.isEmpty) {
+                      return "Please enter a name";
+                    }
+                    return null;
+                  },
+                  cursorColor: Color.fromRGBO(45, 156, 219, 0.5),
+                  cursorWidth: 1,
+                  decoration: InputDecoration(
+                      labelText: "Group Name",
+                      labelStyle: Theme.of(context).accentTextTheme.display3,
+                      border: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color.fromRGBO(45, 156, 219, 0.5),
+                              width: 0.5))),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  'Continue',
+                  style: Theme.of(context).accentTextTheme.display3.copyWith(
+                        color: Color.fromRGBO(45, 156, 219, 1),
+                      ),
+                ),
+                onPressed: () {
+                  if (formKey.currentState.validate()) {
+                    formKey.currentState.save();
+                    _isGroupNameAdded = true;
+                    _isDialogShown = true;
+                    Navigator.pop(context);
+                  }
+                },
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -41,15 +103,20 @@ class _ContactsScreenState extends State<ContactsScreen> {
               ),
               onPressed: () async {
                 if (selectedContacts.length >= 2) {
-                  IsNewUser isNewUserResponse =
-                      await isNewUser(currentUserMobileNumber);
-                  print(isNewUserResponse.id);
-                  currentUserId = isNewUserResponse.id;
-                  AddGroup addGroupResponse =
-                      await addGroupService(selectedContacts, currentUserId);
-                  if (addGroupResponse.updated) {
-                    Navigator.pop(context);
-                    selectedContacts = [];
+                  if (!_isDialogShown) {
+                    _displayDialog(context);
+                  }
+                  if (_isGroupNameAdded) {
+                    IsNewUser isNewUserResponse =
+                        await isNewUser(currentUserMobileNumber);
+                    print(isNewUserResponse.id);
+                    currentUserId = isNewUserResponse.id;
+                    AddGroup addGroupResponse = await addGroupService(
+                        selectedContacts, currentUserId, groupName);
+                    if (addGroupResponse.updated) {
+                      Navigator.pop(context);
+                      selectedContacts = [];
+                    }
                   }
                 } else {
                   Toast.show("Please select at least two Contacts", context,

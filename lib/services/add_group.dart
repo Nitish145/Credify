@@ -9,8 +9,8 @@ String url =
 var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
-Future<AddGroup> addGroupService(
-    List<ContactsModel> selectedContacts, String userId) async {
+Future<AddGroup> addGroupService(List<ContactsModel> selectedContacts,
+    String userId, String groupName) async {
   String endPoint = "/group/$userId";
   String uri = url + endPoint;
 
@@ -24,7 +24,7 @@ Future<AddGroup> addGroupService(
 
   print(listInJson);
 
-  var json = listInJson;
+  var json = {"friends": listInJson, "group_name": groupName};
 
   try {
     http.Response response =
