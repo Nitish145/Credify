@@ -26,59 +26,62 @@ class _ContactsScreenState extends State<ContactsScreen> {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text(
-              'Choose a Group Name',
-              style: TextStyle(fontWeight: FontWeight.bold)
-                  .copyWith(color: Color.fromRGBO(45, 156, 219, 1)),
-            ),
-            content: Theme(
-              data: ThemeData(
-                primaryColor: Color.fromRGBO(45, 156, 219, 0.5),
+          return Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+            child: AlertDialog(
+              title: Text(
+                'Choose a Group Name',
+                style: TextStyle(fontWeight: FontWeight.bold)
+                    .copyWith(color: Color.fromRGBO(45, 156, 219, 1)),
               ),
-              child: Form(
-                key: formKey,
-                child: TextFormField(
-                  style: Theme.of(context).accentTextTheme.display3,
-                  onSaved: (_groupName) {
-                    groupName = _groupName;
-                  },
-                  validator: (_groupName) {
-                    if (_groupName.isEmpty) {
-                      return "Please enter a name";
+              content: Theme(
+                data: ThemeData(
+                  primaryColor: Color.fromRGBO(45, 156, 219, 0.5),
+                ),
+                child: Form(
+                  key: formKey,
+                  child: TextFormField(
+                    style: Theme.of(context).accentTextTheme.display3,
+                    onSaved: (_groupName) {
+                      groupName = _groupName;
+                    },
+                    validator: (_groupName) {
+                      if (_groupName.isEmpty) {
+                        return "Please enter a name";
+                      }
+                      return null;
+                    },
+                    cursorColor: Color.fromRGBO(45, 156, 219, 0.5),
+                    cursorWidth: 1,
+                    decoration: InputDecoration(
+                        labelText: "Group Name",
+                        labelStyle: Theme.of(context).accentTextTheme.display3,
+                        border: new UnderlineInputBorder(
+                            borderSide: new BorderSide(
+                                color: Color.fromRGBO(45, 156, 219, 0.5),
+                                width: 0.5))),
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text(
+                    'Continue',
+                    style: Theme.of(context).accentTextTheme.display3.copyWith(
+                          color: Color.fromRGBO(45, 156, 219, 1),
+                        ),
+                  ),
+                  onPressed: () {
+                    if (formKey.currentState.validate()) {
+                      formKey.currentState.save();
+                      _isGroupNameAdded = true;
+                      _isDialogShown = true;
+                      Navigator.pop(context);
                     }
-                    return null;
                   },
-                  cursorColor: Color.fromRGBO(45, 156, 219, 0.5),
-                  cursorWidth: 1,
-                  decoration: InputDecoration(
-                      labelText: "Group Name",
-                      labelStyle: Theme.of(context).accentTextTheme.display3,
-                      border: new UnderlineInputBorder(
-                          borderSide: new BorderSide(
-                              color: Color.fromRGBO(45, 156, 219, 0.5),
-                              width: 0.5))),
-                ),
-              ),
+                )
+              ],
             ),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text(
-                  'Continue',
-                  style: Theme.of(context).accentTextTheme.display3.copyWith(
-                        color: Color.fromRGBO(45, 156, 219, 1),
-                      ),
-                ),
-                onPressed: () {
-                  if (formKey.currentState.validate()) {
-                    formKey.currentState.save();
-                    _isGroupNameAdded = true;
-                    _isDialogShown = true;
-                    Navigator.pop(context);
-                  }
-                },
-              )
-            ],
           );
         });
   }
