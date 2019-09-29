@@ -28,55 +28,49 @@ class CredifyCard extends StatefulWidget {
 
 class _CredifyCardState extends State<CredifyCard> {
   BoxDecoration getBoxDecorationForCard() {
-    if (!widget.isUserDataNull) {
-      switch (widget.kycStage) {
-        case 0:
-          return BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Color.fromRGBO(221, 221, 221, 1));
-          break;
-        case 1:
-          return BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color.fromRGBO(229, 93, 135, .33),
-                    Color.fromRGBO(95, 195, 228, .33)
-                  ]));
-          break;
-        case 2:
-          return BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color.fromRGBO(229, 93, 135, .66),
-                    Color.fromRGBO(95, 195, 228, .66)
-                  ]));
-          break;
-        case 3:
-          return BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color.fromRGBO(229, 93, 135, 1),
-                    Color.fromRGBO(95, 195, 228, 1)
-                  ]));
-          break;
-        default:
-          return BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Color.fromRGBO(221, 221, 221, 1));
-      }
-    } else {
-      return BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Color.fromRGBO(221, 221, 221, 1));
+    switch (widget.kycStage) {
+      case 0:
+        return BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Color.fromRGBO(221, 221, 221, 1));
+        break;
+      case 1:
+        return BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color.fromRGBO(229, 93, 135, .33),
+                  Color.fromRGBO(95, 195, 228, .33)
+                ]));
+        break;
+      case 2:
+        return BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color.fromRGBO(229, 93, 135, .66),
+                  Color.fromRGBO(95, 195, 228, .66)
+                ]));
+        break;
+      case 3:
+        return BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color.fromRGBO(229, 93, 135, 1),
+                  Color.fromRGBO(95, 195, 228, 1)
+                ]));
+        break;
+      default:
+        return BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Color.fromRGBO(221, 221, 221, 1));
     }
   }
 
@@ -164,7 +158,7 @@ class _CredifyCardState extends State<CredifyCard> {
                       ),
                     ],
                   )
-                : (widget.kycStage == 0)
+                : (widget.isUserDataNull)
                     ? Center(
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),

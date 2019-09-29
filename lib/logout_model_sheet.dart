@@ -57,8 +57,6 @@ Future<void> showLogoutModalBottomSheet(BuildContext context) {
                             await SharedPreferences.getInstance();
                         sharedPrefs.setBool("isLoggedIn", false);
                         sharedPrefs.remove("currentUserId");
-                        sharedPrefs.remove("currentUserName");
-                        sharedPrefs.remove("currentuserCardNumber");
                         sharedPrefs.remove("currentUserMobileNumber");
                         sharedPrefs.remove("currentUserData");
 
