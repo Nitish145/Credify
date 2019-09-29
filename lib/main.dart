@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
           "/panScreen": (context) => UploadPan(),
           "/bankScreen1": (context) => BankScreen(),
           "/bankScreen2": (context) => BankScreen2(),
-          "/dashboard": (context) => DashboardScreen()
+          "/dashboard": (context) => DashboardScreen(),
+          "/mobileNumber": (context) => MobileNumberScreen()
         },
         title: 'CREDIFY',
         theme: ThemeData(

@@ -9,6 +9,7 @@ import 'package:credify/credify_card.dart';
 import 'package:credify/dashboard_card.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/group_UI.dart';
+import 'package:credify/logout_model_sheet.dart';
 import 'package:credify/progress_bar.dart';
 import 'package:credify/services/get_groups_service.dart';
 import 'package:credify/services/is_new_user.dart';
@@ -78,6 +79,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: new FloatingActionButton.extended(
+        label: Text("Logout"),
+        foregroundColor: Colors.white,
+        backgroundColor: Color.fromRGBO(45, 156, 219, 1),
+        onPressed: () {
+          showLogoutModalBottomSheet(context);
+        },
+      ),
       body: Container(
         child: SingleChildScrollView(
           child: Stack(
