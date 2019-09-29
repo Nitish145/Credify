@@ -6,7 +6,7 @@ import 'package:credify/services/user_data.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String mobileNumber;
@@ -157,10 +157,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               MaterialPageRoute(
                                   builder: (context) => DashboardScreen()));
                         } else {
-                          Toast.show("Wrong OTP entered", context,
-                              duration: Toast.LENGTH_SHORT,
-                              gravity: Toast.BOTTOM,
-                              backgroundColor: Colors.blueGrey);
+                          Fluttertoast.showToast(
+                            msg: "Wrong OTP entered",
+                            toastLength: Toast.LENGTH_SHORT,
+                          );
                         }
                       }
                     },

@@ -4,7 +4,7 @@ import 'package:credify/contacts_model.dart';
 import 'package:credify/services/add_group.dart';
 import 'package:credify/services/is_new_user.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'globals.dart';
 
 class ContactsScreen extends StatefulWidget {
@@ -122,8 +122,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     }
                   }
                 } else {
-                  Toast.show("Please select at least two Contacts", context,
-                      duration: Toast.LENGTH_LONG);
+                  Fluttertoast.showToast(
+                      msg: "Please select at least two Contacts",
+                      toastLength: Toast.LENGTH_LONG);
                 }
               },
             ),

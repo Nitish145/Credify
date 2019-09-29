@@ -7,7 +7,7 @@ import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:credify/services/pin_info.dart';
 import 'package:flutter/services.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CompleteKYC2 extends StatefulWidget {
   @override
@@ -230,10 +230,10 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                                           builder: (context) =>
                                               CompleteKYC3()));
                                 } else {
-                                  Toast.show("Something Wrong Occured", context,
-                                      duration: Toast.LENGTH_SHORT,
-                                      gravity: Toast.BOTTOM,
-                                      backgroundColor: Colors.blueGrey);
+                                  Fluttertoast.showToast(
+                                    msg: "Something Wrong Occured",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
                                 }
                               }
                             },

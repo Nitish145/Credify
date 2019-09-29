@@ -8,7 +8,7 @@ import 'package:credify/services/get_groups_service.dart';
 import 'package:credify/services/travel_loan.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TravelDetailScreen extends StatefulWidget {
   final String imageLocation;
@@ -36,6 +36,8 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
   DateTime finalSelectedDate = DateTime.now().add(Duration(days: 3));
 
   int numberOfTravellers = 2;
+
+  bool isChoosingGroup = false;
 
   List<Widget> travellersInputList = [];
 
@@ -357,6 +359,7 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                 onPressed: () async {
                                   setState(() {
                                     isLoading = true;
+                                    isChoosingGroup = true;
                                   });
                                   List<String> groupIds =
                                       currentUserData.groupId;
@@ -381,6 +384,7 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                       () {
                                     setState(() {
                                       isLoading = false;
+                                      isChoosingGroup = false;
                                     });
                                     Navigator.push(
                                         context,
@@ -528,9 +532,9 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                             ),
                             onPressed: () async {
                               if (commuteType == "") {
-                                Toast.show(
-                                    "Please select a commute type", context,
-                                    duration: Toast.LENGTH_LONG);
+                                Fluttertoast.showToast(
+                                    msg: "Please select a commute type",
+                                    toastLength: Toast.LENGTH_LONG);
                               } else {
                                 if (listOfTravellers.isNotEmpty) {
                                   setState(() {
@@ -560,17 +564,17 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                   });
 
                                   if (travelLoanResponse.updated) {
-                                    Toast.show(
-                                        "Loan Request Submitted!", context,
-                                        duration: Toast.LENGTH_SHORT);
+                                    Fluttertoast.showToast(
+                                        msg: "Loan Request Submitted!",
+                                        toastLength: Toast.LENGTH_SHORT);
                                     Navigator.pop(context);
                                     listOfTravellers = [];
                                   }
                                 } else {
-                                  Toast.show(
-                                      "Please select a group or enter travellers",
-                                      context,
-                                      duration: Toast.LENGTH_LONG);
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Please select a group or enter travellers",
+                                      toastLength: Toast.LENGTH_LONG);
                                 }
                               }
                             },
@@ -583,9 +587,13 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
               ],
             ),
           ),
-          UndismissableProgressBar(
-            message: "Submitting Request",
-          )
+          isChoosingGroup
+              ? UndismissableProgressBar(
+                  message: "Loading Groups",
+                )
+              : UndismissableProgressBar(
+                  message: "Submitting Request",
+                )
         ],
       ),
     );

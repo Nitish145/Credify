@@ -4,8 +4,8 @@ import 'package:credify/globals.dart';
 import 'package:credify/services/add_kyc_data.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
-import 'package:toast/toast.dart';
 
 class CompleteKYC1 extends StatefulWidget {
   @override
@@ -205,10 +205,10 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                           builder: (context) =>
                                               CompleteKYC2()));
                                 } else {
-                                  Toast.show("Something Wrong Occured", context,
-                                      duration: Toast.LENGTH_SHORT,
-                                      gravity: Toast.BOTTOM,
-                                      backgroundColor: Colors.blueGrey);
+                                  Fluttertoast.showToast(
+                                    msg: "Something Wrong Occured",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
                                 }
                               }
                             },
@@ -220,7 +220,9 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                 )
               ],
             ),
-            UndismissableProgressBar(message: "Saving",)
+            UndismissableProgressBar(
+              message: "Saving",
+            )
           ],
         ),
       ),

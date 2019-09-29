@@ -4,7 +4,7 @@ import 'package:credify/complete_KYC_3_screen.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/travel_detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TravelCard extends StatefulWidget {
   final bool isLocked;
@@ -73,8 +73,9 @@ class _TravelCardState extends State<TravelCard> {
                           )));
             }
           } else {
-            Toast.show("This Travel location is locked", context,
-                duration: Toast.LENGTH_LONG);
+            Fluttertoast.showToast(
+                msg: "This Travel location is locked",
+                toastLength: Toast.LENGTH_LONG);
           }
         },
         child: Container(

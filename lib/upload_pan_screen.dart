@@ -6,9 +6,9 @@ import 'package:credify/services/add_documents.dart';
 import 'package:credify/undismissable_progress_bar.dart';
 import 'package:credify/video_selfie_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:toast/toast.dart';
 
 class UploadPan extends StatefulWidget {
   @override
@@ -226,17 +226,15 @@ class _UploadPanState extends State<UploadPan> {
                                         builder: (context) =>
                                             VideoSelfieScreen()));
                               } else {
-                                Toast.show(
-                                  "Something Wrong Occured",
-                                  context,
-                                  duration: Toast.LENGTH_LONG,
+                                Fluttertoast.showToast(
+                                  msg: "Something Wrong Occured",
+                                  toastLength: Toast.LENGTH_SHORT,
                                 );
                               }
                             } else {
-                              Toast.show(
-                                "You have not choosen one or more images",
-                                context,
-                                duration: Toast.LENGTH_LONG,
+                              Fluttertoast.showToast(
+                                msg: "You have not choosen one or more images",
+                                toastLength: Toast.LENGTH_LONG,
                               );
                             }
                           },
