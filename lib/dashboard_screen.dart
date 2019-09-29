@@ -26,17 +26,22 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  bool isGroupLoading = false;
+  bool areContactsLoading = false;
+
   Future<List<Contact>> getContacts() async {
     List<Contact> _contacts;
     PermissionStatus permissionStatus = await _getPermission();
     if (permissionStatus == PermissionStatus.granted) {
       setState(() {
         isLoading = true;
+        areContactsLoading = true;
       });
       var contacts = await ContactsService.getContacts();
       _contacts = contacts.toList();
       setState(() {
         isLoading = false;
+        areContactsLoading = false;
       });
       return _contacts;
     } else {
@@ -100,6 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     onPressed: () async {
                                       setState(() {
                                         isLoading = true;
+                                        isGroupLoading = true;
                                       });
                                       IsNewUser isNewUserResponse =
                                           await isNewUser(
@@ -131,6 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           () {
                                         setState(() {
                                           isLoading = false;
+                                          isGroupLoading = false;
                                         });
                                         Navigator.push(
                                             context,
@@ -322,7 +329,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ],
               ),
-              UndismissableProgressBar()
+              areContactsLoading
+                  ? UndismissableProgressBar(
+                      message: "Loading Contacts",
+                    )
+                  : UndismissableProgressBar(
+                      message: "Loading Groups",
+                    )
             ],
           ),
         ),

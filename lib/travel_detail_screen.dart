@@ -533,6 +533,9 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                     duration: Toast.LENGTH_LONG);
                               } else {
                                 if (listOfTravellers.isNotEmpty) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
                                   TravelLoan travelLoanResponse =
                                       await travelLoanService(
                                           currentUserId,
@@ -552,6 +555,9 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                           (widget.place + widget.daysNights)
                                               .toString(),
                                           "");
+                                  setState(() {
+                                    isLoading = false;
+                                  });
 
                                   if (travelLoanResponse.updated) {
                                     Toast.show(
@@ -577,7 +583,9 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
               ],
             ),
           ),
-          UndismissableProgressBar()
+          UndismissableProgressBar(
+            message: "Submitting Request",
+          )
         ],
       ),
     );

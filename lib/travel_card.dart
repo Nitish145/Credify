@@ -1,11 +1,7 @@
-import 'package:credify/Models/is_new_user_model.dart';
-import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/complete_KYC_1_screen.dart';
 import 'package:credify/complete_KYC_2_screen.dart';
 import 'package:credify/complete_KYC_3_screen.dart';
 import 'package:credify/globals.dart';
-import 'package:credify/services/is_new_user.dart';
-import 'package:credify/services/user_data.dart';
 import 'package:credify/travel_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -38,19 +34,6 @@ class _TravelCardState extends State<TravelCard> {
       child: GestureDetector(
         onTap: () async {
           if (!widget.isLocked) {
-            setState(() {
-              isLoading = true;
-            });
-            Toast.show("Hold On! Loading your travel location", context,
-                duration: Toast.LENGTH_LONG);
-            IsNewUser isNewUserResponse =
-                await isNewUser(currentUserMobileNumber);
-            print(isNewUserResponse.id);
-            currentUserId = isNewUserResponse.id;
-            UserData currentUserData = await getUserData(currentUserId);
-            setState(() {
-              isLoading = false;
-            });
             if (!currentUserData.kycStatus) {
               switch (currentUserData.kycProgress) {
                 case 0:

@@ -1,4 +1,5 @@
 import 'package:archive/archive_io.dart';
+import 'package:credify/globals.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,6 +29,13 @@ Future<bool> addDocumentsService(
       uri.toString(),
       data: await formData1(),
       onSendProgress: (received, total) {
+        if (documentName == "aadhaar") {
+          aadharLoadingProgress =
+              (received / total * 100).toStringAsFixed(0) + "%";
+        } else if (documentName == "pan") {
+          panLoadingProgress =
+              (received / total * 100).toStringAsFixed(0) + "%";
+        }
         if (total != -1) {
           print((received / total * 100).toStringAsFixed(0) + "%");
         }

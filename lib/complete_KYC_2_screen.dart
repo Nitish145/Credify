@@ -27,6 +27,8 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
   String locality;
   String city;
 
+  bool isPinInfoLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,10 +97,12 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                                     .requestFocus(FocusNode());
                                 setState(() {
                                   isLoading = true;
+                                  isPinInfoLoading = true;
                                 });
                                 PinInfo pinInfo = await pinInfoService(text);
                                 setState(() {
                                   isLoading = false;
+                                  isPinInfoLoading = false;
                                 });
                                 cityController.text =
                                     pinInfo.postOffice[0].block +
@@ -241,7 +245,13 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                 )
               ],
             ),
-            UndismissableProgressBar()
+            isPinInfoLoading
+                ? UndismissableProgressBar(
+                    message: "Fetching Location",
+                  )
+                : UndismissableProgressBar(
+                    message: "Saving",
+                  )
           ],
         ),
       ),

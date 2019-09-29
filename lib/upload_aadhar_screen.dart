@@ -247,7 +247,9 @@ class _UploadAadharState extends State<UploadAadhar> {
               ],
             ),
           ),
-          UndismissableProgressBar()
+          UndismissableProgressBar(
+            message: "Uploading AADHAR",
+          )
         ],
       ),
     );

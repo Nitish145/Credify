@@ -248,7 +248,9 @@ class _UploadPanState extends State<UploadPan> {
               ],
             ),
           ),
-          UndismissableProgressBar()
+          UndismissableProgressBar(
+            message: "Uploading PAN",
+          )
         ],
       ),
     );

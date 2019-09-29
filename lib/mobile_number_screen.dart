@@ -161,7 +161,7 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
               )
             ],
           ),
-          UndismissableProgressBar()
+          UndismissableProgressBar(message: "Sending OTP",)
         ],
       )),
     );

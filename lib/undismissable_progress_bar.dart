@@ -1,7 +1,11 @@
+import 'package:credify/custom_progress_bar.dart';
 import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 
 class UndismissableProgressBar extends StatelessWidget {
+  final String message;
+
+  const UndismissableProgressBar({Key key, this.message}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -20,12 +24,7 @@ class UndismissableProgressBar extends StatelessWidget {
           ),
           Container(
             height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
+            child: Center(child: getCustomProgressLoader(message, context)),
           )
         ],
       );

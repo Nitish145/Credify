@@ -169,7 +169,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
             ],
           )),
-          UndismissableProgressBar()
+          UndismissableProgressBar(message: "Fetching Data")
         ],
       ),
     );

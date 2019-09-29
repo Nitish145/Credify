@@ -11,3 +11,6 @@ UserData currentUserData;
 
 String currentUserName = "";
 String currentUserCardNumber = "";
+
+String aadharLoadingProgress = "";
+String panLoadingProgress = "";

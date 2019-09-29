@@ -220,7 +220,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                 )
               ],
             ),
-            UndismissableProgressBar()
+            UndismissableProgressBar(message: "Saving",)
           ],
         ),
       ),
