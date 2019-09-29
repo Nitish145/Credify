@@ -896,7 +896,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                       generateCardNumber());
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      '/dashboard',
+                                      '/aadharScreen',
                                       (Route<dynamic> route) => false);
                                 } else {
                                   Fluttertoast.showToast(
