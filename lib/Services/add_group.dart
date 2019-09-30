@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:credify/Models/add_group_response.dart';
-import 'package:credify/contacts_model.dart';
+import 'package:credify/Components/contacts_model.dart';
 import 'package:http/http.dart' as http;
 
 String url =

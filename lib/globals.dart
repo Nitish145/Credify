@@ -1,4 +1,4 @@
-import 'package:credify/contacts_model.dart';
+import 'package:credify/Components/contacts_model.dart';
 
 bool isLoading = false;
 

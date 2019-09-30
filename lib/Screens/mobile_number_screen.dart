@@ -1,46 +1,40 @@
-import 'dart:convert';
-
-import 'package:credify/Models/is_new_user_model.dart';
-import 'package:credify/Models/user_data_model.dart';
-import 'package:credify/dashboard_screen.dart';
+import 'package:credify/Models/otp_response_model.dart';
 import 'package:credify/globals.dart';
-import 'package:credify/services/is_new_user.dart';
-import 'package:credify/services/user_data.dart';
-import 'package:credify/undismissable_progress_bar.dart';
+import 'package:credify/Screens/otp_verification_screen.dart';
+import 'package:credify/Services/otp_response.dart';
+import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:math' as math;
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OtpVerificationScreen extends StatefulWidget {
-  final String mobileNumber;
-  final String otp;
-
-  const OtpVerificationScreen({Key key, this.mobileNumber, this.otp})
-      : super(key: key);
+class MobileNumberScreen extends StatefulWidget {
   @override
-  _OtpVerificationScreenState createState() => _OtpVerificationScreenState();
+  _MobileNumberScreenState createState() => _MobileNumberScreenState();
 }
 
-class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
+class _MobileNumberScreenState extends State<MobileNumberScreen> {
   var formKey = new GlobalKey<FormState>();
-  TextEditingController otpController = new TextEditingController();
-  String otp;
+  String mobileNumber;
 
-  @override
-  void initState() {
-    super.initState();
-    otpController.text = widget.otp;
+  String generateOtp() {
+    var rnd = new math.Random();
+    var next = rnd.nextDouble() * 1000000;
+    while (next < 100000) {
+      next *= 10;
+    }
+    return next.toInt().toString();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(3, 4, 5, 1),
-      body: Stack(
+      body: SingleChildScrollView(
+          child: Stack(
         children: <Widget>[
-          SingleChildScrollView(
-              child: Column(
+          Column(
             children: <Widget>[
               Container(
                 height: MediaQuery.of(context).size.height / 2.2,
@@ -100,21 +94,20 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           top: 100, left: 30, right: 30, bottom: 10),
                       child: TextFormField(
                         keyboardType: TextInputType.phone,
-                        maxLength: 6,
+                        maxLength: 10,
                         style: Theme.of(context).primaryTextTheme.display3,
-                        controller: otpController,
                         decoration: InputDecoration(
-                            labelText: "OTP",
+                            labelText: "Mobile Number",
                             labelStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder()),
-                        validator: (_otp) {
-                          if (_otp.length < 6) {
-                            return "Invalid OTP";
+                        validator: (_phoneNo) {
+                          if (_phoneNo.length < 10) {
+                            return "Enter a valid mobile no.";
                           }
                           return null;
                         },
-                        onSaved: (String _otp) => otp = _otp,
+                        onSaved: (String _phoneNo) => mobileNumber = _phoneNo,
                       ),
                     ),
                   ],
@@ -136,52 +129,48 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     child: Padding(
                       padding:
                           const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
-                      child: new Text('Verify',
+                      child: new Text('Send OTP',
                           style: new TextStyle(
                               fontSize: 18.0, color: Colors.white)),
                     ),
                     onPressed: () async {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
-                        if (otp == widget.otp) {
-                          setState(() {
-                            isLoading = true;
-                          });
+                        String otp = generateOtp();
+                        setState(() {
+                          isLoading = true;
+                        });
+                        OtpResponse otpResponse =
+                            await otpResponseService(mobileNumber, "otp", otp);
+                        print(otp);
+                        if (otpResponse.isSent) {
                           SharedPreferences sharedPrefs =
                               await SharedPreferences.getInstance();
-                          IsNewUser isNewUserResponse = await isNewUser(
-                              sharedPrefs.getString("currentUserMobileNumber"));
-                          print(isNewUserResponse.id);
-                          await sharedPrefs.setString(
-                              "currentUserId", isNewUserResponse.id);
-                          UserData currentUserData = await getUserData(
-                              sharedPrefs.getString("currentUserId"));
-                          sharedPrefs.setString(
-                              "currentUserData", jsonEncode(currentUserData));
                           setState(() {
                             isLoading = false;
                           });
-                          sharedPrefs.setBool("isLoggedIn", true);
+                          sharedPrefs.setString(
+                              "currentUserMobileNumber", mobileNumber);
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DashboardScreen()));
-                        } else {
-                          Fluttertoast.showToast(
-                            msg: "Wrong OTP entered",
-                            toastLength: Toast.LENGTH_SHORT,
-                          );
+                                  builder: (context) => OtpVerificationScreen(
+                                        mobileNumber: mobileNumber,
+                                        otp: otp,
+                                      )));
                         }
                       }
                     },
                   ),
                 ),
-              ),
+              )
             ],
-          )),
-          UndismissableProgressBar(message: "Fetching Data")
+          ),
+          UndismissableProgressBar(
+            message: "Sending OTP",
+          )
         ],
-      ),
+      )),
     );
   }
 }

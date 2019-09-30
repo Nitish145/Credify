@@ -1,4 +1,4 @@
-import 'package:credify/dashboard_screen.dart';
+import 'package:credify/Screens/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmedScreen extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:credify/travel_card.dart';
+import 'package:credify/Components/travel_card.dart';
 import 'package:flutter/material.dart';
 
 class TravelScreen extends StatefulWidget {

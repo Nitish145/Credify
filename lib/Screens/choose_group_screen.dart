@@ -1,5 +1,5 @@
 import 'package:credify/globals.dart';
-import 'package:credify/group_UI.dart';
+import 'package:credify/Components/group_design.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

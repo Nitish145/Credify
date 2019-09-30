@@ -1,10 +1,10 @@
 import 'package:credify/Models/add_group_response.dart';
-import 'package:credify/contacts_model.dart';
-import 'package:credify/services/add_group.dart';
+import 'package:credify/Components/contacts_model.dart';
+import 'package:credify/Services/add_group.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'globals.dart';
+import '../globals.dart';
 
 class ContactsScreen extends StatefulWidget {
   final List<ContactsModel> allContacts;

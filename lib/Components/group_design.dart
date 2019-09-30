@@ -1,4 +1,4 @@
-import 'package:credify/contacts_model.dart';
+import 'package:credify/Components/contacts_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

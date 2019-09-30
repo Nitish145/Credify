@@ -1,4 +1,4 @@
-import 'package:credify/custom_progress_bar.dart';
+import 'package:credify/Components/custom_progress_bar.dart';
 import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 

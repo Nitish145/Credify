@@ -1,4 +1,4 @@
-import 'package:credify/bank_2_screen.dart';
+import 'package:credify/Screens/bank_2_screen.dart';
 import 'package:flutter/material.dart';
 
 class BankScreen extends StatefulWidget {

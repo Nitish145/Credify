@@ -1,11 +1,11 @@
-import 'package:credify/bank_1_screen.dart';
-import 'package:credify/bank_2_screen.dart';
-import 'package:credify/confirmed_screen.dart';
-import 'package:credify/credify.dart';
-import 'package:credify/dashboard_screen.dart';
-import 'package:credify/mobile_number_screen.dart';
-import 'package:credify/upload_aadhar_screen.dart';
-import 'package:credify/upload_pan_screen.dart';
+import 'package:credify/Screens/bank_1_screen.dart';
+import 'package:credify/Screens/bank_2_screen.dart';
+import 'package:credify/Screens/confirmed_screen.dart';
+import 'package:credify/Screens/credify_screen.dart';
+import 'package:credify/Screens/dashboard_screen.dart';
+import 'package:credify/Screens/mobile_number_screen.dart';
+import 'package:credify/Screens/upload_aadhar_screen.dart';
+import 'package:credify/Screens/upload_pan_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

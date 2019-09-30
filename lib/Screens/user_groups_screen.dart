@@ -1,4 +1,4 @@
-import 'package:credify/group_UI.dart';
+import 'package:credify/Components/group_design.dart';
 import 'package:flutter/material.dart';
 
 class UserGroupsScreen extends StatefulWidget {

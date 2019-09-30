@@ -1,5 +1,5 @@
-import 'package:credify/dashboard_screen.dart';
-import 'package:credify/mobile_number_screen.dart';
+import 'package:credify/Screens/dashboard_screen.dart';
+import 'package:credify/Screens/mobile_number_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -1,12 +1,12 @@
 import 'package:credify/Models/add_kyc_data_model.dart';
-import 'package:credify/generate_card_number.dart';
+import 'package:credify/Utils/generate_card_number.dart';
 import 'package:credify/globals.dart';
-import 'package:credify/undismissable_progress_bar.dart';
+import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'services/add_kyc_data.dart';
+import '../Services/add_kyc_data.dart';
 
 class CompleteKYC3 extends StatefulWidget {
   @override
