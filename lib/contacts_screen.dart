@@ -31,7 +31,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(32, 16, 16, 16),
               child: Text(
                 contactName,
                 style: Theme.of(context).accentTextTheme.display4,
@@ -209,10 +209,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     "Selected",
-                    style: Theme.of(context)
-                        .primaryTextTheme
-                        .display3
-                        .copyWith(color: Color.fromRGBO(47, 128, 237, 1)),
+                    style: Theme.of(context).primaryTextTheme.display3.copyWith(
+                        color: Color.fromRGBO(47, 128, 237, 1),
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
               ),
@@ -240,10 +239,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   "Contacts",
-                  style: Theme.of(context)
-                      .primaryTextTheme
-                      .display3
-                      .copyWith(color: Color.fromRGBO(47, 128, 237, 1)),
+                  style: Theme.of(context).primaryTextTheme.display3.copyWith(
+                      color: Color.fromRGBO(47, 128, 237, 1),
+                      fontWeight: FontWeight.w400),
                 ),
               ),
             ),
