@@ -254,7 +254,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 Color.fromRGBO(229, 93, 135, 1),
                                                 Color.fromRGBO(95, 195, 228, 1)
                                               ]),
-                                          progress: 100.0,
+                                          progress: 40.0,
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           height: 15.0,
@@ -298,7 +298,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     221, 221, 221, 1),
                                                 Color.fromRGBO(221, 221, 221, 1)
                                               ]),
-                                          progress: 40.0,
+                                          progress: 100.0,
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           height: 15.0,
