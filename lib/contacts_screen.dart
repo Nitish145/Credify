@@ -18,8 +18,38 @@ class _ContactsScreenState extends State<ContactsScreen> {
   bool _isGroupNameAdded = false;
   bool _isDialogShown = false;
   String groupName = "";
+  List<bool> isCheckedList = [];
 
   var formKey = new GlobalKey<FormState>();
+
+  Widget contactsModel(
+      String contactName, String contactNumber, bool isChecked) {
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: 55,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                contactName,
+                style: Theme.of(context).accentTextTheme.display4,
+              ),
+            ),
+            isChecked
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Image.asset(
+                      "assets/images/selected.png",
+                      height: 20,
+                      width: 20,
+                    ),
+                  )
+                : Container()
+          ],
+        ));
+  }
 
   _displayDialog(BuildContext context) async {
     return showDialog(
@@ -86,8 +116,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    isCheckedList = widget.allContacts.map((contactModel) {
+      return false;
+    }).toList(growable: false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(selectedContacts);
     Widget _createGroupButton() {
       return Align(
         alignment: Alignment.bottomCenter,
@@ -153,10 +190,17 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
 
     Widget getSelectedContacts() {
+      selectedContacts = widget.allContacts.where((contact) {
+        if (isCheckedList[widget.allContacts.indexOf(contact)]) {
+          return true;
+        }
+        return false;
+      }).toList();
+
       if (selectedContacts.isNotEmpty) {
         return Container(
           width: MediaQuery.of(context).size.width,
-          color: Color.fromRGBO(242, 242, 242, 1),
+          color: Color.fromRGBO(220, 220, 220, 1),
           child: Column(
             children: <Widget>[
               Align(
@@ -172,7 +216,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   ),
                 ),
               ),
-              Column(children: selectedContacts)
+              Column(
+                  children: selectedContacts.map((contactModel) {
+                return contactsModel(
+                    contactModel.contactName, contactModel.contactNumber, true);
+              }).toList())
             ],
           ),
         );
@@ -199,7 +247,27 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 ),
               ),
             ),
-            Column(children: widget.allContacts)
+            Column(
+                children: widget.allContacts.map((contactModel) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (!isCheckedList[
+                        widget.allContacts.indexOf(contactModel)]) {
+                      isCheckedList[widget.allContacts.indexOf(contactModel)] =
+                          true;
+                    } else {
+                      isCheckedList[widget.allContacts.indexOf(contactModel)] =
+                          false;
+                    }
+                  });
+                },
+                child: contactsModel(
+                    contactModel.contactName,
+                    contactModel.contactNumber,
+                    isCheckedList[widget.allContacts.indexOf(contactModel)]),
+              );
+            }).toList())
           ],
         ),
       );
