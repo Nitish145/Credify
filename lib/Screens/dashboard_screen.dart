@@ -7,6 +7,7 @@ import 'package:credify/Components/contacts_model.dart';
 import 'package:credify/Screens/contacts_screen.dart';
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
+import 'package:credify/Services/card_data.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/Components/group_design.dart';
 import 'package:credify/Components/logout_model_sheet.dart';
@@ -76,11 +77,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((sharedPrefs) {
-      currentUserName = sharedPrefs.getString("currentUserName");
-      currentUserCardNumber = sharedPrefs.getString("currentUserCardNumber");
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
-        setState(() {
-          currentUserData = userData;
+        getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
+          setState(() {
+            currentUserCardNumber = cardData.cardNumber;
+            currentUserName = cardData.userName.toUpperCase();
+            currentUserData = userData;
+          });
         });
       });
     });

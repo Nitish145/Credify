@@ -202,8 +202,6 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                   isLoading = false;
                                 });
                                 if (addKycResponse.updated) {
-                                  sharedPrefs.setString("currentUserName",
-                                      fullName.toUpperCase());
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

@@ -119,11 +119,19 @@ class _CredifyCardState extends State<CredifyCard> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                widget.cardNumber ?? "",
+                                widget.cardNumber.substring(0, 4) +
+                                    " " +
+                                    widget.cardNumber.substring(4, 8) +
+                                    " " +
+                                    widget.cardNumber.substring(8, 12) +
+                                    " " +
+                                    widget.cardNumber.substring(12, 16),
                                 style: Theme.of(context)
                                     .accentTextTheme
-                                    .display4
-                                    .copyWith(letterSpacing: 3),
+                                    .display3
+                                    .copyWith(
+                                        letterSpacing: 3,
+                                        fontWeight: FontWeight.w300),
                               ),
                             ),
                           ),
@@ -132,13 +140,13 @@ class _CredifyCardState extends State<CredifyCard> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                widget.name ?? "".toUpperCase(),
+                                widget.name,
                                 style: Theme.of(context)
                                     .accentTextTheme
                                     .display4
                                     .copyWith(
-                                      letterSpacing: 3,
-                                    ),
+                                        letterSpacing: 5,
+                                        fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
