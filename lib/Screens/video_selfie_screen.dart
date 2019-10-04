@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,6 +40,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   VideoPlayerController videoController;
   VoidCallback videoPlayerListener;
   bool enableAudio = true;
+  bool isShowing = true;
 
   List<CameraDescription> cameras;
 
@@ -212,22 +214,57 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
             }
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: const Text(
-            'Tap here ',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24.0,
-              fontWeight: FontWeight.w900,
-            ),
+        child: const Text(
+          'Tap for Rear Camera. \n\n Double Tap for Front Camera',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w500,
           ),
         ),
       );
     } else {
-      return AspectRatio(
-        aspectRatio: 1,
-        child: CameraPreview(controller),
+      return Stack(
+        children: <Widget>[
+          Center(
+            child: AspectRatio(
+              aspectRatio: controller.value.aspectRatio,
+              child: CameraPreview(controller),
+            ),
+          ),
+          isShowing
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isShowing = false;
+                    });
+                  },
+                  child: Center(
+                    child: AspectRatio(
+                        aspectRatio: controller.value.aspectRatio,
+                        child: Center(
+                            child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          color: Colors.black54,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Upload Video selfie saying "I am <YOUR NAME> and i will repay my debt"',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .display3
+                                    .copyWith(letterSpacing: 2, height: 2),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ))),
+                  ),
+                )
+              : Container()
+        ],
       );
     }
   }
@@ -438,7 +475,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   }
 
   Future<void> _startVideoPlayer() async {
-    final VideoPlayerController vcontroller =
+    final VideoPlayerController vController =
         VideoPlayerController.file(File(videoPath));
     videoPlayerListener = () {
       if (videoController != null && videoController.value.size != null) {
@@ -447,16 +484,16 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
         videoController.removeListener(videoPlayerListener);
       }
     };
-    vcontroller.addListener(videoPlayerListener);
-    await vcontroller.setLooping(true);
-    await vcontroller.initialize();
+    vController.addListener(videoPlayerListener);
+    await vController.setLooping(true);
+    await vController.initialize();
     await videoController?.dispose();
     if (mounted) {
       setState(() {
-        videoController = vcontroller;
+        videoController = vController;
       });
     }
-    await vcontroller.play();
+    await vController.play();
   }
 
   void _showCameraException(CameraException e) {
