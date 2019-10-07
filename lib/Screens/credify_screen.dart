@@ -1,5 +1,5 @@
-import 'package:credify/Screens/dashboard_screen.dart';
 import 'package:credify/Screens/mobile_number_screen.dart';
+import 'package:credify/bottom_navigation_bar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,8 +21,10 @@ class _CredifyState extends State<Credify> {
       SharedPreferences.getInstance().then((sharedPrefs) {
         bool isLoggedIn = sharedPrefs.getBool("isLoggedIn") ?? false;
         if (isLoggedIn) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => DashboardScreen()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BottomNavigationBarScreen()));
         } else {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => MobileNumberScreen()));

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:contacts_service/contacts_service.dart';
-import 'package:credify/Models/get_groups.dart';
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Components/contacts_model.dart';
 import 'package:credify/Screens/contacts_screen.dart';
@@ -9,14 +8,10 @@ import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
 import 'package:credify/Services/card_data.dart';
 import 'package:credify/globals.dart';
-import 'package:credify/Components/group_design.dart';
-import 'package:credify/Components/logout_model_sheet.dart';
 import 'package:credify/Components/progress_bar.dart';
-import 'package:credify/Services/get_groups_service.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/Screens/travel_screen.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
-import 'package:credify/Screens/user_groups_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -28,7 +23,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  bool isGroupLoading = false;
   bool areContactsLoading = false;
   UserData currentUserData;
   String currentUserName = "";
@@ -92,14 +86,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: new FloatingActionButton.extended(
-        label: Text("Logout"),
-        foregroundColor: Colors.white,
-        backgroundColor: Color.fromRGBO(45, 156, 219, 1),
-        onPressed: () {
-          showLogoutModalBottomSheet(context);
-        },
-      ),
       body: Container(
         child: SingleChildScrollView(
           child: Stack(
@@ -117,61 +103,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width,
                               color: Colors.black,
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: IconButton(
-                                    icon: Icon(Icons.people),
-                                    color: Colors.white,
-                                    onPressed: () async {
-                                      setState(() {
-                                        isLoading = true;
-                                        isGroupLoading = true;
-                                      });
-                                      SharedPreferences sharedPrefs =
-                                          await SharedPreferences.getInstance();
-                                      UserData currentUserData =
-                                          await getUserData(sharedPrefs
-                                              .getString("currentUserId"));
-                                      List<String> groupIds =
-                                          currentUserData.groupId;
-                                      List<Group> groupList = [];
-                                      groupIds.forEach((groupId) async {
-                                        GroupData groupData =
-                                            await getGroupData(groupId);
-                                        String groupName = groupData.groupName;
-                                        List<ContactsModel> contactsGroupData =
-                                            [];
-                                        groupData.friends.forEach((friend) {
-                                          contactsGroupData.add(ContactsModel(
-                                            contactName: friend.name,
-                                            contactNumber: friend.mobileNumber,
-                                          ));
-                                        });
-                                        groupList.add(Group(
-                                          groupName: groupName.toUpperCase(),
-                                          groupMembersNames: contactsGroupData,
-                                        ));
-                                      });
-                                      Future.delayed(const Duration(seconds: 3),
-                                          () {
-                                        setState(() {
-                                          isLoading = false;
-                                          isGroupLoading = false;
-                                        });
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserGroupsScreen(
-                                                      groupList: groupList,
-                                                    )));
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
                             ),
                           ),
                         ),
@@ -417,13 +348,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ],
               ),
-              areContactsLoading
-                  ? UndismissableProgressBar(
-                      message: "Loading Contacts",
-                    )
-                  : UndismissableProgressBar(
-                      message: "Loading Groups",
-                    )
+              UndismissableProgressBar(
+                message: "Loading Contacts",
+              )
             ],
           ),
         ),
