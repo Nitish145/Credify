@@ -1,5 +1,6 @@
 import 'package:credify/Screens/dashboard_screen.dart';
 import 'package:credify/Screens/user_groups_screen.dart';
+import 'package:credify/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarScreen extends StatefulWidget {
@@ -36,7 +37,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
           break;
         case 4:
           {
-            return Container();
+            return ProfileScreen();
           }
           break;
       }

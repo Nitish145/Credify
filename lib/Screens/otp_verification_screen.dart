@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/Models/user_data_model.dart';
-import 'package:credify/Screens/dashboard_screen.dart';
+import 'package:credify/bottom_navigation_bar_screen.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/Services/is_new_user.dart';
 import 'package:credify/Services/user_data.dart';
@@ -165,7 +165,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DashboardScreen()));
+                                  builder: (context) =>
+                                      BottomNavigationBarScreen()));
                         } else {
                           Fluttertoast.showToast(
                             msg: "Wrong OTP entered",
