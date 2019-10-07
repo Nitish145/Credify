@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Raleway',
             primaryColor: Colors.white,
             cursorColor: Colors.white,
+            accentColor: Colors.grey,
             primaryTextTheme: TextTheme(
               display1: TextStyle(color: Colors.white, fontSize: 32),
               display2: TextStyle(color: Colors.white, fontSize: 26),

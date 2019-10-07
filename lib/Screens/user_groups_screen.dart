@@ -54,29 +54,48 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Your Groups",
-            style: Theme.of(context).primaryTextTheme.display3,
-          ),
-          backgroundColor: Colors.black,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          iconTheme: IconThemeData(color: Colors.white),
-        ),
-        body: Stack(
-          children: <Widget>[
-            ListView(
+      body: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 90.0),
+            child: ListView(
               children: stateGroupList,
             ),
-            UndismissableProgressBar(
-              message: "Loading Groups",
-            )
-          ],
-        ));
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  height: 80,
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30.0),
+                          child: Text(
+                            "Groups",
+                            style: Theme.of(context).primaryTextTheme.display2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          UndismissableProgressBar(
+            message: "Loading Groups",
+          )
+        ],
+      ),
+    );
   }
 }
