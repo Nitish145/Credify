@@ -7,6 +7,18 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String currentUserName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((sharedPrefs) {
+      setState(() {
+        currentUserName = sharedPrefs.getString("currentUserName");
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +59,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Center(
                           child: CircleAvatar(
                             radius: 70,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Color.fromRGBO(245, 245, 245, 1),
+                            backgroundImage:
+                                Image.asset("assets/images/profile_image.png")
+                                    .image,
                           ),
                         ),
                       ),
@@ -59,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    "Tanmay Joshi".toUpperCase(),
+                    currentUserName.toUpperCase(),
                     style: Theme.of(context)
                         .accentTextTheme
                         .display3
