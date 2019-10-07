@@ -26,12 +26,12 @@ class _ContactsScreenState extends State<ContactsScreen> {
       String contactName, String contactNumber, bool isChecked) {
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: 55,
+        height: 45,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(32, 16, 16, 16),
+              padding: const EdgeInsets.fromLTRB(32, 0, 8, 0),
               child: Text(
                 contactName,
                 style: Theme.of(context).accentTextTheme.display4,
@@ -42,8 +42,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Image.asset(
                       "assets/images/selected.png",
-                      height: 20,
-                      width: 20,
+                      height: 18,
+                      width: 18,
                     ),
                   )
                 : Container()
@@ -169,24 +169,31 @@ class _ContactsScreenState extends State<ContactsScreen> {
       );
     }
 
-    Widget customAppBar() {
-      return AppBar(
-        title: Text(
-          "Create Group",
-          style: Theme.of(context).primaryTextTheme.display3,
-        ),
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-            selectedContacts = [];
-          },
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-      );
+    double getSelectedContainerHeight() {
+      switch (selectedContacts.length) {
+        case 0:
+          return 0;
+          break;
+
+        case 1:
+          return 110;
+          break;
+
+        case 2:
+          return 155;
+          break;
+
+        case 3:
+          return 200;
+          break;
+
+        case 4:
+          return 245;
+          break;
+
+        default:
+          return 245;
+      }
     }
 
     Widget getSelectedContacts() {
@@ -200,27 +207,36 @@ class _ContactsScreenState extends State<ContactsScreen> {
       if (selectedContacts.isNotEmpty) {
         return Container(
           width: MediaQuery.of(context).size.width,
+          height: getSelectedContainerHeight(),
           color: Color.fromRGBO(220, 220, 220, 1),
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "Selected",
-                    style: Theme.of(context).primaryTextTheme.display3.copyWith(
-                        color: Color.fromRGBO(47, 128, 237, 1),
-                        fontWeight: FontWeight.w400),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 55,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        "Selected",
+                        style: Theme.of(context)
+                            .primaryTextTheme
+                            .display3
+                            .copyWith(
+                                color: Color.fromRGBO(47, 128, 237, 1),
+                                fontWeight: FontWeight.w400),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                  children: selectedContacts.map((contactModel) {
-                return contactsModel(
-                    contactModel.contactName, contactModel.contactNumber, true);
-              }).toList())
-            ],
+                Column(
+                    children: selectedContacts.map((contactModel) {
+                  return contactsModel(contactModel.contactName,
+                      contactModel.contactNumber, true);
+                }).toList())
+              ],
+            ),
           ),
         );
       }
@@ -231,56 +247,121 @@ class _ContactsScreenState extends State<ContactsScreen> {
       return Container(
         width: MediaQuery.of(context).size.width,
         color: Color.fromRGBO(242, 242, 242, 1),
-        child: Column(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  "Contacts",
-                  style: Theme.of(context).primaryTextTheme.display3.copyWith(
-                      color: Color.fromRGBO(47, 128, 237, 1),
-                      fontWeight: FontWeight.w400),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 55,
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      "Contacts",
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .display3
+                          .copyWith(
+                              color: Color.fromRGBO(47, 128, 237, 1),
+                              fontWeight: FontWeight.w400),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Column(
-                children: widget.allContacts.map((contactModel) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (!isCheckedList[
-                        widget.allContacts.indexOf(contactModel)]) {
-                      isCheckedList[widget.allContacts.indexOf(contactModel)] =
-                          true;
-                    } else {
-                      isCheckedList[widget.allContacts.indexOf(contactModel)] =
-                          false;
-                    }
-                  });
-                },
-                child: contactsModel(
-                    contactModel.contactName,
-                    contactModel.contactNumber,
-                    isCheckedList[widget.allContacts.indexOf(contactModel)]),
-              );
-            }).toList())
-          ],
+              Column(
+                  children: widget.allContacts.map((contactModel) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (!isCheckedList[
+                          widget.allContacts.indexOf(contactModel)]) {
+                        isCheckedList[
+                            widget.allContacts.indexOf(contactModel)] = true;
+                      } else {
+                        isCheckedList[
+                            widget.allContacts.indexOf(contactModel)] = false;
+                      }
+                    });
+                  },
+                  child: contactsModel(
+                      contactModel.contactName,
+                      contactModel.contactNumber,
+                      isCheckedList[widget.allContacts.indexOf(contactModel)]),
+                );
+              }).toList())
+            ],
+          ),
         ),
       );
     }
 
     return Scaffold(
-      appBar: customAppBar(),
       body: Stack(
         children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
+          Padding(
+            padding: const EdgeInsets.only(top: 120),
+            child: Stack(
               children: <Widget>[
                 getSelectedContacts(),
-                getAllContacts(),
+                Padding(
+                  padding: EdgeInsets.only(top: getSelectedContainerHeight()),
+                  child: getAllContacts(),
+                ),
               ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.black,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            selectedContacts = [];
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 70,
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "Create Group",
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .display2,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
           _createGroupButton()
