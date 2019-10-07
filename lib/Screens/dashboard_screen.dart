@@ -74,6 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
           sharedPrefs.setString("currentUserName", cardData.userName);
+          sharedPrefs.setString("currentUserCardNumber", cardData.cardNumber);
           setState(() {
             currentUserCardNumber = cardData.cardNumber;
             currentUserName = cardData.userName;

@@ -1,5 +1,6 @@
 import 'package:credify/Screens/dashboard_screen.dart';
 import 'package:credify/Screens/user_groups_screen.dart';
+import 'package:credify/credify_screen.dart';
 import 'package:credify/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
           break;
         case 2:
           {
-            return Container();
+            return CredifyScreen();
           }
           break;
         case 3:

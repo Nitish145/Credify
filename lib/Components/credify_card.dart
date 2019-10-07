@@ -141,11 +141,8 @@ class _CredifyCardState extends State<CredifyCard> {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 widget.name,
-                                style: Theme.of(context)
-                                    .accentTextTheme
-                                    .display3
-                                    .copyWith(
-                                        fontWeight: FontWeight.w500),
+                                style:
+                                    Theme.of(context).accentTextTheme.display3,
                               ),
                             ),
                           ),
