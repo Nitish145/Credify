@@ -6,7 +6,6 @@ import 'package:credify/Services/card_data.dart';
 import 'package:credify/Components/progress_bar.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/Screens/travel_screen.dart';
-import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +15,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  bool areContactsLoading = false;
   UserData currentUserData;
   String currentUserName = "";
   String currentUserCardNumber = "";
@@ -301,9 +299,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
         ),
-        UndismissableProgressBar(
-          message: "Loading Contacts",
-        )
       ],
     );
   }
