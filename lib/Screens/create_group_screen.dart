@@ -1,24 +1,27 @@
+import 'package:contacts_service/contacts_service.dart';
+import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Models/add_group_response.dart';
 import 'package:credify/Components/contacts_model.dart';
 import 'package:credify/Services/add_group.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart';
 
-class ContactsScreen extends StatefulWidget {
-  final List<ContactsModel> allContacts;
-
-  const ContactsScreen({Key key, this.allContacts}) : super(key: key);
+class CreateGroupScreen extends StatefulWidget {
   @override
-  _ContactsScreenState createState() => _ContactsScreenState();
+  _CreateGroupScreenState createState() => _CreateGroupScreenState();
 }
 
-class _ContactsScreenState extends State<ContactsScreen> {
+class _CreateGroupScreenState extends State<CreateGroupScreen> {
+  List<ContactsModel> stateAllContacts = [];
   bool _isGroupNameAdded = false;
   bool _isDialogShown = false;
   String groupName = "";
   List<bool> isCheckedList = [];
+  bool isPermissionGranted;
 
   var formKey = new GlobalKey<FormState>();
 
@@ -115,12 +118,65 @@ class _ContactsScreenState extends State<ContactsScreen> {
         });
   }
 
+  Future<List<Contact>> getContacts() async {
+    List<Contact> _contacts;
+    PermissionStatus permissionStatus = await _getPermission();
+    if (permissionStatus == PermissionStatus.granted) {
+      setState(() {
+        isLoading = true;
+        isPermissionGranted = true;
+      });
+      var contacts = await ContactsService.getContacts();
+      _contacts = contacts.toList();
+      setState(() {
+        isLoading = false;
+      });
+      return _contacts;
+    } else {
+      setState(() {
+        isPermissionGranted = false;
+      });
+      throw PlatformException(
+        code: 'PERMISSION_DENIED',
+        message: 'Access to contacts denied',
+        details: null,
+      );
+    }
+  }
+
+  Future<PermissionStatus> _getPermission() async {
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.contacts);
+    if (permission != PermissionStatus.granted &&
+        permission != PermissionStatus.disabled) {
+      Map<PermissionGroup, PermissionStatus> permissionStatus =
+          await PermissionHandler()
+              .requestPermissions([PermissionGroup.contacts]);
+      return permissionStatus[PermissionGroup.contacts] ??
+          PermissionStatus.unknown;
+    } else {
+      return permission;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    isCheckedList = widget.allContacts.map((contactModel) {
-      return false;
-    }).toList(growable: false);
+    getContacts().then((listOfContacts) {
+      listOfContacts.forEach((contact) {
+        stateAllContacts.add(ContactsModel(
+          contactNumber: contact.phones.toList().isEmpty
+              ? ""
+              : contact.phones.toList()[0].value,
+          contactName: contact?.displayName,
+        ));
+      });
+      setState(() {
+        isCheckedList = stateAllContacts.map((contactModel) {
+          return false;
+        }).toList(growable: false);
+      });
+    });
   }
 
   @override
@@ -197,8 +253,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
 
     Widget getSelectedContacts() {
-      selectedContacts = widget.allContacts.where((contact) {
-        if (isCheckedList[widget.allContacts.indexOf(contact)]) {
+      selectedContacts = stateAllContacts.where((contact) {
+        if (isCheckedList[stateAllContacts.indexOf(contact)]) {
           return true;
         }
         return false;
@@ -269,24 +325,24 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 ),
               ),
               Column(
-                  children: widget.allContacts.map((contactModel) {
+                  children: stateAllContacts.map((contactModel) {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
                       if (!isCheckedList[
-                          widget.allContacts.indexOf(contactModel)]) {
-                        isCheckedList[
-                            widget.allContacts.indexOf(contactModel)] = true;
+                          stateAllContacts.indexOf(contactModel)]) {
+                        isCheckedList[stateAllContacts.indexOf(contactModel)] =
+                            true;
                       } else {
-                        isCheckedList[
-                            widget.allContacts.indexOf(contactModel)] = false;
+                        isCheckedList[stateAllContacts.indexOf(contactModel)] =
+                            false;
                       }
                     });
                   },
                   child: contactsModel(
                       contactModel.contactName,
                       contactModel.contactNumber,
-                      isCheckedList[widget.allContacts.indexOf(contactModel)]),
+                      isCheckedList[stateAllContacts.indexOf(contactModel)]),
                 );
               }).toList())
             ],
@@ -305,7 +361,23 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 getSelectedContacts(),
                 Padding(
                   padding: EdgeInsets.only(top: getSelectedContainerHeight()),
-                  child: getAllContacts(),
+                  child: Center(
+                    child: stateAllContacts.isNotEmpty && isPermissionGranted
+                        ? getAllContacts()
+                        : isPermissionGranted == null
+                            ? Container()
+                            : isPermissionGranted == false
+                                ? Container(
+                                    child: Text(
+                                      "Please Provide required permissions first",
+                                      style: Theme.of(context)
+                                          .accentTextTheme
+                                          .display2,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : Container(),
+                  ),
                 ),
               ],
             ),
@@ -364,7 +436,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
               ),
             ),
           ),
-          _createGroupButton()
+          stateAllContacts.isEmpty ? Container() : _createGroupButton(),
+          UndismissableProgressBar(
+            message: "Loading Contacts",
+          )
         ],
       ),
     );

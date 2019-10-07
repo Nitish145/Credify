@@ -1,20 +1,13 @@
-import 'dart:async';
-
-import 'package:contacts_service/contacts_service.dart';
 import 'package:credify/Models/user_data_model.dart';
-import 'package:credify/Components/contacts_model.dart';
-import 'package:credify/Screens/contacts_screen.dart';
+import 'package:credify/Screens/create_group_screen.dart';
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
 import 'package:credify/Services/card_data.dart';
-import 'package:credify/globals.dart';
 import 'package:credify/Components/progress_bar.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/Screens/travel_screen.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -27,45 +20,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   UserData currentUserData;
   String currentUserName = "";
   String currentUserCardNumber = "";
-
-  Future<List<Contact>> getContacts() async {
-    List<Contact> _contacts;
-    PermissionStatus permissionStatus = await _getPermission();
-    if (permissionStatus == PermissionStatus.granted) {
-      setState(() {
-        isLoading = true;
-        areContactsLoading = true;
-      });
-      var contacts = await ContactsService.getContacts();
-      _contacts = contacts.toList();
-      setState(() {
-        isLoading = false;
-        areContactsLoading = false;
-      });
-      return _contacts;
-    } else {
-      throw PlatformException(
-        code: 'PERMISSION_DENIED',
-        message: 'Access to contacts denied',
-        details: null,
-      );
-    }
-  }
-
-  Future<PermissionStatus> _getPermission() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.contacts);
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.disabled) {
-      Map<PermissionGroup, PermissionStatus> permissionStatus =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.contacts]);
-      return permissionStatus[PermissionGroup.contacts] ??
-          PermissionStatus.unknown;
-    } else {
-      return permission;
-    }
-  }
 
   @override
   void initState() {
@@ -253,22 +207,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                   GestureDetector(
                     onTap: () async {
-                      List<Contact> listOfContacts = await getContacts();
-                      List<ContactsModel> allContacts = [];
-                      listOfContacts.forEach((contact) {
-                        allContacts.add(ContactsModel(
-                          contactNumber: contact.phones.toList().isEmpty
-                              ? ""
-                              : contact.phones.toList()[0].value,
-                          contactName: contact?.displayName,
-                        ));
-                      });
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ContactsScreen(
-                                    allContacts: allContacts,
-                                  )));
+                              builder: (context) => CreateGroupScreen()));
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(36, 8, 36, 16),

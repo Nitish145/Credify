@@ -38,7 +38,7 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
             ));
           });
           groupList.add(Group(
-            groupName: groupName.toUpperCase(),
+            groupName: groupName,
             groupMembersNames: contactsGroupData,
           ));
         });
