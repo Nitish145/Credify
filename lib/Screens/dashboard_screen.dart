@@ -85,12 +85,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: SingleChildScrollView(
-          child: Stack(
-            children: <Widget>[
-              Column(
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          body: Container(
+            child: SingleChildScrollView(
+              child: Column(
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width,
@@ -354,13 +354,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ],
               ),
-              UndismissableProgressBar(
-                message: "Loading Contacts",
-              )
-            ],
+            ),
           ),
         ),
-      ),
+        UndismissableProgressBar(
+          message: "Loading Contacts",
+        )
+      ],
     );
   }
 }

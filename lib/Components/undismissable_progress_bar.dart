@@ -13,7 +13,7 @@ class UndismissableProgressBar extends StatelessWidget {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 1.1,
+            height: MediaQuery.of(context).size.height,
             child: Opacity(
               opacity: 0.8,
               child: const ModalBarrier(

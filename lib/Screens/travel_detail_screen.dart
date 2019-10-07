@@ -81,90 +81,100 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
   Widget build(BuildContext context) {
     Widget detailedScreenAppBar() {
       return Container(
-        color: Colors.black,
         child: SafeArea(
           child: Container(
               width: MediaQuery.of(context).size.width,
               child: Stack(children: <Widget>[
-                Center(
-                    child: Image.asset(
-                  widget.imageLocation,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 3,
-                  fit: BoxFit.fill,
-                )),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                      child: Image.asset(
+                    widget.imageLocation,
+                    width: MediaQuery.of(context).size.width,
+                    height: 250,
+                    fit: BoxFit.fill,
+                  )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.arrow_back_ios),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Column(
+                        Row(
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.only(left: 5, top: 20),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  widget.place,
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .display1
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_back_ios),
+                                color: Colors.white,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 5, bottom: 5, top: 5),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  widget.daysNights,
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .display4
-                                      .copyWith(fontWeight: FontWeight.w300),
+                            Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      widget.place,
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .display1
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(bottom: 5, top: 5),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      widget.daysNights,
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .display4
+                                          .copyWith(
+                                              fontWeight: FontWeight.w300),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 35, top: 5),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              widget.price,
+                              style:
+                                  Theme.of(context).primaryTextTheme.display1,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 35, top: 2),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              widget.timeSpan,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .display4
+                                  .copyWith(fontWeight: FontWeight.w300),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 35, top: 5),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          widget.price,
-                          style: Theme.of(context)
-                              .primaryTextTheme
-                              .display2
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 35, top: 2),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          widget.timeSpan,
-                          style: Theme.of(context)
-                              .primaryTextTheme
-                              .display4
-                              .copyWith(fontWeight: FontWeight.w300),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 )
               ])),
         ),
