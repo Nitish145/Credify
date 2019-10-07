@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:credify/Models/is_new_user_model.dart';
 import 'package:credify/Models/user_data_model.dart';
-import 'package:credify/bottom_navigation_bar_screen.dart';
+import 'package:credify/Screens/bottom_navigation_bar_screen.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/Services/is_new_user.dart';
 import 'package:credify/Services/user_data.dart';
