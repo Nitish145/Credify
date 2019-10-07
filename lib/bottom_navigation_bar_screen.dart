@@ -65,25 +65,22 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/HomeBNB.png",
                 height: 20,
                 width: 20,
               ),
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                "Home",
-                style: TextStyle(fontSize: 15, color: Colors.black),
-              ),
+            title: Text(
+              "Home",
+              style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
             activeIcon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/GroupBNB.png",
                 height: 20,
@@ -91,25 +88,22 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/GroupBNB.png",
                 height: 20,
                 width: 20,
               ),
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: Text(
-                "Groups",
-                style: TextStyle(fontSize: 15, color: Colors.black),
-              ),
+            title: Text(
+              "Groups",
+              style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
             activeIcon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/PaymentCardBNB.png",
                 height: 20,
@@ -117,25 +111,22 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/PaymentCardBNB.png",
                 height: 20,
                 width: 20,
               ),
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                "Credify",
-                style: TextStyle(fontSize: 15, color: Colors.black),
-              ),
+            title: Text(
+              "Credify",
+              style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
             activeIcon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/ShareBNB.png",
                 height: 20,
@@ -143,25 +134,22 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/ShareBNB.png",
                 height: 20,
                 width: 20,
               ),
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: Text(
-                "Refer",
-                style: TextStyle(fontSize: 15, color: Colors.black),
-              ),
+            title: Text(
+              "Refer",
+              style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
             activeIcon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/ContactBNB.png",
                 height: 20,
@@ -169,19 +157,16 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/ContactBNB.png",
                 height: 20,
                 width: 20,
               ),
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: Text(
-                "Profile",
-                style: TextStyle(fontSize: 15, color: Colors.black),
-              ),
+            title: Text(
+              "Profile",
+              style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
         ],

@@ -93,7 +93,7 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
           ),
           UndismissableProgressBar(
             message: "Loading Groups",
-          )
+          ),
         ],
       ),
     );

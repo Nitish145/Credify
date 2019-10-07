@@ -75,7 +75,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
           setState(() {
             currentUserCardNumber = cardData.cardNumber;
-            currentUserName = cardData.userName.toUpperCase();
+            currentUserName = cardData.userName;
             currentUserData = userData;
           });
         });
@@ -97,17 +97,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Stack(
                       children: <Widget>[
                         Container(
-                          color: Colors.black,
                           child: SafeArea(
-                            child: Container(
-                              height: MediaQuery.of(context).size.height / 5,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.black,
+                                ),
+                                height: MediaQuery.of(context).size.height / 8,
+                                width: MediaQuery.of(context).size.width,
+                              ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 100, bottom: 20),
+                          padding: const EdgeInsets.only(top: 70, bottom: 20),
                           child: CredifyCard(
                             cardLevel: "Silver",
                             cardNumber: currentUserCardNumber,
@@ -185,8 +190,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               begin: Alignment.centerLeft,
                                               end: Alignment.centerRight,
                                               colors: [
-                                                Color.fromRGBO(229, 93, 135, 1),
-                                                Color.fromRGBO(95, 195, 228, 1)
+                                                Color.fromRGBO(
+                                                    151, 150, 240, 1),
+                                                Color.fromRGBO(251, 199, 212, 1)
                                               ]),
                                           progress: 40.0,
                                           borderRadius:

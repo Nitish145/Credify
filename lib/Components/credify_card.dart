@@ -41,8 +41,8 @@ class _CredifyCardState extends State<CredifyCard> {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  Color.fromRGBO(229, 93, 135, .33),
-                  Color.fromRGBO(95, 195, 228, .33)
+                  Color.fromRGBO(151, 150, 240, .33),
+                  Color.fromRGBO(251, 199, 212, .33)
                 ]));
         break;
       case 2:
@@ -52,8 +52,8 @@ class _CredifyCardState extends State<CredifyCard> {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  Color.fromRGBO(229, 93, 135, .66),
-                  Color.fromRGBO(95, 195, 228, .66)
+                  Color.fromRGBO(151, 150, 240, .66),
+                  Color.fromRGBO(251, 199, 212, .66)
                 ]));
         break;
       case 3:
@@ -63,8 +63,8 @@ class _CredifyCardState extends State<CredifyCard> {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  Color.fromRGBO(229, 93, 135, 1),
-                  Color.fromRGBO(95, 195, 228, 1)
+                  Color.fromRGBO(151, 150, 240, 1),
+                  Color.fromRGBO(251, 199, 212, 1)
                 ]));
         break;
       default:
@@ -80,7 +80,7 @@ class _CredifyCardState extends State<CredifyCard> {
       child: Stack(
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height / 3.7,
+            height: MediaQuery.of(context).size.height / 3.8,
             width: MediaQuery.of(context).size.width / 1.2,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
@@ -88,7 +88,7 @@ class _CredifyCardState extends State<CredifyCard> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 3.7,
+            height: MediaQuery.of(context).size.height / 3.8,
             width: MediaQuery.of(context).size.width / 1.2,
             decoration: getBoxDecorationForCard(),
             child: (widget.kycStage == 3)
@@ -143,9 +143,8 @@ class _CredifyCardState extends State<CredifyCard> {
                                 widget.name,
                                 style: Theme.of(context)
                                     .accentTextTheme
-                                    .display4
+                                    .display3
                                     .copyWith(
-                                        letterSpacing: 5,
                                         fontWeight: FontWeight.w500),
                               ),
                             ),
