@@ -2,6 +2,7 @@ import 'package:credify/Components/contacts_model.dart';
 import 'package:credify/Components/group_design.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Models/get_groups.dart';
+import 'package:credify/Screens/create_group_screen.dart';
 import 'package:credify/Services/get_groups_service.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/globals.dart';
@@ -54,6 +55,17 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromRGBO(47, 128, 237, 1),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreateGroupScreen()));
+        },
+      ),
       body: Stack(
         children: <Widget>[
           Padding(
