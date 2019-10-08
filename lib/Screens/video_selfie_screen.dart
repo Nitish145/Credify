@@ -228,7 +228,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
             Fluttertoast.showToast(msg: "Loading Cameras!!");
           } else {
             if (cameras.isEmpty) {
-              showInSnackBar("No Cameras Found");
+              Fluttertoast.showToast(msg: "No Cameras Found");
             } else {
               onNewCameraSelected(cameras[0]);
             }
@@ -239,7 +239,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
             Fluttertoast.showToast(msg: "Loading Cameras!!");
           } else {
             if (cameras.isEmpty) {
-              showInSnackBar("No Cameras Found");
+              Fluttertoast.showToast(msg: "No Cameras Found");
             } else {
               onNewCameraSelected(cameras[1]);
             }
@@ -379,34 +379,34 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   void onVideoRecordButtonPressed() {
     startVideoRecording().then((String filePath) {
       if (mounted) setState(() {});
-      if (filePath != null) showInSnackBar('Saving video to $filePath');
+      if (filePath != null) Fluttertoast.showToast(msg: "Saving Video");
     });
   }
 
   void onStopButtonPressed() {
     stopVideoRecording().then((_) {
       if (mounted) setState(() {});
-      showInSnackBar('Video recorded to: $videoPath');
+      Fluttertoast.showToast(msg: "Video Recorded");
     });
   }
 
   void onPauseButtonPressed() {
     pauseVideoRecording().then((_) {
       if (mounted) setState(() {});
-      showInSnackBar('Video recording paused');
+      Fluttertoast.showToast(msg: "Video recording paused");
     });
   }
 
   void onResumeButtonPressed() {
     resumeVideoRecording().then((_) {
       if (mounted) setState(() {});
-      showInSnackBar('Video recording resumed');
+      Fluttertoast.showToast(msg: "Video recording resumed");
     });
   }
 
   Future<String> startVideoRecording() async {
     if (!controller.value.isInitialized) {
-      showInSnackBar('Error: select a camera first.');
+      Fluttertoast.showToast(msg: "Error: select a camera first.");
       return null;
     }
 
