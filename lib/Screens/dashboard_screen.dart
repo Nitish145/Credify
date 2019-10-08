@@ -24,14 +24,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     SharedPreferences.getInstance().then((sharedPrefs) {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
+        setState(() {
+          print(userData.kycProgress);
+          currentUserData = userData;
+        });
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
-          sharedPrefs.setString("currentUserName", cardData.userName);
-          sharedPrefs.setString("currentUserCardNumber", cardData.cardNumber);
-          setState(() {
-            currentUserCardNumber = cardData.cardNumber;
-            currentUserName = cardData.userName;
-            currentUserData = userData;
-          });
+          if (cardData != null) {
+            sharedPrefs.setString("currentUserName", cardData.userName);
+            sharedPrefs.setString("currentUserCardNumber", cardData.cardNumber);
+            setState(() {
+              currentUserCardNumber = cardData.cardNumber;
+              currentUserName = cardData.userName;
+            });
+          }
         });
       });
     });

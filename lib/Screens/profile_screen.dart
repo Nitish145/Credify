@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    currentUserName.toUpperCase(),
+                    currentUserName ?? "".toUpperCase(),
                     style: Theme.of(context)
                         .accentTextTheme
                         .display3
