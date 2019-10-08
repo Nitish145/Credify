@@ -23,7 +23,8 @@ class _UploadPanState extends State<UploadPan> {
   File _backPanImage;
 
   Future getFrontImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 1500, maxWidth: 1500);
 
     setState(() {
       _frontPanImage = image;
@@ -31,7 +32,8 @@ class _UploadPanState extends State<UploadPan> {
   }
 
   Future getBackImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 1500, maxWidth: 1500);
 
     setState(() {
       _backPanImage = image;

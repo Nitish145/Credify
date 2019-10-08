@@ -74,8 +74,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           padding: const EdgeInsets.only(top: 70, bottom: 20),
                           child: CredifyCard(
                             cardLevel: "Silver",
-                            cardNumber: currentUserCardNumber,
-                            name: currentUserName,
+                            cardNumber: currentUserCardNumber ?? "                ",
+                            name: currentUserName ?? "",
                             kycStage: currentUserData == null
                                 ? 0
                                 : currentUserData.kycProgress,

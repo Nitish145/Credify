@@ -23,7 +23,8 @@ class _UploadAadharState extends State<UploadAadhar> {
   File _backAadharImage;
 
   Future getFrontImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 1500, maxWidth: 1500);
 
     setState(() {
       _frontAadharImage = image;
@@ -31,7 +32,8 @@ class _UploadAadharState extends State<UploadAadhar> {
   }
 
   Future getBackImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 1500, maxWidth: 1500);
 
     setState(() {
       _backAadharImage = image;

@@ -119,13 +119,15 @@ class _CredifyCardState extends State<CredifyCard> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                widget.cardNumber.substring(0, 4) +
-                                    " " +
-                                    widget.cardNumber.substring(4, 8) +
-                                    " " +
-                                    widget.cardNumber.substring(8, 12) +
-                                    " " +
-                                    widget.cardNumber.substring(12, 16),
+                                widget.cardNumber == ""
+                                    ? ""
+                                    : widget.cardNumber.substring(0, 4) +
+                                        " " +
+                                        widget.cardNumber.substring(4, 8) +
+                                        " " +
+                                        widget.cardNumber.substring(8, 12) +
+                                        " " +
+                                        widget.cardNumber.substring(12, 16),
                                 style: Theme.of(context)
                                     .accentTextTheme
                                     .display3
