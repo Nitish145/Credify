@@ -1,16 +1,17 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:credify/Components/undismissable_progress_bar.dart';
+import 'package:credify/Services/add_video.dart';
+import 'package:credify/globals.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoSelfieScreen extends StatefulWidget {
-  final List<CameraDescription> cameras;
-
-  const VideoSelfieScreen({Key key, this.cameras}) : super(key: key);
   @override
   _VideoSelfieScreenState createState() => _VideoSelfieScreenState();
 }
@@ -87,103 +88,133 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: Container(
-        color: Colors.black,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15.0, 0, 15.0, 0),
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 50, left: 15),
-                  child: Text(
-                    "Credify",
-                    style: Theme.of(context).primaryTextTheme.display2,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 15),
-                  child: Text(
-                    " Upload",
-                    style: Theme.of(context).primaryTextTheme.display1,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0, left: 15),
-                  child: Text(
-                    "  1/2",
-                    style: Theme.of(context).primaryTextTheme.display3,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 15, bottom: 20),
-                  child: Text(
-                    "  Video Selfie",
-                    style: Theme.of(context).primaryTextTheme.display4,
-                  ),
-                ),
-              ),
-              Flexible(
-                child: Container(
-                  child: Center(
-                    child: _cameraPreviewWidget(),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(
-                      color: controller != null &&
-                              controller.value.isRecordingVideo
-                          ? Colors.redAccent
-                          : Colors.grey,
-                      width: 3.0,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            color: Colors.black,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(15.0, 0, 15.0, 0),
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50, left: 15),
+                      child: Text(
+                        "Credify",
+                        style: Theme.of(context).primaryTextTheme.display2,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Container(
-                color: Colors.grey,
-                child: _captureControlRowWidget(),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 30.0),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: RaisedButton(
-                    elevation: 5.0,
-                    color: Color.fromRGBO(45, 156, 219, 1),
-                    shape: new RoundedRectangleBorder(
-                        side: BorderSide(
-                          style: BorderStyle.solid,
-                          width: 2,
-                        ),
-                        borderRadius: new BorderRadius.circular(5)),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 15),
+                      child: Text(
+                        " Upload",
+                        style: Theme.of(context).primaryTextTheme.display1,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 0, left: 15),
+                      child: Text(
+                        "  1/2",
+                        style: Theme.of(context).primaryTextTheme.display3,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
                     child: Padding(
                       padding:
-                          const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
-                      child: new Text('Continue',
-                          style: new TextStyle(
-                              fontSize: 18.0, color: Colors.white)),
+                          const EdgeInsets.only(top: 10, left: 15, bottom: 20),
+                      child: Text(
+                        "  Video Selfie",
+                        style: Theme.of(context).primaryTextTheme.display4,
+                      ),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(context, '/bankScreen1',
-                          (Route<dynamic> route) => false);
-                    },
                   ),
-                ),
-              )
-            ],
+                  Flexible(
+                    child: Container(
+                      child: Center(
+                        child: _cameraPreviewWidget(),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        border: Border.all(
+                          color: controller != null &&
+                                  controller.value.isRecordingVideo
+                              ? Colors.redAccent
+                              : Colors.grey,
+                          width: 3.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: Colors.grey,
+                    child: _captureControlRowWidget(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 30.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RaisedButton(
+                        elevation: 5.0,
+                        color: Color.fromRGBO(45, 156, 219, 1),
+                        shape: new RoundedRectangleBorder(
+                            side: BorderSide(
+                              style: BorderStyle.solid,
+                              width: 2,
+                            ),
+                            borderRadius: new BorderRadius.circular(5)),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
+                          child: new Text('Continue',
+                              style: new TextStyle(
+                                  fontSize: 18.0, color: Colors.white)),
+                        ),
+                        onPressed: () async {
+                          if (videoPath == null) {
+                            Fluttertoast.showToast(msg: "No video captured!!");
+                          } else {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            SharedPreferences sharedPrefs =
+                                await SharedPreferences.getInstance();
+                            bool isVideoUploaded = await addVideoService(
+                                sharedPrefs.getString("currentUserId"),
+                                videoPath);
+                            setState(() {
+                              isLoading = false;
+                            });
+                            if (isVideoUploaded) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/bankScreen1',
+                                  (Route<dynamic> route) => false);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Something Wrong Occured!");
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
+          UndismissableProgressBar(
+            message: "Uploading Video",
+          ),
+        ],
       ),
     );
   }
@@ -268,40 +299,6 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
       );
     }
   }
-
-//  /// Display the thumbnail of the captured image or video.
-//  Widget _thumbnailWidget() {
-//    return Expanded(
-//      child: Align(
-//        alignment: Alignment.centerRight,
-//        child: Row(
-//          mainAxisSize: MainAxisSize.min,
-//          children: <Widget>[
-//            videoController == null
-//                ? Container()
-//                : SizedBox(
-//                    child: (videoController == null)
-//                        ? Container()
-//                        : Container(
-//                            child: Center(
-//                              child: AspectRatio(
-//                                  aspectRatio:
-//                                      videoController.value.size != null
-//                                          ? videoController.value.aspectRatio
-//                                          : 1.0,
-//                                  child: VideoPlayer(videoController)),
-//                            ),
-//                            decoration: BoxDecoration(
-//                                border: Border.all(color: Colors.pink)),
-//                          ),
-//                    width: 64.0,
-//                    height: 64.0,
-//                  ),
-//          ],
-//        ),
-//      ),
-//    );
-//  }
 
   /// Display the control bar with buttons to take pictures and record videos.
   Widget _captureControlRowWidget() {
