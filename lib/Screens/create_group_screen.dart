@@ -35,9 +35,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 0, 8, 0),
-              child: Text(
-                contactName,
-                style: Theme.of(context).accentTextTheme.display4,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.25,
+                child: Text(
+                  contactName,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).accentTextTheme.display4,
+                ),
               ),
             ),
             isChecked
@@ -190,7 +194,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             height: 60,
             child: RaisedButton(
               elevation: 10.0,
-              color: Color.fromRGBO(45, 156, 219, 1),
+              color: selectedContacts.length < 2
+                  ? Colors.grey
+                  : Color.fromRGBO(45, 156, 219, 1),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: new Text('Create Group',
@@ -308,6 +314,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             children: <Widget>[
               Container(
                 height: 55,
+                width: MediaQuery.of(context).size.width,
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
@@ -339,10 +346,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                       }
                     });
                   },
-                  child: contactsModel(
-                      contactModel.contactName,
-                      contactModel.contactNumber,
-                      isCheckedList[stateAllContacts.indexOf(contactModel)]),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: contactsModel(
+                        contactModel.contactName,
+                        contactModel.contactNumber,
+                        isCheckedList[stateAllContacts.indexOf(contactModel)]),
+                  ),
                 );
               }).toList())
             ],

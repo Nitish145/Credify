@@ -176,11 +176,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () async {
                           SharedPreferences sharedPrefs =
                               await SharedPreferences.getInstance();
+                          sharedPrefs.clear();
                           sharedPrefs.setBool("isLoggedIn", false);
-                          sharedPrefs.remove("currentUserId");
-                          sharedPrefs.remove("currentUserMobileNumber");
-                          sharedPrefs.remove("currentUserData");
-
                           Navigator.pushNamedAndRemoveUntil(context,
                               "/mobileNumber", (Route<dynamic> route) => false);
                         },
