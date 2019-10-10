@@ -74,7 +74,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           padding: const EdgeInsets.only(top: 70, bottom: 20),
                           child: CredifyCard(
                             cardLevel: "Silver",
-                            cardNumber: currentUserCardNumber ?? "                ",
+                            cardNumber:
+                                currentUserCardNumber ?? "                ",
                             name: currentUserName ?? "",
                             kycStage: currentUserData == null
                                 ? 0
@@ -218,7 +219,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(36, 8, 36, 16),
                       child: Container(
-                          height: 150,
+                          height: 170,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
@@ -231,7 +232,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Center(
                                   child: Image.asset(
                                     "assets/images/addContactsBackground.png",
-                                    height: 150,
+                                    height: 170,
                                     width: MediaQuery.of(context).size.width,
                                     fit: BoxFit.fill,
                                   ),

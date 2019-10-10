@@ -80,7 +80,7 @@ class _CredifyCardState extends State<CredifyCard> {
       child: Stack(
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height / 3.8,
+            height: 220,
             width: MediaQuery.of(context).size.width / 1.2,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
@@ -88,7 +88,7 @@ class _CredifyCardState extends State<CredifyCard> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 3.8,
+            height: 220,
             width: MediaQuery.of(context).size.width / 1.2,
             decoration: getBoxDecorationForCard(),
             child: (widget.kycStage == 3)
