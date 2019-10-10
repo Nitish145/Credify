@@ -1,4 +1,5 @@
 import 'package:credify/Screens/dashboard_screen.dart';
+import 'package:credify/Screens/referral_screen.dart';
 import 'package:credify/Screens/user_groups_screen.dart';
 import 'package:credify/Screens/credify_screen.dart';
 import 'package:credify/Screens/profile_screen.dart';
@@ -33,7 +34,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
           break;
         case 3:
           {
-            return Container();
+            return ReferralScreen();
           }
           break;
         case 4:

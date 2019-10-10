@@ -34,6 +34,7 @@ dependencies:
   shared_preferences: ^0.5.3+4
   camera: ^0.5.5+1
   video_player: ^0.10.2+1
+  flutter_svg: ^0.14.2
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/svg/
 
   fonts:
     - family: Raleway
