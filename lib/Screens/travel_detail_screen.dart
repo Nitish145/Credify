@@ -377,40 +377,48 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                     isChoosingGroup = true;
                                   });
                                   UserData currentUserData = await getUserData(
-                                      sharedPrefs.getString("currentUserId"));
-                                  List<String> groupIds =
-                                      currentUserData.groupId;
-                                  List<Group> groupList = [];
-                                  groupIds.forEach((groupId) async {
-                                    GroupData groupData =
-                                        await getGroupData(groupId);
-                                    String groupName = groupData.groupName;
-                                    List<ContactsModel> contactsGroupData = [];
-                                    groupData.friends.forEach((friend) {
-                                      contactsGroupData.add(ContactsModel(
-                                        contactName: friend.name,
-                                        contactNumber: friend.mobileNumber,
+                                          sharedPrefs
+                                              .getString("currentUserId"))
+                                      .catchError((e) {
+                                    Fluttertoast.showToast(
+                                        msg: "Something Wrong Occured!");
+                                  });
+                                  if (currentUserData != null) {
+                                    List<String> groupIds =
+                                        currentUserData.groupId;
+                                    List<Group> groupList = [];
+                                    groupIds.forEach((groupId) async {
+                                      GroupData groupData =
+                                          await getGroupData(groupId);
+                                      String groupName = groupData.groupName;
+                                      List<ContactsModel> contactsGroupData =
+                                          [];
+                                      groupData.friends.forEach((friend) {
+                                        contactsGroupData.add(ContactsModel(
+                                          contactName: friend.name,
+                                          contactNumber: friend.mobileNumber,
+                                        ));
+                                      });
+                                      groupList.add(Group(
+                                        groupName: groupName.toUpperCase(),
+                                        groupMembersNames: contactsGroupData,
                                       ));
                                     });
-                                    groupList.add(Group(
-                                      groupName: groupName.toUpperCase(),
-                                      groupMembersNames: contactsGroupData,
-                                    ));
-                                  });
-                                  Future.delayed(const Duration(seconds: 3),
-                                      () {
-                                    setState(() {
-                                      isLoading = false;
-                                      isChoosingGroup = false;
+                                    Future.delayed(const Duration(seconds: 3),
+                                        () {
+                                      setState(() {
+                                        isLoading = false;
+                                        isChoosingGroup = false;
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChooseGroupScreen(
+                                                    groupList: groupList,
+                                                  )));
                                     });
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ChooseGroupScreen(
-                                                  groupList: groupList,
-                                                )));
-                                  });
+                                  }
                                 },
                               ),
                             ),
@@ -561,34 +569,42 @@ class _TravelDetailScreenState extends State<TravelDetailScreen> {
                                   });
                                   TravelLoan travelLoanResponse =
                                       await travelLoanService(
-                                          sharedPrefs
-                                              .getString("currentUserId"),
-                                          initialSelectedDate
-                                              .toLocal()
-                                              .toIso8601String()
-                                              .substring(0, 10),
-                                          finalSelectedDate
-                                              .toLocal()
-                                              .toIso8601String()
-                                              .substring(0, 10),
-                                          commuteType,
-                                          commuteType == "car" ? 1 : 2,
-                                          listOfTravellers,
-                                          true,
-                                          0,
-                                          (widget.place + widget.daysNights)
-                                              .toString(),
-                                          "");
+                                              sharedPrefs
+                                                  .getString("currentUserId"),
+                                              initialSelectedDate
+                                                  .toLocal()
+                                                  .toIso8601String()
+                                                  .substring(0, 10),
+                                              finalSelectedDate
+                                                  .toLocal()
+                                                  .toIso8601String()
+                                                  .substring(0, 10),
+                                              commuteType,
+                                              commuteType == "car" ? 1 : 2,
+                                              listOfTravellers,
+                                              true,
+                                              0,
+                                              (widget.place + widget.daysNights)
+                                                  .toString(),
+                                              "")
+                                          .catchError((e) {
+                                    Fluttertoast.showToast(
+                                        msg: "Something Wrong Occured!");
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  });
                                   setState(() {
                                     isLoading = false;
                                   });
-
-                                  if (travelLoanResponse.updated) {
-                                    Fluttertoast.showToast(
-                                        msg: "Loan Request Submitted!",
-                                        toastLength: Toast.LENGTH_SHORT);
-                                    Navigator.pop(context);
-                                    listOfTravellers = [];
+                                  if (travelLoanResponse != null) {
+                                    if (travelLoanResponse.updated) {
+                                      Fluttertoast.showToast(
+                                          msg: "Loan Request Submitted!",
+                                          toastLength: Toast.LENGTH_SHORT);
+                                      Navigator.pop(context);
+                                      listOfTravellers = [];
+                                    }
                                   }
                                 } else {
                                   Fluttertoast.showToast(

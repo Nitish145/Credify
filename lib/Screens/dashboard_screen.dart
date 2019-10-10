@@ -9,6 +9,7 @@ import 'package:credify/Components/progress_bar.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/Screens/travel_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -30,8 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           print(userData.kycProgress);
           currentUserData = userData;
         });
-        sharedPrefs.setString(
-            "currentUserData", jsonEncode(currentUserData));
+        sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
           if (cardData != null) {
             sharedPrefs.setString("currentUserName", cardData.userName);
@@ -42,6 +42,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             });
           }
         });
+      }).catchError((e) {
+        Fluttertoast.showToast(msg: "Something Wrong Occured!");
       });
     });
   }

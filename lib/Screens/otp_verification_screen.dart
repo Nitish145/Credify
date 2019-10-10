@@ -155,18 +155,30 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           await sharedPrefs.setString(
                               "currentUserId", isNewUserResponse.id);
                           UserData currentUserData = await getUserData(
-                              sharedPrefs.getString("currentUserId"));
-                          sharedPrefs.setString(
-                              "currentUserData", jsonEncode(currentUserData));
-                          setState(() {
-                            isLoading = false;
+                                  sharedPrefs.getString("currentUserId"))
+                              .catchError((e) {
+                            setState(() {
+                              isLoading = false;
+                            });
                           });
-                          sharedPrefs.setBool("isLoggedIn", true);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      BottomNavigationBarScreen()));
+                          if (currentUserData == null) {
+                            Fluttertoast.showToast(
+                              msg: "Something Wrong Occured!",
+                              toastLength: Toast.LENGTH_SHORT,
+                            );
+                          } else {
+                            sharedPrefs.setString(
+                                "currentUserData", jsonEncode(currentUserData));
+                            setState(() {
+                              isLoading = false;
+                            });
+                            sharedPrefs.setBool("isLoggedIn", true);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        BottomNavigationBarScreen()));
+                          }
                         } else {
                           Fluttertoast.showToast(
                             msg: "Wrong OTP entered",

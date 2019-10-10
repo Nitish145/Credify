@@ -7,6 +7,7 @@ import 'package:credify/Services/get_groups_service.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserGroupsScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
     });
     SharedPreferences.getInstance().then((sharedPrefs) async {
       getUserData(sharedPrefs.getString("currentUserId"))
-          .then((currentUserData) {
+          .then((currentUserData) async {
         List<String> groupIds = currentUserData.groupId;
         groupIds.forEach((groupId) async {
           GroupData groupData = await getGroupData(groupId);
@@ -43,11 +44,16 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
             groupMembersNames: contactsGroupData,
           ));
         });
-      });
-      await Future.delayed(Duration(seconds: 3));
-      setState(() {
-        stateGroupList = groupList;
-        isLoading = false;
+        await Future.delayed(Duration(seconds: 3));
+        setState(() {
+          stateGroupList = groupList;
+          isLoading = false;
+        });
+      }).catchError((e) {
+        Fluttertoast.showToast(msg: "Something Wrong Occured!");
+        setState(() {
+          isLoading = false;
+        });
       });
     });
   }

@@ -4,6 +4,7 @@ import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Services/card_data.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CredifyScreen extends StatefulWidget {
@@ -35,6 +36,8 @@ class _CredifyScreenState extends State<CredifyScreen> {
             });
           }
         });
+      }).catchError((e) {
+        Fluttertoast.showToast(msg: "Something Wrong Occured!");
       });
     });
   }

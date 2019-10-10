@@ -5,6 +5,7 @@ import 'package:credify/Services/otp_response.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:math' as math;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -141,23 +142,27 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                           isLoading = true;
                         });
                         OtpResponse otpResponse =
-                            await otpResponseService(mobileNumber, "otp", otp);
-                        print(otp);
-                        if (otpResponse.isSent) {
-                          SharedPreferences sharedPrefs =
-                              await SharedPreferences.getInstance();
-                          setState(() {
-                            isLoading = false;
-                          });
-                          sharedPrefs.setString(
-                              "currentUserMobileNumber", mobileNumber);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OtpVerificationScreen(
-                                        mobileNumber: mobileNumber,
-                                        otp: otp,
-                                      )));
+                            await otpResponseService(mobileNumber, "otp", otp)
+                                .catchError((e) {
+                          Fluttertoast.showToast(msg: "Couldn't send OTP");
+                        });
+                        if (otpResponse != null) {
+                          if (otpResponse.isSent) {
+                            SharedPreferences sharedPrefs =
+                                await SharedPreferences.getInstance();
+                            setState(() {
+                              isLoading = false;
+                            });
+                            sharedPrefs.setString(
+                                "currentUserMobileNumber", mobileNumber);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => OtpVerificationScreen(
+                                          mobileNumber: mobileNumber,
+                                          otp: otp,
+                                        )));
+                          }
                         }
                       }
                     },
