@@ -109,6 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {},
                         child: Container(
                           width: MediaQuery.of(context).size.width,
+                          height: 50,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
@@ -122,6 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {},
                         child: Container(
                           width: MediaQuery.of(context).size.width,
+                          height: 50,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
@@ -135,6 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {},
                         child: Container(
                           width: MediaQuery.of(context).size.width,
+                          height: 50,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
@@ -163,6 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {},
                         child: Container(
                           width: MediaQuery.of(context).size.width,
+                          height: 50,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
@@ -183,6 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
+                          height: 50,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(

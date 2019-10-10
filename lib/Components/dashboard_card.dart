@@ -24,7 +24,7 @@ class _DashboardCardState extends State<DashboardCard> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-          height: MediaQuery.of(context).size.height / 3.4,
+          height: 250,
           width: MediaQuery.of(context).size.width / 1.2,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
@@ -36,7 +36,13 @@ class _DashboardCardState extends State<DashboardCard> {
                     Color.fromRGBO(95, 195, 228, .2)
                   ])),
           child: Stack(children: <Widget>[
-            Image.asset(widget.imageLocation, fit: BoxFit.fill),
+            Container(
+                height: 250,
+                width: MediaQuery.of(context).size.width / 1.2,
+                child: FittedBox(
+                  child: Center(child: Image.asset(widget.imageLocation)),
+                  fit: BoxFit.fill,
+                )),
             Column(
               mainAxisAlignment: widget.isAtBottom
                   ? MainAxisAlignment.end

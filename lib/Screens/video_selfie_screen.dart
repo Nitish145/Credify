@@ -442,7 +442,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
       return null;
     }
 
-    await _startVideoPlayer();
+    //await _startVideoPlayer();
   }
 
   Future<void> pauseVideoRecording() async {
@@ -471,27 +471,27 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
     }
   }
 
-  Future<void> _startVideoPlayer() async {
-    final VideoPlayerController vController =
-        VideoPlayerController.file(File(videoPath));
-    videoPlayerListener = () {
-      if (videoController != null && videoController.value.size != null) {
-        // Refreshing the state to update video player with the correct ratio.
-        if (mounted) setState(() {});
-        videoController.removeListener(videoPlayerListener);
-      }
-    };
-    vController.addListener(videoPlayerListener);
-    await vController.setLooping(true);
-    await vController.initialize();
-    await videoController?.dispose();
-    if (mounted) {
-      setState(() {
-        videoController = vController;
-      });
-    }
-    await vController.play();
-  }
+//  Future<void> _startVideoPlayer() async {
+//    final VideoPlayerController vController =
+//        VideoPlayerController.file(File(videoPath));
+//    videoPlayerListener = () {
+//      if (videoController != null && videoController.value.size != null) {
+//        // Refreshing the state to update video player with the correct ratio.
+//        if (mounted) setState(() {});
+//        videoController.removeListener(videoPlayerListener);
+//      }
+//    };
+//    vController.addListener(videoPlayerListener);
+//    await vController.setLooping(true);
+//    await vController.initialize();
+//    await videoController?.dispose();
+//    if (mounted) {
+//      setState(() {
+//        videoController = vController;
+//      });
+//    }
+//    await vController.play();
+//  }
 
   void _showCameraException(CameraException e) {
     logError(e.code, e.description);

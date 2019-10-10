@@ -85,7 +85,7 @@ class _TravelCardState extends State<TravelCard> {
           }
         },
         child: Container(
-            height: MediaQuery.of(context).size.height / 3.4,
+            height: 250,
             width: MediaQuery.of(context).size.width / 1.2,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -105,7 +105,14 @@ class _TravelCardState extends State<TravelCard> {
                           borderRadius: BorderRadius.circular(8),
                         )
                       : BoxDecoration(),
-                  child: Image.asset(widget.imageLocation, fit: BoxFit.fill)),
+                  child: Container(
+                    height: 250,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    child: FittedBox(
+                        fit: BoxFit.fill,
+                        child:
+                            Center(child: Image.asset(widget.imageLocation))),
+                  )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
