@@ -3,6 +3,7 @@ import 'package:credify/globals.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Services/add_kyc_data.dart';
@@ -21,6 +22,7 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
   bool _isBikeChecked = false;
   bool _isMobileChecked = false;
   bool _isOthersChecked = false;
+  bool _isNoneChecked = false;
 
   String employmentType = "Choose your occupation";
   String livesWith = "";
@@ -121,6 +123,10 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
       existingDebts.add(otherEmi);
     }
 
+    if (_isNoneChecked) {
+      existingDebts = [];
+    }
+
     if (selfEmployedWorkTime != "Choose Time Duration") {
       workExp = selfEmployedWorkTime;
     } else {
@@ -163,7 +169,11 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                   child: Container(
                     height: 40,
                     child: TextFormField(
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          MaskedTextInputFormatter(
+                              mask: "--/--/----", separator: "/")
+                        ],
                         cursorColor: Colors.white,
                         style: Theme.of(context).primaryTextTheme.display4,
                         validator: (_joiningDate) {
@@ -297,9 +307,14 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                               checkColor: Colors.black,
                               value: _isBikeChecked,
                               onChanged: (bool value) {
-                                setState(() {
-                                  _isBikeChecked = value;
-                                });
+                                if (!_isNoneChecked) {
+                                  setState(() {
+                                    _isBikeChecked = value;
+                                  });
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Please uncheck none first");
+                                }
                               },
                             ),
                             new Text(
@@ -316,9 +331,14 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                               checkColor: Colors.black,
                               value: _isMobileChecked,
                               onChanged: (bool value) {
-                                setState(() {
-                                  _isMobileChecked = value;
-                                });
+                                if (!_isNoneChecked) {
+                                  setState(() {
+                                    _isMobileChecked = value;
+                                  });
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Please uncheck none first");
+                                }
                               },
                             ),
                             new Text(
@@ -335,9 +355,14 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                               checkColor: Colors.black,
                               value: _isOthersChecked,
                               onChanged: (bool value) {
-                                setState(() {
-                                  _isOthersChecked = value;
-                                });
+                                if (!_isNoneChecked) {
+                                  setState(() {
+                                    _isOthersChecked = value;
+                                  });
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Please uncheck none first");
+                                }
                               },
                             ),
                             new Text(
@@ -346,7 +371,33 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                   Theme.of(context).primaryTextTheme.display4,
                             ),
                           ],
-                        )
+                        ),
+                        Row(
+                          children: <Widget>[
+                            new Checkbox(
+                              activeColor: Colors.white,
+                              checkColor: Colors.black,
+                              value: _isNoneChecked,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  _isNoneChecked = value;
+                                  if (_isNoneChecked) {
+                                    setState(() {
+                                      _isOthersChecked = false;
+                                      _isBikeChecked = false;
+                                      _isMobileChecked = false;
+                                    });
+                                  }
+                                });
+                              },
+                            ),
+                            new Text(
+                              'None',
+                              style:
+                                  Theme.of(context).primaryTextTheme.display4,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

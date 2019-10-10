@@ -89,7 +89,7 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                         padding: const EdgeInsets.only(
                             top: 10, left: 30, right: 30, bottom: 30),
                         child: TextFormField(
-                            keyboardType: TextInputType.datetime,
+                            keyboardType: TextInputType.number,
                             inputFormatters: [
                               MaskedTextInputFormatter(
                                   mask: "--/--/----", separator: "/")
@@ -190,6 +190,8 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                 });
                                 SharedPreferences sharedPrefs =
                                     await SharedPreferences.getInstance();
+                                sharedPrefs.setString(
+                                    "currentUserName", fullName);
                                 AddKycDataResponse addKycResponse =
                                     await addKycData(
                                         sharedPrefs.getString("currentUserId"),

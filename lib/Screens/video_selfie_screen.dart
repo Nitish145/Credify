@@ -35,6 +35,7 @@ void logError(String code, String message) =>
 class _VideoSelfieScreenState extends State<VideoSelfieScreen>
     with WidgetsBindingObserver {
   var formKey = new GlobalKey<FormState>();
+  String currentUserName = "";
 
   CameraController controller;
   String videoPath;
@@ -59,6 +60,11 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     getCameras();
+    SharedPreferences.getInstance().then((sharedPrefs) {
+      setState(() {
+        currentUserName = sharedPrefs.getString("currentUserName");
+      });
+    });
   }
 
   @override
@@ -289,7 +295,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'Upload Video selfie saying "I am <YOUR NAME> and i will repay my debt"',
+                                'Upload Video selfie saying "I am $currentUserName and i will repay my debt"',
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .display3
