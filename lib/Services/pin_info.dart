@@ -12,7 +12,7 @@ Future<PinInfo> pinInfoService(String pin) async {
   String uri = url + endPoint;
 
   try {
-    var response = await client.get(uri);
+    var response = await client.get(uri).timeout(const Duration(seconds: 5));
     final jsonResponse = jsonDecode(response.body);
     PinInfo pinInfo = new PinInfo.fromJson(jsonResponse[0]);
     print(jsonResponse[0]);

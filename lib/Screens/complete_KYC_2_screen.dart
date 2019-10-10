@@ -100,17 +100,34 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                                   isLoading = true;
                                   isPinInfoLoading = true;
                                 });
-                                PinInfo pinInfo = await pinInfoService(text);
-                                setState(() {
-                                  isLoading = false;
-                                  isPinInfoLoading = false;
+                                PinInfo pinInfo = await pinInfoService(text)
+                                    .catchError((error) {
+                                  setState(() {
+                                    isLoading = false;
+                                    isPinInfoLoading = false;
+                                  });
                                 });
-                                cityController.text =
-                                    pinInfo.postOffice[0].block +
-                                        "/" +
-                                        pinInfo.postOffice[0].district;
-                                localityController.text =
-                                    pinInfo.postOffice[0].name;
+                                if (pinInfo == null) {
+                                  setState(() {
+                                    isLoading = false;
+                                    isPinInfoLoading = false;
+                                  });
+                                  Fluttertoast.showToast(
+                                    msg: "Something Wrong Occured",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
+                                } else {
+                                  setState(() {
+                                    isLoading = false;
+                                    isPinInfoLoading = false;
+                                  });
+                                  cityController.text =
+                                      pinInfo.postOffice[0].block +
+                                          "/" +
+                                          pinInfo.postOffice[0].district;
+                                  localityController.text =
+                                      pinInfo.postOffice[0].name;
+                                }
                               }
                             },
                             decoration: InputDecoration(
@@ -226,17 +243,24 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
                                 setState(() {
                                   isLoading = false;
                                 });
-                                if (addKycResponse.updated) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CompleteKYC3()));
-                                } else {
+                                if (addKycResponse == null) {
                                   Fluttertoast.showToast(
                                     msg: "Something Wrong Occured",
                                     toastLength: Toast.LENGTH_SHORT,
                                   );
+                                } else {
+                                  if (addKycResponse.updated) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CompleteKYC3()));
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg: "Something Wrong Occured",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                    );
+                                  }
                                 }
                               }
                             },

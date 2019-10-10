@@ -214,9 +214,16 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                         selectedContacts,
                         sharedPrefs.getString("currentUserId"),
                         groupName);
-                    if (addGroupResponse.updated) {
-                      Navigator.pop(context);
-                      selectedContacts = [];
+                    if (addGroupResponse == null) {
+                      Fluttertoast.showToast(
+                        msg: "Something Wrong Occured",
+                        toastLength: Toast.LENGTH_SHORT,
+                      );
+                    } else {
+                      if (addGroupResponse.updated) {
+                        Navigator.pop(context);
+                        selectedContacts = [];
+                      }
                     }
                   }
                 } else {

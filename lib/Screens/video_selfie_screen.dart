@@ -193,14 +193,21 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
                             setState(() {
                               isLoading = false;
                             });
-                            if (isVideoUploaded) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  '/bankScreen1',
-                                  (Route<dynamic> route) => false);
-                            } else {
+                            if (isVideoUploaded == null) {
                               Fluttertoast.showToast(
-                                  msg: "Something Wrong Occured!");
+                                msg: "Something Wrong Occured",
+                                toastLength: Toast.LENGTH_SHORT,
+                              );
+                            } else {
+                              if (isVideoUploaded) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/bankScreen1',
+                                    (Route<dynamic> route) => false);
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: "Something Wrong Occured!");
+                              }
                             }
                           }
                         },

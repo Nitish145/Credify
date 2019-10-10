@@ -201,17 +201,24 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                 setState(() {
                                   isLoading = false;
                                 });
-                                if (addKycResponse.updated) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CompleteKYC2()));
-                                } else {
+                                if (addKycResponse == null) {
                                   Fluttertoast.showToast(
                                     msg: "Something Wrong Occured",
                                     toastLength: Toast.LENGTH_SHORT,
                                   );
+                                } else {
+                                  if (addKycResponse.updated) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CompleteKYC2()));
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg: "Something Wrong Occured",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                    );
+                                  }
                                 }
                               }
                             },

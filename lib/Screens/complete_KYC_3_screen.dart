@@ -889,17 +889,23 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
                                     }
                                     break;
                                 }
-
-                                if (addKycResponse.updated) {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      '/aadharScreen',
-                                      (Route<dynamic> route) => false);
-                                } else {
+                                if (addKycResponse == null) {
                                   Fluttertoast.showToast(
                                     msg: "Something Wrong Occured",
                                     toastLength: Toast.LENGTH_SHORT,
                                   );
+                                } else {
+                                  if (addKycResponse.updated) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        '/aadharScreen',
+                                        (Route<dynamic> route) => false);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg: "Something Wrong Occured",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                    );
+                                  }
                                 }
                               }
                             },
