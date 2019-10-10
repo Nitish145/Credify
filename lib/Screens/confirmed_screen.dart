@@ -1,4 +1,4 @@
-import 'package:credify/Screens/dashboard_screen.dart';
+import 'package:credify/Screens/bottom_navigation_bar_screen.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmedScreen extends StatefulWidget {
@@ -72,7 +72,7 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DashboardScreen()));
+                            builder: (context) => BottomNavigationBarScreen()));
                   },
                 ),
               ),
