@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Screens/create_group_screen.dart';
 import 'package:credify/Components/credify_card.dart';
@@ -28,6 +30,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           print(userData.kycProgress);
           currentUserData = userData;
         });
+        sharedPrefs.setString(
+            "currentUserData", jsonEncode(currentUserData));
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
           if (cardData != null) {
             sharedPrefs.setString("currentUserName", cardData.userName);
