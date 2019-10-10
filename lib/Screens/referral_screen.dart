@@ -41,17 +41,67 @@ class _ReferralScreenState extends State<ReferralScreen> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 80),
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: SvgPicture.asset(
-                  "assets/svg/refer.svg",
-                  semanticsLabel: "Refer Background",
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 250),
+                  child: Container(
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "assets/svg/refer.svg",
+                        semanticsLabel: "Refer Background",
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 24, 0, 4),
+                  child: Text(
+                    "Here's your refer link",
+                    style: Theme.of(context).accentTextTheme.display3,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                  child: Container(
+                    color: Color.fromRGBO(232, 232, 232, 1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            "http://www.statholdings.com",
+                            style: Theme.of(context).accentTextTheme.display4,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            color: Colors.grey.withOpacity(0.5),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                "assets/images/clipboardIcon.png",
+                                height: 25,
+                                width: 25,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 24, 0, 4),
+                  child: Text(
+                    "Share the link with your friends",
+                    style: Theme.of(context).accentTextTheme.display4,
+                  ),
+                ),
+              ],
             ),
           )
         ],
