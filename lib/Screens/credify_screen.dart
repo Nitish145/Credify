@@ -16,6 +16,7 @@ class _CredifyScreenState extends State<CredifyScreen> {
   UserData currentUserData;
   String currentUserName = "";
   String currentUserCardNumber = "";
+  bool isDataLoading = true;
 
   @override
   void initState() {
@@ -23,7 +24,6 @@ class _CredifyScreenState extends State<CredifyScreen> {
     SharedPreferences.getInstance().then((sharedPrefs) {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
         setState(() {
-          print(userData.kycProgress);
           currentUserData = userData;
         });
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
@@ -35,6 +35,9 @@ class _CredifyScreenState extends State<CredifyScreen> {
               currentUserName = cardData.userName;
             });
           }
+          setState(() {
+            isDataLoading = false;
+          });
         });
       }).catchError((e) {
         Fluttertoast.showToast(msg: "Something Wrong Occured!");
@@ -72,16 +75,14 @@ class _CredifyScreenState extends State<CredifyScreen> {
                     cardLevel: "Silver",
                     cardNumber: currentUserCardNumber,
                     name: currentUserName,
-                    kycStage: currentUserData == null
-                        ? 0
-                        : currentUserData.kycProgress,
-                    isUserDataNull: (currentUserData == null) ? true : false,
+                    kycStage: isDataLoading ? 0 : currentUserData.kycProgress,
+                    isUserDataNull: isDataLoading ? true : false,
                   ),
                 ),
               ],
             ),
           ),
-          currentUserData == null
+          isDataLoading
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(36, 8, 36, 8),
                   child: Container(

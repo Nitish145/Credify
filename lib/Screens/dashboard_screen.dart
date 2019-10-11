@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Screens/create_group_screen.dart';
 import 'package:credify/Components/credify_card.dart';
@@ -21,6 +19,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   UserData currentUserData;
   String currentUserName = "";
   String currentUserCardNumber = "";
+  bool isDataLoading = true;
 
   @override
   void initState() {
@@ -28,10 +27,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     SharedPreferences.getInstance().then((sharedPrefs) {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
         setState(() {
-          print(userData.kycProgress);
           currentUserData = userData;
         });
-        sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
           if (cardData != null) {
             sharedPrefs.setString("currentUserName", cardData.userName);
@@ -41,6 +38,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               currentUserName = cardData.userName;
             });
           }
+          setState(() {
+            isDataLoading = false;
+          });
         });
       }).catchError((e) {
         Fluttertoast.showToast(msg: "Something Wrong Occured!");
@@ -80,20 +80,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           padding: const EdgeInsets.only(top: 70, bottom: 20),
                           child: CredifyCard(
                             cardLevel: "Silver",
-                            cardNumber:
-                                currentUserCardNumber ?? "                ",
-                            name: currentUserName ?? "",
-                            kycStage: currentUserData == null
-                                ? 0
-                                : currentUserData.kycProgress,
-                            isUserDataNull:
-                                (currentUserData == null) ? true : false,
+                            cardNumber: currentUserCardNumber,
+                            name: currentUserName,
+                            kycStage:
+                                isDataLoading ? 0 : currentUserData.kycProgress,
+                            isUserDataNull: isDataLoading ? true : false,
                           ),
                         )
                       ],
                     ),
                   ),
-                  currentUserData == null
+                  isDataLoading
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(36, 8, 36, 8),
                           child: Container(
