@@ -1,14 +1,8 @@
-import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Screens/create_group_screen.dart';
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
-import 'package:credify/Services/card_data.dart';
-import 'package:credify/Components/progress_bar.dart';
-import 'package:credify/Services/user_data.dart';
 import 'package:credify/Screens/travel_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -16,37 +10,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  UserData currentUserData;
-  String currentUserName = "";
-  String currentUserCardNumber = "";
-  bool isDataLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    SharedPreferences.getInstance().then((sharedPrefs) {
-      getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
-        setState(() {
-          currentUserData = userData;
-        });
-        getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
-          if (cardData != null) {
-            sharedPrefs.setString("currentUserName", cardData.userName);
-            sharedPrefs.setString("currentUserCardNumber", cardData.cardNumber);
-            setState(() {
-              currentUserCardNumber = cardData.cardNumber;
-              currentUserName = cardData.userName;
-            });
-          }
-          setState(() {
-            isDataLoading = false;
-          });
-        });
-      }).catchError((e) {
-        Fluttertoast.showToast(msg: "Something Wrong Occured!");
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,140 +41,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 70, bottom: 20),
-                          child: CredifyCard(
-                            cardLevel: "Silver",
-                            cardNumber: currentUserCardNumber,
-                            name: currentUserName,
-                            kycStage:
-                                isDataLoading ? 0 : currentUserData.kycProgress,
-                            isUserDataNull: isDataLoading ? true : false,
-                          ),
+                          child: CredifyCard(),
                         )
                       ],
                     ),
                   ),
-                  isDataLoading
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(36, 8, 36, 8),
-                          child: Container(
-                            height: 90,
-                          ),
-                        )
-                      : (currentUserData.kycProgress == 3)
-                          ? Padding(
-                              padding: const EdgeInsets.fromLTRB(36, 8, 36, 8),
-                              child: Container(
-                                height: 90,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text("Used",
-                                            style: Theme.of(context)
-                                                .accentTextTheme
-                                                .display4),
-                                        Text("Credify limit",
-                                            style: Theme.of(context)
-                                                .accentTextTheme
-                                                .display4)
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text("4,000/",
-                                            style: Theme.of(context)
-                                                .accentTextTheme
-                                                .display2
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                        Text("10,000/",
-                                            style: Theme.of(context)
-                                                .accentTextTheme
-                                                .display2
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold))
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        elevation: 10.0,
-                                        child: ProgressBar(
-                                          linearGradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              colors: [
-                                                Color.fromRGBO(
-                                                    151, 150, 240, 1),
-                                                Color.fromRGBO(251, 199, 212, 1)
-                                              ]),
-                                          progress: 40.0,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          height: 15.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.fromLTRB(36, 8, 36, 8),
-                              child: Container(
-                                height: 90,
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text("Credify limit",
-                                            style: Theme.of(context)
-                                                .accentTextTheme
-                                                .display4)
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        elevation: 10.0,
-                                        child: ProgressBar(
-                                          linearGradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              colors: [
-                                                Color.fromRGBO(
-                                                    221, 221, 221, 1),
-                                                Color.fromRGBO(221, 221, 221, 1)
-                                              ]),
-                                          progress: 100.0,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          height: 15.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                   GestureDetector(
                     onTap: () async {
                       Navigator.push(
