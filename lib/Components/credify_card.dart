@@ -31,6 +31,7 @@ class _CredifyCardState extends State<CredifyCard> {
     SharedPreferences.getInstance().then((sharedPrefs) {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
         getCardData(sharedPrefs.getString("currentUserId")).then((cardData) {
+          sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
           setState(() {
             currentUserData = userData;
           });

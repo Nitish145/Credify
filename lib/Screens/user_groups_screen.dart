@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:credify/Components/contacts_model.dart';
 import 'package:credify/Components/group_design.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
@@ -28,6 +30,7 @@ class _UserGroupsScreenState extends State<UserGroupsScreen> {
     SharedPreferences.getInstance().then((sharedPrefs) async {
       getUserData(sharedPrefs.getString("currentUserId"))
           .then((currentUserData) async {
+        sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
         List<String> groupIds = currentUserData.groupId;
         groupIds.forEach((groupId) async {
           GroupData groupData = await getGroupData(groupId);

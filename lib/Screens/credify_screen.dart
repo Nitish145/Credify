@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Services/user_data.dart';
@@ -17,6 +19,7 @@ class _CredifyScreenState extends State<CredifyScreen> {
     super.initState();
     SharedPreferences.getInstance().then((sharedPrefs) {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
+        sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
         setState(() {
           currentUserData = userData;
         });
