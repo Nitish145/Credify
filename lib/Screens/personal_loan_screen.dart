@@ -9,6 +9,7 @@ class PersonalLoanScreen extends StatefulWidget {
 class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
   var formKey = new GlobalKey<FormState>();
   double sliderValue = 1000;
+  TextEditingController amountController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +52,9 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 15),
                             child: TextFormField(
+                                controller: amountController,
                                 keyboardType: TextInputType.number,
-                                maxLength: 5,
+                                cursorColor: Colors.black,
                                 style:
                                     Theme.of(context).accentTextTheme.display3,
                                 onSaved: (_amount) {},
@@ -198,6 +200,7 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                           value: sliderValue,
                           onChanged: (newSliderValue) {
                             setState(() {
+                              amountController.text = sliderValue.toString();
                               sliderValue = newSliderValue;
                             });
                           },
