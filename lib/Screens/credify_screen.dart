@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Models/user_data_model.dart';
+import 'package:credify/Screens/bank_detail_1_screen.dart';
 import 'package:credify/Services/user_data.dart';
+import 'package:credify/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +15,9 @@ class CredifyScreen extends StatefulWidget {
 
 class _CredifyScreenState extends State<CredifyScreen> {
   UserData currentUserData;
+  bool isKycDone = false;
+  bool isBankAccountAdded = false;
+  bool isPersonalLoanAvailed = false;
 
   @override
   void initState() {
@@ -22,6 +27,7 @@ class _CredifyScreenState extends State<CredifyScreen> {
         sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
         setState(() {
           currentUserData = userData;
+          isKycDone = userData.kycProgress == 3;
         });
       });
     });
@@ -51,9 +57,194 @@ class _CredifyScreenState extends State<CredifyScreen> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 70, bottom: 20),
-                  child: CredifyCard(),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 70, bottom: 20),
+                      child: CredifyCard(),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          "To-do",
+                          style: Theme.of(context).accentTextTheme.display3,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 5),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: isKycDone
+                                ? credifyLightGreen
+                                : credifyLightGrey,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    backgroundColor: isKycDone
+                                        ? credifyDarkGreen
+                                        : credifyDarkGrey,
+                                    radius: 12,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Know your Customer",
+                                    style: isKycDone
+                                        ? Theme.of(context)
+                                            .primaryTextTheme
+                                            .display4
+                                            .copyWith(
+                                                decoration:
+                                                    TextDecoration.lineThrough)
+                                        : Theme.of(context)
+                                            .accentTextTheme
+                                            .display4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                color: isKycDone ? credifyWhite : credifyBlack,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => BankDetailScreen1()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 5),
+                        child: Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: isBankAccountAdded
+                                  ? credifyLightGreen
+                                  : credifyLightGrey,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircleAvatar(
+                                      backgroundColor: isBankAccountAdded
+                                          ? credifyDarkGreen
+                                          : credifyDarkGrey,
+                                      radius: 12,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Add Bank Account",
+                                      style: isBankAccountAdded
+                                          ? Theme.of(context)
+                                              .primaryTextTheme
+                                              .display4
+                                              .copyWith(
+                                                  decoration:
+                                                      TextDecoration.lineThrough)
+                                          : Theme.of(context)
+                                              .accentTextTheme
+                                              .display4,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: isBankAccountAdded
+                                      ? credifyWhite
+                                      : credifyBlack,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 5),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: isPersonalLoanAvailed
+                                ? credifyLightGreen
+                                : credifyLightGrey,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    backgroundColor: isPersonalLoanAvailed
+                                        ? credifyDarkGreen
+                                        : credifyDarkGrey,
+                                    radius: 12,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Apply for Personal Loan",
+                                    style: isPersonalLoanAvailed
+                                        ? Theme.of(context)
+                                            .primaryTextTheme
+                                            .display4
+                                            .copyWith(
+                                                decoration:
+                                                    TextDecoration.lineThrough)
+                                        : Theme.of(context)
+                                            .accentTextTheme
+                                            .display4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                color: isPersonalLoanAvailed
+                                    ? credifyWhite
+                                    : credifyBlack,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
