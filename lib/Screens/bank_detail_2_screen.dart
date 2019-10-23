@@ -179,7 +179,10 @@ class _BankDetailScreen2State extends State<BankDetailScreen2> {
                               style: new TextStyle(
                                   fontSize: 18.0, color: Colors.white)),
                         ),
-                        onPressed: () async {},
+                        onPressed: () async {
+                          Navigator.popUntil(
+                              context, (Route<dynamic> route) => route.isFirst);
+                        },
                       ),
                     ),
                   )
