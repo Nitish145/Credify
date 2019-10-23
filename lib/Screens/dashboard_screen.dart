@@ -1,6 +1,7 @@
 import 'package:credify/Screens/create_group_screen.dart';
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
+import 'package:credify/Screens/personal_loan_screen.dart';
 import 'package:credify/Screens/travel_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -44,6 +44,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: CredifyCard(),
                         )
                       ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PersonalLoanScreen()));
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                          right: MediaQuery.of(context).size.width * .1667 / 2,
+                          left: MediaQuery.of(context).size.width * .1667 / 2),
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        child: DashboardCard(
+                          isAtBottom: false,
+                          heading: "Get your personal loan",
+                          subheading:
+                              "Apply now and get money \ninto your bank account",
+                          isDark: true,
+                          imageLocation: "assets/images/personal.png",
+                        ),
+                      ),
                     ),
                   ),
                   GestureDetector(
