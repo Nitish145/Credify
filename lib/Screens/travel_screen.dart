@@ -1,5 +1,7 @@
 import 'package:credify/Components/travel_card.dart';
+import 'package:credify/Services/user_data.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TravelScreen extends StatefulWidget {
   @override
@@ -7,6 +9,22 @@ class TravelScreen extends StatefulWidget {
 }
 
 class _TravelScreenState extends State<TravelScreen> {
+  int kycProgress;
+  bool kycStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((sharedPrefs) {
+      getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
+        setState(() {
+          kycProgress = userData.kycProgress;
+          kycStatus = userData.kycStatus;
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget travelScreenAppbar() {
@@ -97,6 +115,8 @@ class _TravelScreenState extends State<TravelScreen> {
                 price: "9,900/-",
                 timeSpan: "per month",
                 isLocked: false,
+                kycProgress: kycProgress,
+                kycStatus: kycStatus,
               ),
               SizedBox(height: 20),
               TravelCard(
@@ -106,6 +126,8 @@ class _TravelScreenState extends State<TravelScreen> {
                 price: "8,900/-",
                 timeSpan: "per month",
                 isLocked: false,
+                kycProgress: kycProgress,
+                kycStatus: kycStatus,
               ),
               SizedBox(height: 20),
               TravelCard(
@@ -115,6 +137,8 @@ class _TravelScreenState extends State<TravelScreen> {
                 price: "12,900/-",
                 timeSpan: "per month",
                 isLocked: true,
+                kycProgress: kycProgress,
+                kycStatus: kycStatus,
               ),
               SizedBox(height: 20),
             ],

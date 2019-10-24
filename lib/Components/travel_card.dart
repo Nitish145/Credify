@@ -1,13 +1,9 @@
-import 'dart:convert';
-
-import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Screens/complete_KYC_1_screen.dart';
 import 'package:credify/Screens/complete_KYC_2_screen.dart';
 import 'package:credify/Screens/complete_KYC_3_screen.dart';
 import 'package:credify/Screens/travel_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TravelCard extends StatefulWidget {
   final bool isLocked;
@@ -16,6 +12,8 @@ class TravelCard extends StatefulWidget {
   final String daysNights;
   final String price;
   final String timeSpan;
+  final bool kycStatus;
+  final int kycProgress;
 
   const TravelCard(
       {Key key,
@@ -24,7 +22,9 @@ class TravelCard extends StatefulWidget {
       this.daysNights,
       this.price,
       this.timeSpan,
-      this.isLocked})
+      this.isLocked,
+      this.kycStatus,
+      this.kycProgress})
       : super(key: key);
   @override
   _TravelCardState createState() => _TravelCardState();
@@ -36,52 +36,51 @@ class _TravelCardState extends State<TravelCard> {
     return Center(
       child: GestureDetector(
         onTap: () async {
-          SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-          Map map = jsonDecode(sharedPrefs.getString("currentUserData"));
-          UserData currentUserData = UserData.fromJson(map);
-          if (!widget.isLocked) {
-            if (!currentUserData.kycStatus) {
-              switch (currentUserData.kycProgress) {
-                case 0:
-                  {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CompleteKYC1()));
-                  }
-                  break;
-                case 1:
-                  {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CompleteKYC2()));
-                  }
-                  break;
-                case 2:
-                  {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CompleteKYC3()));
-                  }
+          if (widget.kycStatus != null && widget.kycProgress != null) {
+            if (!widget.isLocked) {
+              if (!widget.kycStatus) {
+                switch (widget.kycProgress) {
+                  case 0:
+                    {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompleteKYC1()));
+                    }
+                    break;
+                  case 1:
+                    {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompleteKYC2()));
+                    }
+                    break;
+                  case 2:
+                    {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompleteKYC3()));
+                    }
+                }
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TravelDetailScreen(
+                              imageLocation: widget.imageLocation,
+                              place: widget.place,
+                              daysNights: widget.daysNights,
+                              price: widget.price,
+                              timeSpan: widget.timeSpan,
+                            )));
               }
             } else {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TravelDetailScreen(
-                            imageLocation: widget.imageLocation,
-                            place: widget.place,
-                            daysNights: widget.daysNights,
-                            price: widget.price,
-                            timeSpan: widget.timeSpan,
-                          )));
+              Fluttertoast.showToast(
+                  msg: "This Travel location is locked",
+                  toastLength: Toast.LENGTH_LONG);
             }
-          } else {
-            Fluttertoast.showToast(
-                msg: "This Travel location is locked",
-                toastLength: Toast.LENGTH_LONG);
           }
         },
         child: Container(

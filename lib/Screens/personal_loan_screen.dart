@@ -11,6 +11,13 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
   double sliderValue = 1000;
   TextEditingController amountController = new TextEditingController();
 
+
+  @override
+  void initState() {
+    super.initState();
+    amountController.text = sliderValue.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     String getPaybackTime() {
