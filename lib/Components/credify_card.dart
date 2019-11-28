@@ -116,105 +116,21 @@ class _CredifyCardState extends State<CredifyCard> {
           Column(
             children: <Widget>[
               currentUserData != null
-                  ? Container(
-                      height: 220,
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      decoration: getBoxDecorationForCard(),
-                      child: (currentUserData.kycProgress == 3)
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Text("Credify",
-                                          style: Theme.of(context)
-                                              .accentTextTheme
-                                              .display3),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Text("Silver",
-                                          style: Theme.of(context)
-                                              .accentTextTheme
-                                              .display3),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, bottom: 7),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          currentUserCardNumber == ""
-                                              ? ""
-                                              : currentUserCardNumber
-                                                      .substring(0, 4) +
-                                                  " " +
-                                                  currentUserCardNumber
-                                                      .substring(4, 8) +
-                                                  " " +
-                                                  currentUserCardNumber
-                                                      .substring(8, 12) +
-                                                  " " +
-                                                  currentUserCardNumber
-                                                      .substring(12, 16),
-                                          style: Theme.of(context)
-                                              .accentTextTheme
-                                              .display3
-                                              .copyWith(
-                                                  letterSpacing: 3,
-                                                  fontWeight: FontWeight.w300),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, top: 7),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          currentUserName,
-                                          style: Theme.of(context)
-                                              .accentTextTheme
-                                              .display3,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                GestureDetector(
-                                  onTap: () async {},
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15),
-                                      child: Text("Upgrade".toUpperCase(),
-                                          style: Theme.of(context)
-                                              .accentTextTheme
-                                              .display4),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : (currentUserData == null)
-                              ? Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Text("Loading..",
-                                        style: Theme.of(context)
-                                            .accentTextTheme
-                                            .display2),
-                                  ),
-                                )
-                              : Column(
+                  ? Stack(
+                      children: <Widget>[
+                        Container(
+                          height: 220,
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white),
+                        ),
+                        Container(
+                          height: 220,
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          decoration: getBoxDecorationForCard(),
+                          child: (currentUserData.kycProgress == 3)
+                              ? Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
@@ -229,88 +145,180 @@ class _CredifyCardState extends State<CredifyCard> {
                                                   .accentTextTheme
                                                   .display3),
                                         ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Text("Silver",
+                                              style: Theme.of(context)
+                                                  .accentTextTheme
+                                                  .display3),
+                                        )
                                       ],
                                     ),
                                     Column(
                                       children: <Widget>[
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 30, right: 30),
+                                              left: 15, bottom: 7),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
-                                              "Complete KYC to Get your own Credify Card",
+                                              currentUserCardNumber == ""
+                                                  ? ""
+                                                  : currentUserCardNumber
+                                                          .substring(0, 4) +
+                                                      " " +
+                                                      currentUserCardNumber
+                                                          .substring(4, 8) +
+                                                      " " +
+                                                      currentUserCardNumber
+                                                          .substring(8, 12) +
+                                                      " " +
+                                                      currentUserCardNumber
+                                                          .substring(12, 16),
+                                              style: Theme.of(context)
+                                                  .accentTextTheme
+                                                  .display3
+                                                  .copyWith(
+                                                      letterSpacing: 3,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 15, top: 7),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              currentUserName,
                                               style: Theme.of(context)
                                                   .accentTextTheme
                                                   .display3,
-                                              textAlign: TextAlign.center,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                     GestureDetector(
-                                      onTap: () async {
-                                        SharedPreferences sharedPrefs =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        Map map = jsonDecode(sharedPrefs
-                                            .getString("currentUserData"));
-                                        UserData currentUserData =
-                                            UserData.fromJson(map);
-                                        if (!currentUserData.kycStatus) {
-                                          switch (currentUserData.kycProgress) {
-                                            case 0:
-                                              {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CompleteKYC1()));
-                                              }
-                                              break;
-                                            case 1:
-                                              {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CompleteKYC2()));
-                                              }
-                                              break;
-                                            case 2:
-                                              {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CompleteKYC3()));
-                                              }
-                                          }
-                                        }
-                                      },
+                                      onTap: () async {},
                                       child: Align(
                                         alignment: Alignment.bottomRight,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            Icon(Icons.arrow_forward),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      5, 15, 15, 15),
-                                              child: Text("Continue",
-                                                  style: Theme.of(context)
-                                                      .accentTextTheme
-                                                      .display4),
-                                            ),
-                                          ],
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Text("Upgrade".toUpperCase(),
+                                              style: Theme.of(context)
+                                                  .accentTextTheme
+                                                  .display4),
                                         ),
                                       ),
                                     ),
                                   ],
-                                ),
+                                )
+                              : (currentUserData == null)
+                                  ? Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Text("Loading..",
+                                            style: Theme.of(context)
+                                                .accentTextTheme
+                                                .display2),
+                                      ),
+                                    )
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(15.0),
+                                              child: Text("Credify",
+                                                  style: Theme.of(context)
+                                                      .accentTextTheme
+                                                      .display3),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 30, right: 30),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "Complete KYC to Get your own Credify Card",
+                                                  style: Theme.of(context)
+                                                      .accentTextTheme
+                                                      .display3,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            if (!currentUserData.kycStatus) {
+                                              switch (
+                                                  currentUserData.kycProgress) {
+                                                case 0:
+                                                  {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CompleteKYC1()));
+                                                  }
+                                                  break;
+                                                case 1:
+                                                  {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CompleteKYC2()));
+                                                  }
+                                                  break;
+                                                case 2:
+                                                  {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CompleteKYC3()));
+                                                  }
+                                              }
+                                            }
+                                          },
+                                          child: Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Icon(Icons.arrow_forward),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          5, 15, 15, 15),
+                                                  child: Text("Continue",
+                                                      style: Theme.of(context)
+                                                          .accentTextTheme
+                                                          .display4),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                        )
+                      ],
                     )
                   : Container(
                       height: 220,
