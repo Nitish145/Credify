@@ -1,7 +1,5 @@
 import 'package:credify/Screens/dashboard_screen.dart';
 import 'package:credify/Screens/referral_screen.dart';
-import 'package:credify/Screens/user_groups_screen.dart';
-import 'package:credify/Screens/credify_screen.dart';
 import 'package:credify/Screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,20 +22,10 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
           break;
         case 1:
           {
-            return UserGroupsScreen();
-          }
-          break;
-        case 2:
-          {
-            return CredifyScreen();
-          }
-          break;
-        case 3:
-          {
             return ReferralScreen();
           }
           break;
-        case 4:
+        case 2:
           {
             return ProfileScreen();
           }
@@ -77,52 +65,6 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
             ),
             title: Text(
               "Home",
-              style: TextStyle(fontSize: 15, color: Colors.black),
-            ),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).primaryColor,
-            activeIcon: Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-              child: Image.asset(
-                "assets/images/GroupBNB.png",
-                height: 20,
-                width: 20,
-              ),
-            ),
-            icon: Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-              child: Image.asset(
-                "assets/images/GroupBNB.png",
-                height: 20,
-                width: 20,
-              ),
-            ),
-            title: Text(
-              "Groups",
-              style: TextStyle(fontSize: 15, color: Colors.black),
-            ),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).primaryColor,
-            activeIcon: Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-              child: Image.asset(
-                "assets/images/PaymentCardBNB.png",
-                height: 20,
-                width: 20,
-              ),
-            ),
-            icon: Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-              child: Image.asset(
-                "assets/images/PaymentCardBNB.png",
-                height: 20,
-                width: 20,
-              ),
-            ),
-            title: Text(
-              "Credify",
               style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
