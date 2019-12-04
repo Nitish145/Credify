@@ -1,6 +1,6 @@
 import 'package:credify/Screens/dashboard_screen.dart';
-import 'package:credify/Screens/referral_screen.dart';
 import 'package:credify/Screens/profile_screen.dart';
+import 'package:credify/Screens/referral_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarScreen extends StatefulWidget {
@@ -11,6 +11,7 @@ class BottomNavigationBarScreen extends StatefulWidget {
 
 class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
   int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     Widget getDynamicBody() {
@@ -22,12 +23,12 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
           break;
         case 1:
           {
-            return ReferralScreen();
+            return ProfileScreen();
           }
           break;
         case 2:
           {
-            return ProfileScreen();
+            return ReferralScreen();
           }
           break;
       }
@@ -43,7 +44,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
             _currentIndex = index;
           });
         },
-        type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.shifting,
         items: [
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
@@ -51,16 +52,16 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
               padding: const EdgeInsets.all(5.0),
               child: Image.asset(
                 "assets/images/HomeBNB.png",
-                height: 20,
-                width: 20,
+                height: 25,
+                width: 25,
               ),
             ),
             icon: Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
                 "assets/images/HomeBNB.png",
-                height: 20,
-                width: 20,
+                height: 25,
+                width: 25,
               ),
             ),
             title: Text(
@@ -73,21 +74,21 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
             activeIcon: Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
-                "assets/images/ShareBNB.png",
-                height: 20,
-                width: 20,
+                "assets/images/ContactBNB.png",
+                height: 25,
+                width: 25,
               ),
             ),
             icon: Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
-                "assets/images/ShareBNB.png",
-                height: 20,
-                width: 20,
+                "assets/images/ContactBNB.png",
+                height: 25,
+                width: 25,
               ),
             ),
             title: Text(
-              "Refer",
+              "Profile",
               style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
@@ -96,21 +97,21 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
             activeIcon: Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
-                "assets/images/ContactBNB.png",
-                height: 20,
-                width: 20,
+                "assets/images/ShareBNB.png",
+                height: 25,
+                width: 25,
               ),
             ),
             icon: Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Image.asset(
-                "assets/images/ContactBNB.png",
-                height: 20,
-                width: 20,
+                "assets/images/ShareBNB.png",
+                height: 25,
+                width: 25,
               ),
             ),
             title: Text(
-              "Profile",
+              "Refer",
               style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
