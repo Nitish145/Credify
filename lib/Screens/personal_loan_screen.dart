@@ -1,5 +1,9 @@
 import 'package:credify/Screens/personal_loan_agreement_screen.dart';
+import 'package:credify/colors.dart';
+import 'package:credify/utils/get_month_string_by_month_int.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PersonalLoanScreen extends StatefulWidget {
   @override
@@ -7,128 +11,170 @@ class PersonalLoanScreen extends StatefulWidget {
 }
 
 class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
-  var formKey = new GlobalKey<FormState>();
-  double sliderValue = 1000;
-  TextEditingController amountController = new TextEditingController();
-
-
-  @override
-  void initState() {
-    super.initState();
-    amountController.text = sliderValue.toString();
-  }
+  bool areTermsAccepted = false;
 
   @override
   Widget build(BuildContext context) {
-    String getPaybackTime() {
-      if (sliderValue >= 1000 && sliderValue <= 2000) {
-        return "1 week";
-      } else if (sliderValue > 2000 && sliderValue <= 5000) {
-        return "2 week";
-      } else {
-        return "4 week";
-      }
+    Widget getRowForColumnScreen(String title, int amount, {String subtitle}) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: Theme.of(context).accentTextTheme.display4,
+                ),
+                subtitle != null
+                    ? Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      )
+                    : Container()
+              ],
+            ),
+            Text(
+              '\u20B9 ' + amount.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget getDuDateRow(String title, DateTime dueDate) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 32,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              title,
+            ),
+            Text(
+              dueDate.day.toString() +
+                  " " +
+                  monthIntToMonthString(dueDate.month).substring(0, 3),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget getCheckboxRow() {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+        child: Row(
+          children: <Widget>[
+            Checkbox(
+              value: areTermsAccepted,
+              activeColor: credifyBlue,
+              onChanged: (bool value) {
+                setState(() {
+                  areTermsAccepted = value;
+                });
+              },
+            ),
+            RichText(
+              text: new TextSpan(children: [
+                new TextSpan(
+                    text: 'I have read and accept all the ',
+                    style: TextStyle(
+                      color: credifyBlack,
+                      fontSize: 12,
+                    )),
+                new TextSpan(
+                    text: 'terms and conditions',
+                    style: TextStyle(
+                      color: credifyBlue,
+                      fontSize: 12,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PersonalLoanAgreementScreen()));
+                      })
+              ]),
+            )
+          ],
+        ),
+      );
     }
 
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 150),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Form(
-                    key: formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 30, right: 30, bottom: 30),
-                      child: Column(
-                        children: <Widget>[
-                          Align(
-                            child: Padding(
-                              padding: const EdgeInsets.only(),
-                              child: Text(
-                                "How much money do you want?",
-                                style:
-                                    Theme.of(context).accentTextTheme.display4,
-                              ),
-                            ),
-                            alignment: Alignment.topLeft,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: TextFormField(
-                                controller: amountController,
-                                keyboardType: TextInputType.number,
-                                cursorColor: Colors.black,
-                                style:
-                                    Theme.of(context).accentTextTheme.display3,
-                                onSaved: (_amount) {},
-                                onChanged: (_amount) {
-                                  if (int.parse(_amount) % 1000 == 0) {
-                                    setState(() {
-                                      sliderValue = double.parse(_amount);
-                                    });
-                                  }
-                                },
-                                validator: (_amount) {
-                                  if (int.parse(_amount) % 1000 == 0) {
-                                    return "Enter in multiples of 1000";
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: "Amount",
-                                  labelStyle: TextStyle(color: Colors.black),
-                                  border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.black)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.black)),
-                                )),
-                          ),
-                          Align(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 30),
-                              child: Text(
-                                "Payback Time Period",
-                                style:
-                                    Theme.of(context).accentTextTheme.display4,
-                              ),
-                            ),
-                            alignment: Alignment.topLeft,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(4)),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    getPaybackTime(),
-                                    style: Theme.of(context)
-                                        .accentTextTheme
-                                        .display3,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 150),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Congratulations!",
+                          style: Theme.of(context).accentTextTheme.display1,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Your loan has been approved",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "\u20B9 5000/-",
+                          style: TextStyle(
+                              color: credifyBlue,
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  children: <Widget>[
+                    getRowForColumnScreen("Processing Fee", 200,
+                        subtitle: "Deducted from the loans"),
+                    getRowForColumnScreen("One time activation fee", 200,
+                        subtitle: "One time charges"),
+                    getRowForColumnScreen("GST (18% on all fee)", 72),
+                    getDuDateRow("Due Date", DateTime.now()),
+                    getRowForColumnScreen("Interest", 0),
+                    getRowForColumnScreen("Disbursal Amount", 4628),
+                    getRowForColumnScreen("Repayment Amount", 5000),
+                    getCheckboxRow(),
+                  ],
+                ),
+              ],
             ),
           ),
           Container(
@@ -173,100 +219,28 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(47, 128, 237, 1),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Align(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 30, left: 15),
-                        child: Text(
-                          "How much money do you want?",
-                          style: Theme.of(context).primaryTextTheme.display4,
-                        ),
-                      ),
-                      alignment: Alignment.topLeft,
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Slider(
-                          activeColor: Color.fromRGBO(242, 153, 74, 1),
-                          inactiveColor: Colors.white,
-                          min: 1000,
-                          max: 10000,
-                          divisions: 9,
-                          value: sliderValue,
-                          onChanged: (newSliderValue) {
-                            setState(() {
-                              amountController.text = sliderValue.toString();
-                              sliderValue = newSliderValue;
-                            });
-                          },
-                          label: sliderValue != 10000
-                              ? '$sliderValue'.substring(0, 1) + 'K'
-                              : '$sliderValue'.substring(0, 2) + 'K',
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "1,000",
-                                style:
-                                    Theme.of(context).primaryTextTheme.display4,
-                              ),
-                              Text(
-                                "5,000",
-                                style:
-                                    Theme.of(context).primaryTextTheme.display4,
-                              ),
-                              Text(
-                                "10,000",
-                                style:
-                                    Theme.of(context).primaryTextTheme.display4,
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: RaisedButton(
-                          elevation: 5.0,
-                          color: Color.fromRGBO(242, 153, 74, 1),
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5)),
-                          child: Text('Next',
-                              style: new TextStyle(
-                                  fontSize: 18.0, color: Colors.white)),
-                          onPressed: () async {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        PersonalLoanAgreementScreen()));
-                          },
-                        ),
-                      ),
-                    )
-                  ],
+            child: Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              color: areTermsAccepted ? credifyBlue : credifyDarkGrey,
+              child: FlatButton(
+                child: Text(
+                  "Confirm and Continue",
+                  style: areTermsAccepted
+                      ? Theme.of(context).primaryTextTheme.display3
+                      : Theme.of(context).accentTextTheme.display3,
                 ),
+                onPressed: () {
+                  if (areTermsAccepted) {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Please acknowledge Terms & Conditions");
+                  }
+                },
               ),
             ),
-          )
+          ),
         ],
       ),
     );

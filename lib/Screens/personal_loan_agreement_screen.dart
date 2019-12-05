@@ -37,7 +37,9 @@ class _PersonalLoanAgreementScreenState
                           style: new TextStyle(
                               fontSize: 18.0, color: Colors.white)),
                     ),
-                    onPressed: () async {},
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
                   )
                 ],
               ),
@@ -53,29 +55,15 @@ class _PersonalLoanAgreementScreenState
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(8)),
-                  child: Row(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "   Loan Agreement",
+                          style: Theme.of(context).primaryTextTheme.display2,
                         ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Loan Agreement",
-                              style:
-                                  Theme.of(context).primaryTextTheme.display2,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),

@@ -6,3 +6,4 @@ Color credifyDarkGrey = Color.fromRGBO(196, 196, 196, 1);
 Color credifyLightGrey = Color.fromRGBO(196, 196, 196, 0.5);
 Color credifyWhite = Color.fromRGBO(255, 255, 255, 1);
 Color credifyBlack = Colors.black;
+Color credifyBlue = Color.fromRGBO(47, 128, 237, 1);
