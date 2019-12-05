@@ -1,5 +1,6 @@
 import 'package:credify/Screens/bank_detail_2_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BankDetailScreen1 extends StatefulWidget {
   @override
@@ -113,10 +114,16 @@ class _BankDetailScreen1State extends State<BankDetailScreen1> {
                             new TextStyle(fontSize: 18.0, color: Colors.white)),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BankDetailScreen2()));
+                    if (bankName != "Choose your Bank") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BankDetailScreen2(
+                                    bankName: bankName,
+                                  )));
+                    } else if (bankName == "Choose your Bank") {
+                      Fluttertoast.showToast(msg: "Please select a bank");
+                    }
                   },
                 ),
               ),

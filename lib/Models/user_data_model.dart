@@ -14,6 +14,7 @@ class UserData {
   bool kycStatus;
   int kycProgress;
   String kycId;
+  bool bankDetailsProvided;
   bool bankingVerified;
   String bankingId;
   int documentsProgress;
@@ -28,6 +29,7 @@ class UserData {
     this.kycStatus,
     this.kycProgress,
     this.kycId,
+    this.bankDetailsProvided,
     this.bankingVerified,
     this.bankingId,
     this.documentsProgress,
@@ -38,32 +40,34 @@ class UserData {
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-    id: json["_id"],
-    mobileNumber: json["mobile_number"],
-    kycStatus: json["kyc_status"],
-    kycProgress: json["kyc_progress"],
-    kycId: json["kyc_id"],
-    bankingVerified: json["banking_verified"],
-    bankingId: json["banking_id"],
-    documentsProgress: json["documents_progress"],
-    documentsUploaded: json["documents_uploaded"],
-    documentsId: json["documents_id"],
-    packages: List<String>.from(json["packages"].map((x) => x)),
-    groupId: List<String>.from(json["group_id"].map((x) => x)),
-  );
+        id: json["_id"],
+        mobileNumber: json["mobile_number"],
+        kycStatus: json["kyc_status"],
+        kycProgress: json["kyc_progress"],
+        kycId: json["kyc_id"],
+        bankDetailsProvided: json["bank_details_provided"],
+        bankingVerified: json["banking_verified"],
+        bankingId: json["banking_id"],
+        documentsProgress: json["documents_progress"],
+        documentsUploaded: json["documents_uploaded"],
+        documentsId: json["documents_id"],
+        packages: List<String>.from(json["packages"].map((x) => x)),
+        groupId: List<String>.from(json["group_id"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "mobile_number": mobileNumber,
-    "kyc_status": kycStatus,
-    "kyc_progress": kycProgress,
-    "kyc_id": kycId,
-    "banking_verified": bankingVerified,
-    "banking_id": bankingId,
-    "documents_progress": documentsProgress,
-    "documents_uploaded": documentsUploaded,
-    "documents_id": documentsId,
-    "packages": List<dynamic>.from(packages.map((x) => x)),
-    "group_id": List<dynamic>.from(groupId.map((x) => x)),
-  };
+        "_id": id,
+        "mobile_number": mobileNumber,
+        "kyc_status": kycStatus,
+        "kyc_progress": kycProgress,
+        "kyc_id": kycId,
+        "bank_details_provided": bankDetailsProvided,
+        "banking_verified": bankingVerified,
+        "banking_id": bankingId,
+        "documents_progress": documentsProgress,
+        "documents_uploaded": documentsUploaded,
+        "documents_id": documentsId,
+        "packages": List<dynamic>.from(packages.map((x) => x)),
+        "group_id": List<dynamic>.from(groupId.map((x) => x)),
+      };
 }

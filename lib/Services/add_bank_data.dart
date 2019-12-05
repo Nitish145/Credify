@@ -8,7 +8,7 @@ String url =
 http.Client client = new http.Client();
 var header = {"Content-Type": "application/json"};
 
-Future<BankDetailsResponse> getBankDetailsResponse(
+Future<BankDetailsResponse> addBankData(
     String id,
     String bankName,
     String accountNumber,
