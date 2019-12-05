@@ -229,10 +229,10 @@ class _BankDetailScreen2State extends State<BankDetailScreen2> {
 
                                   if (bankDetailsResponse != null &&
                                       bankDetailsResponse.updated) {
-                                    Navigator.popUntil(
+                                    Navigator.pushNamedAndRemoveUntil(
                                         context,
-                                        (Route<dynamic> route) =>
-                                            route.isFirst);
+                                        "/navigationScreen",
+                                        (Route<dynamic> route) => false);
                                   } else {
                                     Fluttertoast.showToast(
                                       msg:

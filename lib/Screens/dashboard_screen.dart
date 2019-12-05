@@ -33,6 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         setState(() {
           currentUserData = userData;
           isKycDone = userData.kycProgress == 3;
+          isBankAccountAdded = userData.bankDetailsProvided;
         });
       });
     });
@@ -171,10 +172,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BankDetailScreen1()));
+                        if (!isBankAccountAdded) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BankDetailScreen1()));
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
