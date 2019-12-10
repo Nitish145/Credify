@@ -1,7 +1,14 @@
+import 'package:credify/Models/refer_code_response.dart';
+import 'package:credify/Models/total_referral_bonus_model.dart';
+import 'package:credify/Services/get_refer_code.dart';
+import 'package:credify/Services/total_referral_bonus.dart';
+import 'package:credify/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReferralScreen extends StatefulWidget {
   @override
@@ -9,10 +16,62 @@ class ReferralScreen extends StatefulWidget {
 }
 
 class _ReferralScreenState extends State<ReferralScreen> {
-  String referralLink = "http://www.statholdings.com";
+  String displayReferCode = "";
+  int totalEarnedAmount;
+  String referText;
+  String playStoreLink = "";
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((sharedPrefs) {
+      String currentUserId = sharedPrefs.getString("currentUserId");
+      setReferCode(currentUserId);
+      setTotalEarnedAmount(currentUserId);
+    });
+  }
+
+  Future<void> setReferCode(String userId) async {
+    ReferCode referCode = await getReferCode(userId).catchError((onError) {
+      Fluttertoast.showToast(msg: "Cannot fetch Refer code for the user");
+    });
+    setState(() {
+      displayReferCode = referCode.refCode;
+      referText =
+          "Register on CREDIFY with $displayReferCode and earn Rs.50 Download on $playStoreLink";
+    });
+  }
+
+  Future<void> setTotalEarnedAmount(String userId) async {
+    TotalReferralBonus totalReferralBonus =
+        await getTotalReferral(userId).catchError((onError) {
+      Fluttertoast.showToast(msg: "Cannot fetch Total amount earned");
+    });
+    setState(() {
+      totalEarnedAmount = totalReferralBonus.referrBonus;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.share,
+          color: Colors.white,
+        ),
+        backgroundColor: credifyBlue,
+        onPressed: () {
+          if (displayReferCode == "") {
+            Fluttertoast.showToast(msg: "Refer Code not fetched!!");
+          } else {
+            final RenderBox box = context.findRenderObject();
+            Share.share(referText,
+                subject: "Refer and Earn",
+                sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+          }
+        },
+      ),
       body: Stack(
         children: <Widget>[
           Padding(
@@ -44,25 +103,27 @@ class _ReferralScreenState extends State<ReferralScreen> {
                       color: Color.fromRGBO(232, 232, 232, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Text(
-                              referralLink,
+                              displayReferCode,
+                              textAlign: TextAlign.center,
                               style: Theme.of(context).accentTextTheme.display4,
                             ),
                           ),
                           InkWell(
                             onTap: () {
                               Clipboard.setData(
-                                  new ClipboardData(text: referralLink));
+                                  new ClipboardData(text: displayReferCode));
                               Fluttertoast.showToast(
                                   msg: "Link copied to clipboard");
                             },
                             child: Container(
                               color: Colors.grey.withOpacity(0.5),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(12.0),
                                 child: Image.asset(
                                   "assets/images/clipboardIcon.png",
                                   height: 25,
@@ -76,12 +137,33 @@ class _ReferralScreenState extends State<ReferralScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
+                    padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
                     child: Text(
                       "Share the link with your friends",
                       style: Theme.of(context).accentTextTheme.display4,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          "Total Earned amount: ",
+                          style: Theme.of(context).accentTextTheme.display4,
+                        ),
+                        Text(
+                          totalEarnedAmount == null
+                              ? "-"
+                              : totalEarnedAmount.toString(),
+                          style: Theme.of(context)
+                              .accentTextTheme
+                              .display4
+                              .copyWith(color: credifyDarkGreen),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
