@@ -9,7 +9,7 @@ OtpResponse otpResponseFromJson(String str) => OtpResponse.fromJson(json.decode(
 String otpResponseToJson(OtpResponse data) => json.encode(data.toJson());
 
 class OtpResponse {
-  bool isSent;
+  String isSent;
 
   OtpResponse({
     this.isSent,

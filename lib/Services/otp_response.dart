@@ -8,15 +8,14 @@ String url =
 var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
-Future<OtpResponse> otpResponseService(
-    String mobileNumber, String smsType, String smsMessage) async {
+Future<OtpResponse> otpResponseService(String mobileNumber) async {
   String endPoint = "/send-message";
   String uri = url + endPoint;
 
   var json = {
     "mobile_number": mobileNumber,
-    "sms_type": smsType,
-    "sms_message": smsMessage
+    "sms_type": "otp",
+    "sms_message": ""
   };
 
   try {

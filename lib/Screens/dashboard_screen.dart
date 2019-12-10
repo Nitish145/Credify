@@ -33,7 +33,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         setState(() {
           currentUserData = userData;
           isKycDone = userData.kycProgress == 3;
-          isBankAccountAdded = userData.bankDetailsProvided;
+          isBankAccountAdded = userData.bankDetailsProvided != null
+              ? userData.bankDetailsProvided
+              : false;
         });
       });
     });
