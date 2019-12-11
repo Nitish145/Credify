@@ -30,6 +30,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     SharedPreferences.getInstance().then((sharedPrefs) {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
         sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
+        sharedPrefs.setString("referralCode", userData.referralCode);
+        sharedPrefs.setString("referredBy", userData.referredBy);
+        sharedPrefs.setInt("referrBonus", userData.referrBonus);
         setState(() {
           currentUserData = userData;
           isKycDone = userData.kycProgress == 3;

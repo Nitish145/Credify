@@ -1,7 +1,3 @@
-import 'package:credify/Models/refer_code_response.dart';
-import 'package:credify/Models/total_referral_bonus_model.dart';
-import 'package:credify/Services/get_refer_code.dart';
-import 'package:credify/Services/total_referral_bonus.dart';
 import 'package:credify/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,30 +21,12 @@ class _ReferralScreenState extends State<ReferralScreen> {
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((sharedPrefs) {
-      String currentUserId = sharedPrefs.getString("currentUserId");
-      setReferCode(currentUserId);
-      setTotalEarnedAmount(currentUserId);
-    });
-  }
-
-  Future<void> setReferCode(String userId) async {
-    ReferCode referCode = await getReferCode(userId).catchError((onError) {
-      Fluttertoast.showToast(msg: "Cannot fetch Refer code for the user");
-    });
-    setState(() {
-      displayReferCode = referCode.refCode;
-      referText =
-          "Register on CREDIFY with $displayReferCode and earn Rs.50 Download on $playStoreLink";
-    });
-  }
-
-  Future<void> setTotalEarnedAmount(String userId) async {
-    TotalReferralBonus totalReferralBonus =
-        await getTotalReferral(userId).catchError((onError) {
-      Fluttertoast.showToast(msg: "Cannot fetch Total amount earned");
-    });
-    setState(() {
-      totalEarnedAmount = totalReferralBonus.referrBonus;
+      setState(() {
+        displayReferCode = sharedPrefs.getString("referralCode");
+        totalEarnedAmount = sharedPrefs.getInt("referrBonus");
+        referText =
+            "Register on CREDIFY with $displayReferCode and earn Rs.50 Download on $playStoreLink";
+      });
     });
   }
 
@@ -62,14 +40,10 @@ class _ReferralScreenState extends State<ReferralScreen> {
         ),
         backgroundColor: credifyBlue,
         onPressed: () {
-          if (displayReferCode == "") {
-            Fluttertoast.showToast(msg: "Refer Code not fetched!!");
-          } else {
-            final RenderBox box = context.findRenderObject();
-            Share.share(referText,
-                subject: "Refer and Earn",
-                sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-          }
+          final RenderBox box = context.findRenderObject();
+          Share.share(referText,
+              subject: "Refer and Earn",
+              sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
         },
       ),
       body: Stack(
