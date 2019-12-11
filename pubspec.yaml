@@ -36,6 +36,7 @@ dependencies:
   video_player: ^0.10.2+1
   flutter_svg: ^0.14.2
   share: ^0.6.0
+  multi_image_picker: ^4.5.9
 
 dev_dependencies:
   flutter_test:
