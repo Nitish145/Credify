@@ -26,6 +26,7 @@ class OtpVerificationScreen extends StatefulWidget {
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   var formKey = new GlobalKey<FormState>();
   String otp;
+  String referralCode = "";
 
   @override
   Widget build(BuildContext context) {
@@ -93,13 +94,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 100, left: 30, right: 30, bottom: 10),
+                            top: 80, left: 30, right: 30, bottom: 5),
                         child: TextFormField(
                           keyboardType: TextInputType.phone,
                           maxLength: 6,
                           style: Theme.of(context).primaryTextTheme.display3,
                           decoration: InputDecoration(
-                              labelText: "OTP",
+                              labelText: "OTP *",
                               labelStyle: TextStyle(color: Colors.white),
                               border: OutlineInputBorder(),
                               enabledBorder: OutlineInputBorder()),
@@ -110,6 +111,21 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             return null;
                           },
                           onSaved: (String _otp) => otp = _otp,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 5, left: 30, right: 30, bottom: 20),
+                        child: TextFormField(
+                          keyboardType: TextInputType.text,
+                          style: Theme.of(context).primaryTextTheme.display3,
+                          decoration: InputDecoration(
+                              labelText: "Referral Code",
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder()),
+                          onSaved: (String _referralCode) =>
+                              referralCode = _referralCode,
                         ),
                       ),
                     ],
@@ -146,7 +162,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                 await SharedPreferences.getInstance();
                             IsNewUser isNewUserResponse = await isNewUser(
                                 sharedPrefs
-                                    .getString("currentUserMobileNumber"));
+                                    .getString("currentUserMobileNumber"),
+                                referralCode);
                             print(isNewUserResponse.id);
                             await sharedPrefs.setString(
                                 "currentUserId", isNewUserResponse.id);

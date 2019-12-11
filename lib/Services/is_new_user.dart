@@ -8,11 +8,11 @@ String url =
 var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
-Future<IsNewUser> isNewUser(String mobileNumber) async {
+Future<IsNewUser> isNewUser(String mobileNumber, String referredBy) async {
   String endPoint = "/users/" + mobileNumber;
   String uri = url + endPoint;
 
-  var json = {"referred_by": ""};
+  var json = {"referred_by": referredBy};
 
   try {
     var response =

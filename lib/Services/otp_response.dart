@@ -13,7 +13,7 @@ Future<OtpResponse> otpResponseService(String mobileNumber) async {
   String uri = url + endPoint;
 
   var json = {
-    "mobile_number": "+91$mobileNumber",
+    "mobile_number": "91$mobileNumber",
     "sms_type": "otp",
     "sms_message": ""
   };
