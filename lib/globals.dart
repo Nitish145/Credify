@@ -7,3 +7,5 @@ List<String> listOfTravellers = [];
 
 String aadharLoadingProgress = "";
 String panLoadingProgress = "";
+
+bool isJobProfileUpdated = false;

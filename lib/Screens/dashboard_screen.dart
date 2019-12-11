@@ -8,8 +8,10 @@ import 'package:credify/Screens/complete_KYC_1_screen.dart';
 import 'package:credify/Screens/complete_KYC_2_screen.dart';
 import 'package:credify/Screens/complete_KYC_3_screen.dart';
 import 'package:credify/Screens/personal_loan_screen.dart';
+import 'package:credify/Screens/profile_screenshot_screen.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/colors.dart';
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +25,105 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool isKycDone = false;
   bool isBankAccountAdded = false;
   bool isPersonalLoanAvailed = false;
+
+  Widget getTodoItem(bool controller, String title, VoidCallback onTodoTap) {
+    return GestureDetector(
+      onTap: onTodoTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+        child: Container(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: controller ? credifyLightGreen : credifyLightGrey,
+              borderRadius: BorderRadius.circular(5)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor:
+                          controller ? credifyDarkGreen : credifyDarkGrey,
+                      radius: 12,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      title,
+                      style: controller
+                          ? Theme.of(context)
+                              .primaryTextTheme
+                              .display4
+                              .copyWith(decoration: TextDecoration.lineThrough)
+                          : Theme.of(context).accentTextTheme.display4,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: controller ? credifyWhite : credifyBlack,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void onTodo1Tapped() {
+    if (currentUserData != null) {
+      if (!currentUserData.kycStatus) {
+        switch (currentUserData.kycProgress) {
+          case 0:
+            {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CompleteKYC1()));
+            }
+            break;
+          case 1:
+            {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CompleteKYC2()));
+            }
+            break;
+          case 2:
+            {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CompleteKYC3()));
+            }
+        }
+      }
+    }
+  }
+
+  void onTodo2Tapped() {
+    if (!isBankAccountAdded) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => BankDetailScreen1()));
+    }
+  }
+
+  void onTodo3Tapped() {
+    if (!isJobProfileUpdated) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ProfileScreenshotScreen()));
+    }
+  }
+
+  void onTodo4Tapped() {
+    if (!isPersonalLoanAvailed) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => PersonalLoanScreen()));
+    }
+  }
 
   @override
   void initState() {
@@ -84,234 +185,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        if (currentUserData != null) {
-                          if (!currentUserData.kycStatus) {
-                            switch (currentUserData.kycProgress) {
-                              case 0:
-                                {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CompleteKYC1()));
-                                }
-                                break;
-                              case 1:
-                                {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CompleteKYC2()));
-                                }
-                                break;
-                              case 2:
-                                {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CompleteKYC3()));
-                                }
-                            }
-                          }
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 5),
-                        child: Container(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: isKycDone
-                                  ? credifyLightGreen
-                                  : credifyLightGrey,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CircleAvatar(
-                                      backgroundColor: isKycDone
-                                          ? credifyDarkGreen
-                                          : credifyDarkGrey,
-                                      radius: 12,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Know your Customer",
-                                      style: isKycDone
-                                          ? Theme.of(context)
-                                              .primaryTextTheme
-                                              .display4
-                                              .copyWith(
-                                                  decoration: TextDecoration
-                                                      .lineThrough)
-                                          : Theme.of(context)
-                                              .accentTextTheme
-                                              .display4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color:
-                                      isKycDone ? credifyWhite : credifyBlack,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if (!isBankAccountAdded) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BankDetailScreen1()));
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 5),
-                        child: Container(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: isBankAccountAdded
-                                  ? credifyLightGreen
-                                  : credifyLightGrey,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CircleAvatar(
-                                      backgroundColor: isBankAccountAdded
-                                          ? credifyDarkGreen
-                                          : credifyDarkGrey,
-                                      radius: 12,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Add Bank Account",
-                                      style: isBankAccountAdded
-                                          ? Theme.of(context)
-                                              .primaryTextTheme
-                                              .display4
-                                              .copyWith(
-                                                  decoration: TextDecoration
-                                                      .lineThrough)
-                                          : Theme.of(context)
-                                              .accentTextTheme
-                                              .display4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: isBankAccountAdded
-                                      ? credifyWhite
-                                      : credifyBlack,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PersonalLoanScreen()));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 5),
-                        child: Container(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: isPersonalLoanAvailed
-                                  ? credifyLightGreen
-                                  : credifyLightGrey,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CircleAvatar(
-                                      backgroundColor: isPersonalLoanAvailed
-                                          ? credifyDarkGreen
-                                          : credifyDarkGrey,
-                                      radius: 12,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Apply for Personal Loan",
-                                      style: isPersonalLoanAvailed
-                                          ? Theme.of(context)
-                                              .primaryTextTheme
-                                              .display4
-                                              .copyWith(
-                                                  decoration: TextDecoration
-                                                      .lineThrough)
-                                          : Theme.of(context)
-                                              .accentTextTheme
-                                              .display4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: isPersonalLoanAvailed
-                                      ? credifyWhite
-                                      : credifyBlack,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+                    getTodoItem(isKycDone, "Know your Customer", onTodo1Tapped),
+                    getTodoItem(
+                        isBankAccountAdded, "Add Bank Account", onTodo2Tapped),
+                    getTodoItem(isJobProfileUpdated, "Add your Job Profile",
+                        onTodo3Tapped),
+                    getTodoItem(isPersonalLoanAvailed,
+                        "Apply for Personal Loan", onTodo4Tapped),
                   ],
                 ),
               ],
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
           GestureDetector(
             onTap: () {

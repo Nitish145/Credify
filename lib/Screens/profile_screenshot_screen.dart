@@ -1,39 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          fontFamily: 'Raleway',
-          primaryColor: Colors.white,
-          cursorColor: Colors.white,
-          accentColor: Colors.grey,
-          primaryTextTheme: TextTheme(
-            display1: TextStyle(color: Colors.white, fontSize: 32),
-            display2: TextStyle(color: Colors.white, fontSize: 26),
-            display3: TextStyle(color: Colors.white, fontSize: 20),
-            display4: TextStyle(color: Colors.white, fontSize: 16),
-            body1: TextStyle(color: Colors.white),
-            body2: TextStyle(color: Colors.white),
-          ),
-          accentTextTheme: TextTheme(
-            display1: TextStyle(color: Colors.black, fontSize: 32),
-            display2: TextStyle(color: Colors.black, fontSize: 26),
-            display3: TextStyle(color: Colors.black, fontSize: 20),
-            display4: TextStyle(color: Colors.black, fontSize: 16),
-            body1: TextStyle(color: Colors.white),
-            body2: TextStyle(color: Colors.white),
-          ),
-          hintColor: Colors.white),
-      home: ProfileScreenshotScreen(),
-    );
-  }
-}
-
 class ProfileScreenshotScreen extends StatefulWidget {
   @override
   _ProfileScreenshotScreenState createState() =>
@@ -68,7 +35,7 @@ class _ProfileScreenshotScreenState extends State<ProfileScreenshotScreen> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 300,
+        maxImages: 10,
         enableCamera: false,
         selectedAssets: images,
         materialOptions: MaterialOptions(
