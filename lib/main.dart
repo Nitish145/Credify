@@ -1,11 +1,10 @@
-import 'package:credify/Screens/bank_1_screen.dart';
-import 'package:credify/Screens/bank_2_screen.dart';
 import 'package:credify/Screens/bottom_navigation_bar_screen.dart';
 import 'package:credify/Screens/confirmed_screen.dart';
 import 'package:credify/Screens/credify_entry_screen.dart';
 import 'package:credify/Screens/credify_screen.dart';
 import 'package:credify/Screens/dashboard_screen.dart';
 import 'package:credify/Screens/mobile_number_screen.dart';
+import 'package:credify/Screens/statement_upload_screen.dart';
 import 'package:credify/Screens/upload_aadhar_screen.dart';
 import 'package:credify/Screens/upload_pan_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +22,7 @@ class MyApp extends StatelessWidget {
           "/confirmed": (context) => ConfirmedScreen(),
           "/aadharScreen": (context) => UploadAadhar(),
           "/panScreen": (context) => UploadPan(),
-          "/bankScreen1": (context) => BankScreen(),
-          "/bankScreen2": (context) => BankScreen2(),
+          "/statementUploadScreen": (context) => StatementUploadScreen(),
           "/dashboard": (context) => DashboardScreen(),
           "/mobileNumber": (context) => MobileNumberScreen(),
           "/credifyScreen": (context) => CredifyScreen(),
