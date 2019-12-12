@@ -44,7 +44,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
             _currentIndex = index;
           });
         },
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
