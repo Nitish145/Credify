@@ -1,9 +1,13 @@
+import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Screens/personal_loan_agreement_screen.dart';
+import 'package:credify/Services/submit_loan_request.dart';
 import 'package:credify/colors.dart';
+import 'package:credify/globals.dart';
 import 'package:credify/utils/get_month_string_by_month_int.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalLoanScreen extends StatefulWidget {
   @override
@@ -232,7 +236,32 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                 ),
                 onPressed: () {
                   if (areTermsAccepted) {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    setState(() {
+                      isLoading = true;
+                    });
+                    SharedPreferences.getInstance().then((sharedPrefs) {
+                      makeLoanRequest(
+                              sharedPrefs.getString("currentUserId"), 5000)
+                          .then((loanRequestResponse) {
+                        if (loanRequestResponse.updated) {
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                          Fluttertoast.showToast(msg: "Request accepted !!");
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Unable to make request! Try Again Later");
+                        }
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }).catchError((e) {
+                        Fluttertoast.showToast(
+                            msg: "Unable to make request! Try Again Later");
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                    });
                   } else {
                     Fluttertoast.showToast(
                         msg: "Please acknowledge Terms & Conditions");
@@ -241,6 +270,9 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
               ),
             ),
           ),
+          UndismissableProgressBar(
+            message: "Making Loan Request",
+          )
         ],
       ),
     );
