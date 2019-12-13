@@ -86,7 +86,7 @@ class UserData {
         "kyc_id": kycId,
         "kyc_progress": kycProgress,
         "kyc_status": kycStatus,
-        "loan_id": loanTaken,
+        "loan_id": loanId,
         "loan_taken": loanTaken,
         "mobile_number": mobileNumber,
         "packages": List<dynamic>.from(packages.map((x) => x)),
