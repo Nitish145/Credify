@@ -1,4 +1,5 @@
 import 'package:credify/Components/contacts_model.dart';
+import 'package:flutter/material.dart';
 
 bool isLoading = false;
 
@@ -9,3 +10,15 @@ String aadharLoadingProgress = "";
 String panLoadingProgress = "";
 
 bool isJobProfileUpdated = false;
+
+Map<String, Color> colorMap = {
+  "0": Colors.teal,
+  "1": Colors.red,
+  "2": Colors.amber,
+  "3": Colors.green,
+  "4": Colors.deepOrange,
+  "5": Colors.blue,
+  "6": Colors.cyan,
+  "7": Colors.deepPurple,
+  "8": Colors.pink
+};
