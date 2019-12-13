@@ -21,6 +21,8 @@ class UserData {
   String kycId;
   int kycProgress;
   bool kycStatus;
+  String loanId;
+  bool loanTaken;
   String mobileNumber;
   List<dynamic> packages;
   int referrBonus;
@@ -40,6 +42,8 @@ class UserData {
     this.kycId,
     this.kycProgress,
     this.kycStatus,
+    this.loanId,
+    this.loanTaken,
     this.mobileNumber,
     this.packages,
     this.referrBonus,
@@ -48,42 +52,46 @@ class UserData {
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-    id: json["_id"],
-    bankDetailsProvided: json["bank_details_provided"],
-    bankingId: json["banking_id"],
-    bankingVerified: json["banking_verified"],
-    cardNumber: json["card_number"],
-    documentsId: json["documents_id"],
-    documentsProgress: json["documents_progress"],
-    documentsUploaded: json["documents_uploaded"],
-    groupId: List<dynamic>.from(json["group_id"].map((x) => x)),
-    kycId: json["kyc_id"],
-    kycProgress: json["kyc_progress"],
-    kycStatus: json["kyc_status"],
-    mobileNumber: json["mobile_number"],
-    packages: List<dynamic>.from(json["packages"].map((x) => x)),
-    referrBonus: json["referr_bonus"],
-    referralCode: json["referral_code"],
-    referredBy: json["referred_by"],
-  );
+        id: json["_id"],
+        bankDetailsProvided: json["bank_details_provided"],
+        bankingId: json["banking_id"],
+        bankingVerified: json["banking_verified"],
+        cardNumber: json["card_number"],
+        documentsId: json["documents_id"],
+        documentsProgress: json["documents_progress"],
+        documentsUploaded: json["documents_uploaded"],
+        groupId: List<dynamic>.from(json["group_id"].map((x) => x)),
+        kycId: json["kyc_id"],
+        kycProgress: json["kyc_progress"],
+        kycStatus: json["kyc_status"],
+        loanId: json["loan_id"],
+        loanTaken: json["loan_taken"],
+        mobileNumber: json["mobile_number"],
+        packages: List<dynamic>.from(json["packages"].map((x) => x)),
+        referrBonus: json["referr_bonus"],
+        referralCode: json["referral_code"],
+        referredBy: json["referred_by"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "bank_details_provided": bankDetailsProvided,
-    "banking_id": bankingId,
-    "banking_verified": bankingVerified,
-    "card_number": cardNumber,
-    "documents_id": documentsId,
-    "documents_progress": documentsProgress,
-    "documents_uploaded": documentsUploaded,
-    "group_id": List<dynamic>.from(groupId.map((x) => x)),
-    "kyc_id": kycId,
-    "kyc_progress": kycProgress,
-    "kyc_status": kycStatus,
-    "mobile_number": mobileNumber,
-    "packages": List<dynamic>.from(packages.map((x) => x)),
-    "referr_bonus": referrBonus,
-    "referral_code": referralCode,
-    "referred_by": referredBy,
-  };
+        "_id": id,
+        "bank_details_provided": bankDetailsProvided,
+        "banking_id": bankingId,
+        "banking_verified": bankingVerified,
+        "card_number": cardNumber,
+        "documents_id": documentsId,
+        "documents_progress": documentsProgress,
+        "documents_uploaded": documentsUploaded,
+        "group_id": List<dynamic>.from(groupId.map((x) => x)),
+        "kyc_id": kycId,
+        "kyc_progress": kycProgress,
+        "kyc_status": kycStatus,
+        "loan_id": loanTaken,
+        "loan_taken": loanTaken,
+        "mobile_number": mobileNumber,
+        "packages": List<dynamic>.from(packages.map((x) => x)),
+        "referr_bonus": referrBonus,
+        "referral_code": referralCode,
+        "referred_by": referredBy,
+      };
 }
