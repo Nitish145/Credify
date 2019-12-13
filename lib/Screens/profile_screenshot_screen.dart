@@ -1,3 +1,4 @@
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
@@ -188,7 +189,12 @@ class _ProfileScreenshotScreenState extends State<ProfileScreenshotScreen> {
                             new TextStyle(fontSize: 18.0, color: Colors.white),
                       ),
                     ),
-                    onPressed: () async {},
+                    onPressed: () {
+                      setState(() {
+                        isJobProfileUpdated = true;
+                      });
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
                   ),
                 ),
               ),

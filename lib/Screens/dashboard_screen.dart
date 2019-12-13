@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
+import 'package:credify/Components/due_date_vs_amount_table.dart';
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Screens/bank_detail_1_screen.dart';
 import 'package:credify/Screens/complete_KYC_1_screen.dart';
@@ -9,10 +10,14 @@ import 'package:credify/Screens/complete_KYC_2_screen.dart';
 import 'package:credify/Screens/complete_KYC_3_screen.dart';
 import 'package:credify/Screens/personal_loan_screen.dart';
 import 'package:credify/Screens/profile_screenshot_screen.dart';
+import 'package:credify/Services/loan_details.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/colors.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/globals.dart' as prefix0;
+import 'package:credify/utils/parse_date_time_string.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -24,11 +29,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   UserData currentUserData;
   bool isKycDone = false;
   bool isBankAccountAdded = false;
-  bool isPersonalLoanAvailed = false;
+  bool isLoanAvailable = false;
 
-  Widget getTodoItem(bool controller, String title, VoidCallback onTodoTap) {
+  Widget getTodoItem(bool controller, String title, VoidCallback onTodoTap,
+      {bool isItemLocked = false}) {
     return GestureDetector(
-      onTap: onTodoTap,
+      onTap: !isItemLocked ? onTodoTap : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         child: Container(
@@ -47,7 +53,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: CircleAvatar(
                       backgroundColor:
                           controller ? credifyDarkGreen : credifyDarkGrey,
-                      radius: 12,
+                      radius: 18,
+                      child: Center(
+                        child: isItemLocked
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.lock_outline,
+                                  size: 18,
+                                ),
+                                onPressed: null)
+                            : Container(),
+                      ),
                     ),
                   ),
                   Padding(
@@ -119,7 +135,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void onTodo4Tapped() {
-    if (!isPersonalLoanAvailed) {
+    if (!isPersonalLoanAvailed && isLoanAvailable) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => PersonalLoanScreen()));
     }
@@ -128,19 +144,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+
     SharedPreferences.getInstance().then((sharedPrefs) {
       getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
         sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
         sharedPrefs.setString("referralCode", userData.referralCode);
         sharedPrefs.setString("referredBy", userData.referredBy);
         sharedPrefs.setInt("referrBonus", userData.referrBonus);
+        sharedPrefs.setBool("loanTaken", userData.loanTaken);
         setState(() {
           currentUserData = userData;
           isKycDone = userData.kycProgress == 3;
           isBankAccountAdded = userData.bankDetailsProvided != null
               ? userData.bankDetailsProvided
               : false;
+          isLoanAvailable =
+              isKycDone && isBankAccountAdded && isJobProfileUpdated;
+          isPersonalLoanAvailed = userData.loanTaken;
         });
+        if (userData.loanTaken) {
+          getLoanDetails(sharedPrefs.getString("currentUserId"))
+              .then((loanResponse) {
+            DateTime startDateTime = getDateTimeObject(loanResponse.startDate);
+            prefix0.relationMap = {
+              startDateTime.toIso8601String(): loanResponse.week1,
+              startDateTime.add(Duration(days: 7)).toIso8601String():
+                  loanResponse.week2,
+              startDateTime.add(Duration(days: 14)).toIso8601String():
+                  loanResponse.week3,
+              startDateTime.add(Duration(days: 21)).toIso8601String():
+                  loanResponse.week4,
+            };
+          }).catchError((e) {
+            Fluttertoast.showToast(msg: "Cannot fetch Loan Details");
+          });
+        }
       });
     });
   }
@@ -154,18 +192,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             width: MediaQuery.of(context).size.width,
             child: Stack(
               children: <Widget>[
-                Container(
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.black,
-                        ),
-                        height: MediaQuery.of(context).size.height / 8,
-                        width: MediaQuery.of(context).size.width,
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.black,
                       ),
+                      height: MediaQuery.of(context).size.height / 8,
+                      width: MediaQuery.of(context).size.width,
                     ),
                   ),
                 ),
@@ -175,23 +211,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       padding: const EdgeInsets.only(top: 70, bottom: 20),
                       child: CredifyCard(),
                     ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Text(
-                          "To-do",
-                          style: Theme.of(context).accentTextTheme.display3,
-                        ),
-                      ),
-                    ),
-                    getTodoItem(isKycDone, "Know your Customer", onTodo1Tapped),
-                    getTodoItem(
-                        isBankAccountAdded, "Add Bank Account", onTodo2Tapped),
-                    getTodoItem(isJobProfileUpdated, "Add your Job Profile",
-                        onTodo3Tapped),
-                    getTodoItem(isPersonalLoanAvailed,
-                        "Apply for Personal Loan", onTodo4Tapped),
+                    isPersonalLoanAvailed == false
+                        ? Column(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: Text(
+                                    "To-do",
+                                    style: Theme.of(context)
+                                        .accentTextTheme
+                                        .display3,
+                                  ),
+                                ),
+                              ),
+                              getTodoItem(isKycDone, "Know your Customer",
+                                  onTodo1Tapped),
+                              getTodoItem(isBankAccountAdded,
+                                  "Add Bank Account", onTodo2Tapped),
+                              getTodoItem(isJobProfileUpdated,
+                                  "Add your Job Profile", onTodo3Tapped),
+                              getTodoItem(isPersonalLoanAvailed,
+                                  "Apply for Personal Loan", onTodo4Tapped,
+                                  isItemLocked: !isLoanAvailable),
+                            ],
+                          )
+                        : Container(),
+                    isPersonalLoanAvailed == true
+                        ? DashBoardLoanTable(
+                            relationMap: prefix0.relationMap,
+                          )
+                        : Container(),
                   ],
                 ),
               ],
@@ -200,34 +251,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
           SizedBox(
             height: 20,
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PersonalLoanScreen()));
-            },
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: 10,
-                  bottom: 10,
-                  right: MediaQuery.of(context).size.width * .1667 / 2,
-                  left: MediaQuery.of(context).size.width * .1667 / 2),
-              child: Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                child: DashboardCard(
-                  isAtBottom: false,
-                  heading: "Get your personal loan",
-                  subheading:
-                      "Apply now and get money \ninto your bank account",
-                  isDark: true,
-                  imageLocation: "assets/images/personal.png",
-                ),
-              ),
-            ),
-          ),
+          isPersonalLoanAvailed == false
+              ? GestureDetector(
+                  onTap: onTodo4Tapped,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: 10,
+                        bottom: 10,
+                        right: MediaQuery.of(context).size.width * .1667 / 2,
+                        left: MediaQuery.of(context).size.width * .1667 / 2),
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      child: DashboardCard(
+                        isAtBottom: false,
+                        heading: "Get your personal loan",
+                        subheading:
+                            "Apply now and get money \ninto your bank account",
+                        isDark: true,
+                        imageLocation: "assets/images/personal.png",
+                        isLocked: !isLoanAvailable,
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

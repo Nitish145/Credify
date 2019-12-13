@@ -6,6 +6,7 @@ class DashboardCard extends StatefulWidget {
   final String heading;
   final String subheading;
   final bool isDark;
+  final bool isLocked;
 
   const DashboardCard(
       {Key key,
@@ -13,8 +14,10 @@ class DashboardCard extends StatefulWidget {
       this.heading,
       this.subheading,
       this.isDark,
-      this.imageLocation})
+      this.imageLocation,
+      this.isLocked})
       : super(key: key);
+
   @override
   _DashboardCardState createState() => _DashboardCardState();
 }
@@ -24,18 +27,19 @@ class _DashboardCardState extends State<DashboardCard> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-          height: 250,
-          width: MediaQuery.of(context).size.width / 1.2,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color.fromRGBO(229, 93, 135, .2),
-                    Color.fromRGBO(95, 195, 228, .2)
-                  ])),
-          child: Stack(children: <Widget>[
+        height: 250,
+        width: MediaQuery.of(context).size.width / 1.2,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color.fromRGBO(229, 93, 135, .2),
+                  Color.fromRGBO(95, 195, 228, .2)
+                ])),
+        child: Stack(
+          children: <Widget>[
             Container(
                 height: 250,
                 width: MediaQuery.of(context).size.width / 1.2,
@@ -85,8 +89,24 @@ class _DashboardCardState extends State<DashboardCard> {
                   ),
                 ),
               ],
-            )
-          ])),
+            ),
+            widget.isLocked
+                ? Container(
+                    height: 250,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                    child: Icon(
+                      Icons.lock_outline,
+                      size: 50,
+                    ),
+                  )
+                : Container()
+          ],
+        ),
+      ),
     );
   }
 }

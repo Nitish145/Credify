@@ -246,6 +246,7 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                         if (loanRequestResponse.updated) {
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
+                          isPersonalLoanAvailed = true;
                           Fluttertoast.showToast(msg: "Request accepted !!");
                         } else {
                           Fluttertoast.showToast(
