@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
-import 'package:credify/globals.dart';
-import 'package:credify/Services/add_documents.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Screens/video_selfie_screen.dart';
+import 'package:credify/Services/add_documents.dart';
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';

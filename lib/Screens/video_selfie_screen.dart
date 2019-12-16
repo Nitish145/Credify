@@ -36,14 +36,12 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
     with WidgetsBindingObserver {
   var formKey = new GlobalKey<FormState>();
   String currentUserName = "";
-
   CameraController controller;
   String videoPath;
   VideoPlayerController videoController;
   VoidCallback videoPlayerListener;
   bool enableAudio = true;
   bool isShowing = true;
-
   List<CameraDescription> cameras;
 
   Future<void> getCameras() async {
@@ -369,7 +367,6 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
       ResolutionPreset.medium,
       enableAudio: enableAudio,
     );
-
     // If the controller is updated then update the UI.
     controller.addListener(() {
       if (mounted) setState(() {});
@@ -377,13 +374,11 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
         showInSnackBar('Camera error ${controller.value.errorDescription}');
       }
     });
-
     try {
       await controller.initialize();
     } on CameraException catch (e) {
       _showCameraException(e);
     }
-
     if (mounted) {
       setState(() {});
     }
@@ -422,17 +417,14 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
       Fluttertoast.showToast(msg: "Error: select a camera first.");
       return null;
     }
-
     final Directory extDir = await getApplicationDocumentsDirectory();
     final String dirPath = '${extDir.path}/Movies/flutter_test';
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.mp4';
-
     if (controller.value.isRecordingVideo) {
       // A recording is already started, do nothing.
       return null;
     }
-
     try {
       videoPath = filePath;
       await controller.startVideoRecording(filePath);
@@ -447,14 +439,12 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
     if (!controller.value.isRecordingVideo) {
       return null;
     }
-
     try {
       await controller.stopVideoRecording();
     } on CameraException catch (e) {
       _showCameraException(e);
       return null;
     }
-
     //await _startVideoPlayer();
   }
 
@@ -462,7 +452,6 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
     if (!controller.value.isRecordingVideo) {
       return null;
     }
-
     try {
       await controller.pauseVideoRecording();
     } on CameraException catch (e) {
@@ -475,7 +464,6 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
     if (!controller.value.isRecordingVideo) {
       return null;
     }
-
     try {
       await controller.resumeVideoRecording();
     } on CameraException catch (e) {
@@ -505,7 +493,6 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
 //    }
 //    await vController.play();
 //  }
-
   void _showCameraException(CameraException e) {
     logError(e.code, e.description);
     showInSnackBar('Error: ${e.code}\n${e.description}');

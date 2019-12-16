@@ -49,7 +49,7 @@ class _ProfileScreenshotScreenState extends State<ProfileScreenshotScreen> {
       );
 
       for (var r in resultList) {
-        var t = await r.filePath;
+        var t = r.name;
         print(t);
       }
     } on Exception catch (e) {
