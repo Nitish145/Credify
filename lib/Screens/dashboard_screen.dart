@@ -14,7 +14,7 @@ import 'package:credify/Services/loan_details.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/colors.dart';
 import 'package:credify/globals.dart';
-import 'package:credify/globals.dart' as prefix0;
+import 'package:credify/utils/iso_string_to_dashboard_date.dart';
 import 'package:credify/utils/parse_date_time_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -166,15 +166,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
           getLoanDetails(sharedPrefs.getString("currentUserId"))
               .then((loanResponse) {
             DateTime startDateTime = getDateTimeObject(loanResponse.startDate);
-            prefix0.relationMap = {
-              startDateTime.toIso8601String(): loanResponse.week1,
-              startDateTime.add(Duration(days: 7)).toIso8601String():
-                  loanResponse.week2,
-              startDateTime.add(Duration(days: 14)).toIso8601String():
-                  loanResponse.week3,
-              startDateTime.add(Duration(days: 21)).toIso8601String():
-                  loanResponse.week4,
-            };
+            setState(() {
+              relationMap = {
+                isoStringToDashboardDate(startDateTime.toIso8601String()):
+                    loanResponse.week1,
+                isoStringToDashboardDate(
+                        startDateTime.add(Duration(days: 7)).toIso8601String()):
+                    loanResponse.week2,
+                isoStringToDashboardDate(startDateTime
+                    .add(Duration(days: 14))
+                    .toIso8601String()): loanResponse.week3,
+                isoStringToDashboardDate(startDateTime
+                    .add(Duration(days: 21))
+                    .toIso8601String()): loanResponse.week4,
+              };
+            });
           }).catchError((e) {
             Fluttertoast.showToast(msg: "Cannot fetch Loan Details");
           });
@@ -240,7 +246,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         : Container(),
                     isPersonalLoanAvailed == true
                         ? DashBoardLoanTable(
-                            relationMap: prefix0.relationMap,
+                            relationMap: relationMap,
                           )
                         : Container(),
                   ],

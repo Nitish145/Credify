@@ -15,10 +15,10 @@ class LoanDetailsResponse {
   String startDate;
   int totalAmount;
   int week;
-  int week1;
-  int week2;
-  int week3;
-  int week4;
+  double week1;
+  double week2;
+  double week3;
+  double week4;
   int weeklyAmountPaid;
 
   LoanDetailsResponse({

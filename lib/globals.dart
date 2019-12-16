@@ -12,7 +12,7 @@ String panLoadingProgress = "";
 bool isJobProfileUpdated = true;
 bool isPersonalLoanAvailed;
 
-Map<String, int> relationMap = {};
+Map<String, double> relationMap = {};
 
 Map<String, Color> colorMap = {
   "0": Colors.teal,

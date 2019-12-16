@@ -5,13 +5,13 @@ import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 
 class DashBoardLoanTable extends StatelessWidget {
-  final Map<String, int> relationMap;
+  final Map<String, double> relationMap;
 
   const DashBoardLoanTable({Key key, this.relationMap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget getDueDateAmountRow(String date, int amount, Color color) {
+    Widget getDueDateAmountRow(String date, double amount, Color color) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
