@@ -244,9 +244,10 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                               sharedPrefs.getString("currentUserId"), 5000)
                           .then((loanRequestResponse) {
                         if (loanRequestResponse.updated) {
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
-                          isPersonalLoanAvailed = true;
+                          Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/navigationScreen',
+                              (Route<dynamic> route) => false);
                           Fluttertoast.showToast(msg: "Request accepted !!");
                         } else {
                           Fluttertoast.showToast(
