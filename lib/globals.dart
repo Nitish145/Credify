@@ -9,9 +9,6 @@ List<String> listOfTravellers = [];
 String aadharLoadingProgress = "";
 String panLoadingProgress = "";
 
-bool isJobProfileUpdated = true;
-bool isPersonalLoanAvailed;
-
 Map<String, double> relationMap = {};
 
 Map<String, Color> colorMap = {

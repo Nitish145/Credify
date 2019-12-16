@@ -29,7 +29,59 @@ class _DashboardScreenState extends State<DashboardScreen> {
   UserData currentUserData;
   bool isKycDone = false;
   bool isBankAccountAdded = false;
+  bool isJobProfileUpdated = false;
+  bool isPersonalLoanAvailed = false;
+
   bool isLoanAvailable = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    SharedPreferences.getInstance().then((sharedPrefs) {
+      getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
+        sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
+        sharedPrefs.setString("referralCode", userData.referralCode);
+        sharedPrefs.setString("referredBy", userData.referredBy);
+        sharedPrefs.setInt("referrBonus", userData.referrBonus);
+        sharedPrefs.setBool("loanTaken", userData.loanTaken);
+        setState(() {
+          currentUserData = userData;
+          isKycDone = userData.kycProgress == 3;
+          isBankAccountAdded = userData.bankDetailsProvided != null
+              ? userData.bankDetailsProvided
+              : false;
+          isPersonalLoanAvailed = userData.loanTaken;
+
+          isLoanAvailable =
+              isKycDone && isBankAccountAdded && isJobProfileUpdated;
+        });
+        if (userData.loanTaken) {
+          getLoanDetails(sharedPrefs.getString("currentUserId"))
+              .then((loanResponse) {
+            DateTime startDateTime = getDateTimeObject(loanResponse.startDate);
+            setState(() {
+              relationMap = {
+                isoStringToDashboardDate(startDateTime.toIso8601String()):
+                    loanResponse.week1,
+                isoStringToDashboardDate(
+                        startDateTime.add(Duration(days: 7)).toIso8601String()):
+                    loanResponse.week2,
+                isoStringToDashboardDate(startDateTime
+                    .add(Duration(days: 14))
+                    .toIso8601String()): loanResponse.week3,
+                isoStringToDashboardDate(startDateTime
+                    .add(Duration(days: 21))
+                    .toIso8601String()): loanResponse.week4,
+              };
+            });
+          }).catchError((e) {
+            Fluttertoast.showToast(msg: "Cannot fetch Loan Details");
+          });
+        }
+      });
+    });
+  }
 
   Widget getTodoItem(bool controller, String title, VoidCallback onTodoTap,
       {bool isItemLocked = false}) {
@@ -139,54 +191,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => PersonalLoanScreen()));
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    SharedPreferences.getInstance().then((sharedPrefs) {
-      getUserData(sharedPrefs.getString("currentUserId")).then((userData) {
-        sharedPrefs.setString("currentUserData", jsonEncode(currentUserData));
-        sharedPrefs.setString("referralCode", userData.referralCode);
-        sharedPrefs.setString("referredBy", userData.referredBy);
-        sharedPrefs.setInt("referrBonus", userData.referrBonus);
-        sharedPrefs.setBool("loanTaken", userData.loanTaken);
-        setState(() {
-          currentUserData = userData;
-          isKycDone = userData.kycProgress == 3;
-          isBankAccountAdded = userData.bankDetailsProvided != null
-              ? userData.bankDetailsProvided
-              : false;
-          isLoanAvailable =
-              isKycDone && isBankAccountAdded && isJobProfileUpdated;
-          isPersonalLoanAvailed = userData.loanTaken;
-        });
-        if (userData.loanTaken) {
-          getLoanDetails(sharedPrefs.getString("currentUserId"))
-              .then((loanResponse) {
-            DateTime startDateTime = getDateTimeObject(loanResponse.startDate);
-            setState(() {
-              relationMap = {
-                isoStringToDashboardDate(startDateTime.toIso8601String()):
-                    loanResponse.week1,
-                isoStringToDashboardDate(
-                        startDateTime.add(Duration(days: 7)).toIso8601String()):
-                    loanResponse.week2,
-                isoStringToDashboardDate(startDateTime
-                    .add(Duration(days: 14))
-                    .toIso8601String()): loanResponse.week3,
-                isoStringToDashboardDate(startDateTime
-                    .add(Duration(days: 21))
-                    .toIso8601String()): loanResponse.week4,
-              };
-            });
-          }).catchError((e) {
-            Fluttertoast.showToast(msg: "Cannot fetch Loan Details");
-          });
-        }
-      });
-    });
   }
 
   @override
