@@ -206,7 +206,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
                               if (isVideoUploaded) {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context,
-                                    '/bankScreen1',
+                                    '/confirmed',
                                     (Route<dynamic> route) => false);
                               } else {
                                 Fluttertoast.showToast(
