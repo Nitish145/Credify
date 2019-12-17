@@ -153,6 +153,7 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                                     builder: (context) => OtpVerificationScreen(
                                           mobileNumber: mobileNumber,
                                           otp: otpResponse.isSent,
+                                          exists: otpResponse.exists,
                                         )));
                           }
                         }

@@ -15,8 +15,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class OtpVerificationScreen extends StatefulWidget {
   final String mobileNumber;
   final String otp;
+  final bool exists;
 
-  const OtpVerificationScreen({Key key, this.mobileNumber, this.otp})
+  const OtpVerificationScreen(
+      {Key key, this.mobileNumber, this.otp, this.exists})
       : super(key: key);
 
   @override
@@ -94,13 +96,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 80, left: 30, right: 30, bottom: 5),
+                            top: 100, left: 30, right: 30, bottom: 10),
                         child: TextFormField(
                           keyboardType: TextInputType.phone,
                           maxLength: 6,
                           style: Theme.of(context).primaryTextTheme.display3,
                           decoration: InputDecoration(
-                              labelText: "OTP *",
+                              labelText: "OTP",
                               labelStyle: TextStyle(color: Colors.white),
                               border: OutlineInputBorder(),
                               enabledBorder: OutlineInputBorder()),
@@ -113,21 +115,26 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           onSaved: (String _otp) => otp = _otp,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5, left: 30, right: 30, bottom: 20),
-                        child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          style: Theme.of(context).primaryTextTheme.display3,
-                          decoration: InputDecoration(
-                              labelText: "Referral Code",
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(),
-                              enabledBorder: OutlineInputBorder()),
-                          onSaved: (String _referralCode) =>
-                              referralCode = _referralCode,
-                        ),
-                      ),
+                      !widget.exists
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 30, right: 30, bottom: 20),
+                              child: TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization:
+                                    TextCapitalization.characters,
+                                style:
+                                    Theme.of(context).primaryTextTheme.display3,
+                                decoration: InputDecoration(
+                                    labelText: "Referral Code",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    border: OutlineInputBorder(),
+                                    enabledBorder: OutlineInputBorder()),
+                                onSaved: (String _referralCode) =>
+                                    referralCode = _referralCode,
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 ),
