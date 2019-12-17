@@ -64,16 +64,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
             DateTime startDateTime = getDateTimeObject(loanResponse.startDate);
             setState(() {
               relationMap = {
-                isoStringToDashboardDate(startDateTime.toIso8601String()):
-                    loanResponse.week1,
-                isoStringToDashboardDate(
-                        startDateTime.add(Duration(days: 7)).toIso8601String()):
-                    loanResponse.week2,
+                isoStringToDashboardDate(startDateTime
+                    .add(Duration(days: 07))
+                    .toIso8601String()): loanResponse.week1,
                 isoStringToDashboardDate(startDateTime
                     .add(Duration(days: 14))
-                    .toIso8601String()): loanResponse.week3,
+                    .toIso8601String()): loanResponse.week2,
                 isoStringToDashboardDate(startDateTime
                     .add(Duration(days: 21))
+                    .toIso8601String()): loanResponse.week3,
+                isoStringToDashboardDate(startDateTime
+                    .add(Duration(days: 28))
                     .toIso8601String()): loanResponse.week4,
               };
             });
