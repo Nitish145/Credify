@@ -27,10 +27,10 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   UserData currentUserData;
-  bool isKycDone = false;
-  bool isBankAccountAdded = false;
-  bool isJobProfileUpdated = false;
-  bool isPersonalLoanAvailed = false;
+  bool isKycDone;
+  bool isBankAccountAdded;
+  bool isJobProfileUpdated;
+  bool isPersonalLoanAvailed;
 
   bool isLoanAvailable = false;
 
