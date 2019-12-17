@@ -18,6 +18,7 @@ class UserData {
   int documentsProgress;
   bool documentsUploaded;
   List<dynamic> groupId;
+  bool isProfileUpdated;
   String kycId;
   int kycProgress;
   bool kycStatus;
@@ -39,6 +40,7 @@ class UserData {
     this.documentsProgress,
     this.documentsUploaded,
     this.groupId,
+    this.isProfileUpdated,
     this.kycId,
     this.kycProgress,
     this.kycStatus,
@@ -61,6 +63,7 @@ class UserData {
         documentsProgress: json["documents_progress"],
         documentsUploaded: json["documents_uploaded"],
         groupId: List<dynamic>.from(json["group_id"].map((x) => x)),
+        isProfileUpdated: json["is_profile_updated"],
         kycId: json["kyc_id"],
         kycProgress: json["kyc_progress"],
         kycStatus: json["kyc_status"],
@@ -83,6 +86,7 @@ class UserData {
         "documents_progress": documentsProgress,
         "documents_uploaded": documentsUploaded,
         "group_id": List<dynamic>.from(groupId.map((x) => x)),
+        "is_profile_updated": isProfileUpdated,
         "kyc_id": kycId,
         "kyc_progress": kycProgress,
         "kyc_status": kycStatus,

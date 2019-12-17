@@ -45,12 +45,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         sharedPrefs.setString("referredBy", userData.referredBy);
         sharedPrefs.setInt("referrBonus", userData.referrBonus);
         sharedPrefs.setBool("loanTaken", userData.loanTaken);
+        sharedPrefs.setBool("isProfileUpdated", userData.isProfileUpdated);
         setState(() {
           currentUserData = userData;
           isKycDone = userData.kycProgress == 3;
           isBankAccountAdded = userData.bankDetailsProvided != null
               ? userData.bankDetailsProvided
               : false;
+          isJobProfileUpdated = userData.isProfileUpdated;
           isPersonalLoanAvailed = userData.loanTaken;
 
           isLoanAvailable =
