@@ -1,5 +1,10 @@
+import 'package:credify/Components/undismissable_progress_bar.dart';
+import 'package:credify/Services/add_profile_screenshot.dart';
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreenshotScreen extends StatefulWidget {
   @override
@@ -188,7 +193,23 @@ class _ProfileScreenshotScreenState extends State<ProfileScreenshotScreen> {
                             new TextStyle(fontSize: 18.0, color: Colors.white),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      SharedPreferences sharedPrefs =
+                          await SharedPreferences.getInstance();
+                      String id = sharedPrefs.getString("currentUserId");
+                      for (int i = 1; i <= images.length; i++) {
+                        bool isUploaded =
+                            await addScreenshotService(id, i, images[i - 1]);
+                        if (isUploaded) {
+                          Fluttertoast.showToast(msg: "Screenshot $i uploaded");
+                        }
+                      }
+                      setState(() {
+                        isLoading = false;
+                      });
                       Navigator.pushNamedAndRemoveUntil(context,
                           '/navigationScreen', (Route<dynamic> route) => false);
                     },
@@ -197,6 +218,9 @@ class _ProfileScreenshotScreenState extends State<ProfileScreenshotScreen> {
               ),
             ],
           ),
+          UndismissableProgressBar(
+            message: "Uploading Profile",
+          )
         ],
       ),
     );
