@@ -1,8 +1,9 @@
+import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Models/add_kyc_data_model.dart';
 import 'package:credify/Screens/complete_KYC_2_screen.dart';
-import 'package:credify/globals.dart';
 import 'package:credify/Services/add_kyc_data.dart';
-import 'package:credify/Components/undismissable_progress_bar.dart';
+import 'package:credify/Services/pan_verification.dart';
+import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
@@ -20,6 +21,8 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
   String dob;
   String panNumber;
   String aadhar;
+
+  String nameFetched;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +69,10 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 30, left: 30, right: 30, bottom: 30),
+                            top: 30, left: 30, right: 30, bottom: 0),
                         child: TextFormField(
                             keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.characters,
                             style: Theme.of(context).primaryTextTheme.display3,
                             onSaved: (_fullName) {
                               fullName = _fullName;
@@ -84,6 +88,16 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                                 labelStyle: TextStyle(color: Colors.white),
                                 border: OutlineInputBorder(),
                                 enabledBorder: OutlineInputBorder())),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30, bottom: 30),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            "*Enter same name as in PAN",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -117,8 +131,19 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                           keyboardType: TextInputType.text,
                           textCapitalization: TextCapitalization.characters,
                           style: Theme.of(context).primaryTextTheme.display3,
+                          maxLength: 10,
                           onSaved: (_panNumber) {
                             panNumber = _panNumber;
+                          },
+                          onChanged: (_panNumber) {
+                            if (_panNumber.length == 10) {
+                              verifyPan(_panNumber).then((panDetails) {
+                                nameFetched = panDetails.data.fullName;
+                              }).catchError((e) {
+                                Fluttertoast.showToast(
+                                    msg: "Unable to fetch PAN details");
+                              });
+                            }
                           },
                           decoration: InputDecoration(
                               labelText: "Your PAN Card",
@@ -185,41 +210,47 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
                             onPressed: () async {
                               if (formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                SharedPreferences sharedPrefs =
-                                    await SharedPreferences.getInstance();
-                                sharedPrefs.setString(
-                                    "currentUserName", fullName);
-                                AddKycDataResponse addKycResponse =
-                                    await addKycData(
-                                        sharedPrefs.getString("currentUserId"),
-                                        1,
-                                        name: fullName,
-                                        dob: dob,
-                                        aadhar: aadhar,
-                                        pan: panNumber);
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                if (addKycResponse == null) {
+                                if (fullName != nameFetched) {
                                   Fluttertoast.showToast(
-                                    msg: "Something Wrong Occured",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                  );
+                                      msg: "Unable to verify PAN details");
                                 } else {
-                                  if (addKycResponse.updated) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CompleteKYC2()));
-                                  } else {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  SharedPreferences sharedPrefs =
+                                      await SharedPreferences.getInstance();
+                                  sharedPrefs.setString(
+                                      "currentUserName", fullName);
+                                  AddKycDataResponse addKycResponse =
+                                      await addKycData(
+                                          sharedPrefs
+                                              .getString("currentUserId"),
+                                          1,
+                                          name: fullName,
+                                          dob: dob,
+                                          aadhar: aadhar,
+                                          pan: panNumber);
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  if (addKycResponse == null) {
                                     Fluttertoast.showToast(
                                       msg: "Something Wrong Occured",
                                       toastLength: Toast.LENGTH_SHORT,
                                     );
+                                  } else {
+                                    if (addKycResponse.updated) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CompleteKYC2()));
+                                    } else {
+                                      Fluttertoast.showToast(
+                                        msg: "Something Wrong Occured",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                      );
+                                    }
                                   }
                                 }
                               }
