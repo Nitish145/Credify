@@ -39,10 +39,10 @@ class LoanDetailsResponse {
         startDate: json["start_date"],
         totalAmount: json["total_amount"],
         week: json["week"],
-        week1: json["week1"],
-        week2: json["week2"],
-        week3: json["week3"],
-        week4: json["week4"],
+        week1: double.parse(json["week1"].toString()),
+        week2: double.parse(json["week2"].toString()),
+        week3: double.parse(json["week3"].toString()),
+        week4: double.parse(json["week4"].toString()),
         weeklyAmountPaid: json["weekly_amount_paid"],
       );
 
