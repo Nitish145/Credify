@@ -83,6 +83,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Fluttertoast.showToast(msg: "Cannot fetch Loan Details");
           });
         }
+      }).catchError((e) {
+        Fluttertoast.showToast(msg: "Cannot fetch User Data");
       });
     });
   }
@@ -152,9 +154,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void onTodo1Tapped() {
     if (currentUserData != null) {
-      logEvent("Know your Customer Tapped",
-          eventParameters: {"userData": currentUserData});
       if (!currentUserData.kycStatus) {
+        logEvent("Know your Customer Tapped", eventParameters: {
+          "user_data": currentUserData.toJson().toString()
+        });
         switch (currentUserData.kycProgress) {
           case 0:
             {
@@ -179,24 +182,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void onTodo2Tapped() {
-    logEvent("Add Bank Account Tapped");
     if (!isBankAccountAdded) {
+      logEvent("Add Bank Account Tapped",
+          eventParameters: {"user_data": currentUserData.toJson().toString()});
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => BankDetailScreen1()));
     }
   }
 
   void onTodo3Tapped() {
-    logEvent("Add your Job Profile Tapped");
     if (!isJobProfileUpdated) {
+      logEvent("Add your Job Profile Tapped",
+          eventParameters: {"user_data": currentUserData.toJson().toString()});
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => ProfileScreenshotScreen()));
     }
   }
 
   void onTodo4Tapped() {
-    logEvent("Apply for Personal Loan Tapped");
     if (!isPersonalLoanAvailed && isLoanAvailable) {
+      logEvent("Apply for Personal Loan Tapped",
+          eventParameters: {"user_data": currentUserData.toJson().toString()});
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => PersonalLoanScreen()));
     }
