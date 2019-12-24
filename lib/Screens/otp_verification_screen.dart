@@ -219,6 +219,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
                                 isLoading = false;
                               });
                               sharedPrefs.setBool("isLoggedIn", true);
+                              await MyApp.analytics
+                                  .logLogin(loginMethod: "OTP Verification");
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(

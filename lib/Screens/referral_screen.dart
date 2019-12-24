@@ -1,4 +1,6 @@
 import 'package:credify/colors.dart';
+import 'package:credify/helper_methods/log_event.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,12 +8,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 class ReferralScreen extends StatefulWidget {
   @override
   _ReferralScreenState createState() => _ReferralScreenState();
 }
 
-class _ReferralScreenState extends State<ReferralScreen> {
+class _ReferralScreenState extends State<ReferralScreen> with RouteAware {
   String displayReferCode = "";
   int totalEarnedAmount;
   String referText;
@@ -31,6 +35,28 @@ class _ReferralScreenState extends State<ReferralScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("referral");
+  }
+
+  @override
+  void didPopNext() {
+    setCurrentScreen("referral");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -40,6 +66,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
         ),
         backgroundColor: credifyBlue,
         onPressed: () {
+          logEvent("Share Tapped");
           final RenderBox box = context.findRenderObject();
           Share.share(referText,
               subject: "Refer and Earn",

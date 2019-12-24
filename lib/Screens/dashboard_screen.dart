@@ -14,6 +14,7 @@ import 'package:credify/Services/loan_details.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/colors.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/helper_methods/log_event.dart';
 import 'package:credify/utils/iso_string_to_dashboard_date.dart';
 import 'package:credify/utils/parse_date_time_string.dart';
 import 'package:flutter/material.dart';
@@ -151,6 +152,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void onTodo1Tapped() {
     if (currentUserData != null) {
+      logEvent("Know your Customer Tapped",
+          eventParameters: {"userData": currentUserData});
       if (!currentUserData.kycStatus) {
         switch (currentUserData.kycProgress) {
           case 0:
@@ -176,6 +179,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void onTodo2Tapped() {
+    logEvent("Add Bank Account Tapped");
     if (!isBankAccountAdded) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => BankDetailScreen1()));
@@ -183,6 +187,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void onTodo3Tapped() {
+    logEvent("Add your Job Profile Tapped");
     if (!isJobProfileUpdated) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => ProfileScreenshotScreen()));
@@ -190,6 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void onTodo4Tapped() {
+    logEvent("Apply for Personal Loan Tapped");
     if (!isPersonalLoanAvailed && isLoanAvailable) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => PersonalLoanScreen()));
