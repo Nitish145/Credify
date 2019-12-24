@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "737629456928",
+    "firebase_url": "https://credify-2b5c2.firebaseio.com",
+    "project_id": "credify-2b5c2",
+    "storage_bucket": "credify-2b5c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737629456928:android:c8f474b45e062b6e520a45",
+        "android_client_info": {
+          "package_name": "com.example.credify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737629456928-3o0fhformtn5tvburtnohh84jn5tcc12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOJQPGeWZvrOFsQ-SY_gMgFPuSL0Eb5UE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737629456928-3o0fhformtn5tvburtnohh84jn5tcc12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

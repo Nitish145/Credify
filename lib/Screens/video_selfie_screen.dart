@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Services/add_video.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -56,6 +57,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   @override
   void initState() {
     super.initState();
+    setCurrentScreen("video_selfie");
     WidgetsBinding.instance.addObserver(this);
     getCameras();
     SharedPreferences.getInstance().then((sharedPrefs) {

@@ -7,16 +7,23 @@ import 'package:credify/Screens/mobile_number_screen.dart';
 import 'package:credify/Screens/statement_upload_screen.dart';
 import 'package:credify/Screens/upload_aadhar_screen.dart';
 import 'package:credify/Screens/upload_pan_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
+        navigatorObservers: <NavigatorObserver>[observer],
         initialRoute: "/",
         routes: {
           "/confirmed": (context) => ConfirmedScreen(),

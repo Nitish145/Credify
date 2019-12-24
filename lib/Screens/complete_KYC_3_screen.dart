@@ -1,6 +1,7 @@
 import 'package:credify/Models/add_kyc_data_model.dart';
 import 'package:credify/globals.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
@@ -104,6 +105,13 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
     setState(() {
       _radioValueNotEarning = value;
     });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    setCurrentScreen("kyc_3");
   }
 
   @override

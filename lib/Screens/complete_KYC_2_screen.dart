@@ -1,11 +1,12 @@
+import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Models/add_kyc_data_model.dart';
 import 'package:credify/Models/pin_info_model.dart';
 import 'package:credify/Screens/complete_KYC_3_screen.dart';
-import 'package:credify/globals.dart';
 import 'package:credify/Services/add_kyc_data.dart';
-import 'package:credify/Components/undismissable_progress_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:credify/Services/pin_info.dart';
+import 'package:credify/globals.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,6 +30,12 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
   String city;
 
   bool isPinInfoLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    setCurrentScreen("kyc_2");
+  }
 
   @override
   Widget build(BuildContext context) {

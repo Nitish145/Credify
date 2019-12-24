@@ -1,4 +1,5 @@
 import 'package:credify/Screens/bottom_navigation_bar_screen.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmedScreen extends StatefulWidget {
@@ -7,6 +8,12 @@ class ConfirmedScreen extends StatefulWidget {
 }
 
 class _ConfirmedScreenState extends State<ConfirmedScreen> {
+  @override
+  void initState() {
+    super.initState();
+    setCurrentScreen("confirmed");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

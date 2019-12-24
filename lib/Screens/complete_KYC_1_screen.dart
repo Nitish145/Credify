@@ -4,6 +4,7 @@ import 'package:credify/Screens/complete_KYC_2_screen.dart';
 import 'package:credify/Services/add_kyc_data.dart';
 import 'package:credify/Services/pan_verification.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
@@ -23,6 +24,12 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
   String aadhar;
 
   String nameFetched;
+
+  @override
+  void initState() {
+    super.initState();
+    setCurrentScreen("kyc_1");
+  }
 
   @override
   Widget build(BuildContext context) {

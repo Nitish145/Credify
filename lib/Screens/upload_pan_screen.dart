@@ -5,6 +5,7 @@ import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Screens/video_selfie_screen.dart';
 import 'package:credify/Services/add_documents.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,6 +39,12 @@ class _UploadPanState extends State<UploadPan> {
     setState(() {
       _backPanImage = image;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setCurrentScreen("upload_pan");
   }
 
   @override
