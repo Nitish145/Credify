@@ -3,19 +3,45 @@ import 'package:credify/Models/otp_response_model.dart';
 import 'package:credify/Screens/otp_verification_screen.dart';
 import 'package:credify/Services/otp_response.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
 
 class MobileNumberScreen extends StatefulWidget {
   @override
   _MobileNumberScreenState createState() => _MobileNumberScreenState();
 }
 
-class _MobileNumberScreenState extends State<MobileNumberScreen> {
+class _MobileNumberScreenState extends State<MobileNumberScreen>
+    with RouteAware {
   var formKey = new GlobalKey<FormState>();
   String mobileNumber;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("mobile_number");
+  }
+
+  @override
+  void didPopNext() {
+    setCurrentScreen("mobile_number");
+  }
 
   @override
   Widget build(BuildContext context) {

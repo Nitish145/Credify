@@ -7,10 +7,13 @@ import 'package:credify/Screens/bottom_navigation_bar_screen.dart';
 import 'package:credify/Services/is_new_user.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/globals.dart';
+import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String mobileNumber;
@@ -25,10 +28,33 @@ class OtpVerificationScreen extends StatefulWidget {
   _OtpVerificationScreenState createState() => _OtpVerificationScreenState();
 }
 
-class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
+class _OtpVerificationScreenState extends State<OtpVerificationScreen>
+    with RouteAware {
   var formKey = new GlobalKey<FormState>();
   String otp;
   String referralCode = "";
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("otp_verification");
+  }
+
+  @override
+  void didPopNext() {
+    setCurrentScreen("otp_verification");
+  }
 
   @override
   Widget build(BuildContext context) {

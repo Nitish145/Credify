@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
-import 'package:credify/globals.dart';
-import 'package:credify/Services/add_documents.dart';
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Screens/upload_pan_screen.dart';
+import 'package:credify/Services/add_documents.dart';
+import 'package:credify/globals.dart';
 import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,12 +12,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 class UploadAadhar extends StatefulWidget {
   @override
   _UploadAadharState createState() => _UploadAadharState();
 }
 
-class _UploadAadharState extends State<UploadAadhar> {
+class _UploadAadharState extends State<UploadAadhar> with RouteAware {
   var formKey = new GlobalKey<FormState>();
 
   File _frontAadharImage;
@@ -41,11 +43,26 @@ class _UploadAadharState extends State<UploadAadhar> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
 
   @override
-  void initState() {
-    super.initState();
-    setCurrentScreen("aadhar_upload");
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("upload_aadhar");
+  }
+
+  @override
+  void didPopNext() {
+    setCurrentScreen("upload_aadhar");
   }
 
   @override

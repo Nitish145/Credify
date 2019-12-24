@@ -11,12 +11,14 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 class CompleteKYC2 extends StatefulWidget {
   @override
   _CompleteKYC2State createState() => _CompleteKYC2State();
 }
 
-class _CompleteKYC2State extends State<CompleteKYC2> {
+class _CompleteKYC2State extends State<CompleteKYC2> with RouteAware {
   var formKey = new GlobalKey<FormState>();
 
   TextEditingController pincodeController = new TextEditingController();
@@ -32,8 +34,24 @@ class _CompleteKYC2State extends State<CompleteKYC2> {
   bool isPinInfoLoading = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("kyc_2");
+  }
+
+  @override
+  void didPopNext() {
     setCurrentScreen("kyc_2");
   }
 

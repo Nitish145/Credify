@@ -12,12 +12,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 class UploadPan extends StatefulWidget {
   @override
   _UploadPanState createState() => _UploadPanState();
 }
 
-class _UploadPanState extends State<UploadPan> {
+class _UploadPanState extends State<UploadPan> with RouteAware {
   var formKey = new GlobalKey<FormState>();
 
   File _frontPanImage;
@@ -42,8 +44,24 @@ class _UploadPanState extends State<UploadPan> {
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("upload_pan");
+  }
+
+  @override
+  void didPopNext() {
     setCurrentScreen("upload_pan");
   }
 

@@ -2,15 +2,33 @@ import 'package:credify/Screens/bottom_navigation_bar_screen.dart';
 import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class ConfirmedScreen extends StatefulWidget {
   @override
   _ConfirmedScreenState createState() => _ConfirmedScreenState();
 }
 
-class _ConfirmedScreenState extends State<ConfirmedScreen> {
+class _ConfirmedScreenState extends State<ConfirmedScreen> with RouteAware {
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("confirmed");
+  }
+
+  @override
+  void didPopNext() {
     setCurrentScreen("confirmed");
   }
 

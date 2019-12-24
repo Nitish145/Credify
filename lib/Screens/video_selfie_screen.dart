@@ -12,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
+import '../main.dart';
+
 class VideoSelfieScreen extends StatefulWidget {
   @override
   _VideoSelfieScreenState createState() => _VideoSelfieScreenState();
@@ -34,7 +36,7 @@ void logError(String code, String message) =>
     print('Error: $code\nError Message: $message');
 
 class _VideoSelfieScreenState extends State<VideoSelfieScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, RouteAware {
   var formKey = new GlobalKey<FormState>();
   String currentUserName = "";
   CameraController controller;
@@ -57,7 +59,6 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   @override
   void initState() {
     super.initState();
-    setCurrentScreen("video_selfie");
     WidgetsBinding.instance.addObserver(this);
     getCameras();
     SharedPreferences.getInstance().then((sharedPrefs) {
@@ -70,6 +71,7 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    MyApp.observer.unsubscribe(this);
     super.dispose();
   }
 
@@ -89,6 +91,22 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("video_selfie");
+  }
+
+  @override
+  void didPopNext() {
+    setCurrentScreen("video_selfie");
+  }
 
   @override
   Widget build(BuildContext context) {

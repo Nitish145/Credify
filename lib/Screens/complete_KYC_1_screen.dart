@@ -10,12 +10,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 class CompleteKYC1 extends StatefulWidget {
   @override
   _CompleteKYC1State createState() => _CompleteKYC1State();
 }
 
-class _CompleteKYC1State extends State<CompleteKYC1> {
+class _CompleteKYC1State extends State<CompleteKYC1> with RouteAware {
   var formKey = new GlobalKey<FormState>();
 
   String fullName;
@@ -26,8 +28,24 @@ class _CompleteKYC1State extends State<CompleteKYC1> {
   String nameFetched;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("kyc_1");
+  }
+
+  @override
+  void didPopNext() {
     setCurrentScreen("kyc_1");
   }
 

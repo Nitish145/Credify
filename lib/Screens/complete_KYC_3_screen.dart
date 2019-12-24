@@ -1,6 +1,6 @@
+import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Models/add_kyc_data_model.dart';
 import 'package:credify/globals.dart';
-import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/helper_methods/set_current_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,13 +8,14 @@ import 'package:masked_text_input_formatter/masked_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Services/add_kyc_data.dart';
+import '../main.dart';
 
 class CompleteKYC3 extends StatefulWidget {
   @override
   _CompleteKYC3State createState() => _CompleteKYC3State();
 }
 
-class _CompleteKYC3State extends State<CompleteKYC3> {
+class _CompleteKYC3State extends State<CompleteKYC3> with RouteAware {
   var formKey = new GlobalKey<FormState>();
   int _radioValueSalary = -1;
 
@@ -107,10 +108,25 @@ class _CompleteKYC3State extends State<CompleteKYC3> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.observer.subscribe(this, ModalRoute.of(context));
+  }
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    MyApp.observer.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    setCurrentScreen("kyc_3");
+  }
+
+  @override
+  void didPopNext() {
     setCurrentScreen("kyc_3");
   }
 
