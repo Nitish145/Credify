@@ -16,6 +16,8 @@ class PersonalLoanScreen extends StatefulWidget {
 
 class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
   bool areTermsAccepted = false;
+  String purposeOfLoan;
+  var formKey = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +177,43 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                     getRowForColumnScreen("Interest", 0),
                     getRowForColumnScreen("Disbursal Amount", 4628),
                     getRowForColumnScreen("Repayment Amount", 5000),
-                    getCheckboxRow(),
+                    Form(
+                      key: formKey,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 30, right: 30, bottom: 20),
+                            child: TextFormField(
+                              keyboardType: TextInputType.text,
+                              style: Theme.of(context).accentTextTheme.display3,
+                              cursorColor: credifyBlack,
+                              decoration: InputDecoration(
+                                  labelText: "Purpose Of Loan",
+                                  labelStyle: TextStyle(color: credifyBlue),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: credifyBlack)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: credifyBlack))),
+                              validator: (_purposeOfLoan) {
+                                if (_purposeOfLoan.length == 0) {
+                                  return "Please add a purpose of loan";
+                                }
+                                return null;
+                              },
+                              onSaved: (String _purposeOfLoan) =>
+                                  purposeOfLoan = _purposeOfLoan,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 50),
+                      child: getCheckboxRow(),
+                    ),
                   ],
                 ),
               ],
@@ -239,31 +277,37 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                     setState(() {
                       isLoading = true;
                     });
-                    SharedPreferences.getInstance().then((sharedPrefs) {
-                      makeLoanRequest(
-                              sharedPrefs.getString("currentUserId"), 5000)
-                          .then((loanRequestResponse) {
-                        if (loanRequestResponse.updated) {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              '/navigationScreen',
-                              (Route<dynamic> route) => false);
-                          Fluttertoast.showToast(msg: "Request accepted !!");
-                        } else {
+                    if (formKey.currentState.validate()) {
+                      formKey.currentState.save();
+                      SharedPreferences.getInstance().then((sharedPrefs) {
+                        makeLoanRequest(sharedPrefs.getString("currentUserId"),
+                                5000, purposeOfLoan)
+                            .then((loanRequestResponse) {
+                          if (loanRequestResponse.updated) {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/navigationScreen',
+                                (Route<dynamic> route) => false);
+                            Fluttertoast.showToast(msg: "Request accepted !!");
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Unable to make request! Try Again Later");
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }).catchError((e) {
                           Fluttertoast.showToast(
                               msg: "Unable to make request! Try Again Later");
-                        }
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }).catchError((e) {
-                        Fluttertoast.showToast(
-                            msg: "Unable to make request! Try Again Later");
-                        setState(() {
-                          isLoading = false;
+                          setState(() {
+                            isLoading = false;
+                          });
                         });
                       });
-                    });
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Please Add a purpose of loan");
+                    }
                   } else {
                     Fluttertoast.showToast(
                         msg: "Please acknowledge Terms & Conditions");

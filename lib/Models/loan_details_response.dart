@@ -12,6 +12,7 @@ String loanDetailsResponseToJson(LoanDetailsResponse data) =>
 
 class LoanDetailsResponse {
   String id;
+  String purposeOfLoan;
   String startDate;
   int totalAmount;
   int week;
@@ -23,6 +24,7 @@ class LoanDetailsResponse {
 
   LoanDetailsResponse({
     this.id,
+    this.purposeOfLoan,
     this.startDate,
     this.totalAmount,
     this.week,
@@ -36,6 +38,7 @@ class LoanDetailsResponse {
   factory LoanDetailsResponse.fromJson(Map<String, dynamic> json) =>
       LoanDetailsResponse(
         id: json["_id"],
+        purposeOfLoan: json["purpose_of_loan"],
         startDate: json["start_date"],
         totalAmount: json["total_amount"],
         week: json["week"],
@@ -48,6 +51,7 @@ class LoanDetailsResponse {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "purpose_of_loan": purposeOfLoan,
         "start_date": startDate,
         "total_amount": totalAmount,
         "week": week,

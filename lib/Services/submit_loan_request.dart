@@ -9,11 +9,14 @@ var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
 Future<SubmitLoanRequestResponse> makeLoanRequest(
-    String id, int totalAmount) async {
+    String id, int totalAmount, String purposeOfLoan) async {
   String endPoint = "/user/$id/loan/request";
   String uri = url + endPoint;
 
-  var json = {"total_amount": totalAmount.toString()};
+  var json = {
+    "total_amount": totalAmount.toString(),
+    "purpose_of_loan": purposeOfLoan
+  };
 
   try {
     http.Response response =
