@@ -16,8 +16,8 @@ class PersonalLoanScreen extends StatefulWidget {
 
 class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
   bool areTermsAccepted = false;
+  bool isPurposeOfLoanMoreThanFiveChars = false;
   String purposeOfLoan;
-  TextEditingController purposeOfLoanController = new TextEditingController();
   var formKey = new GlobalKey<FormState>();
 
   @override
@@ -186,7 +186,6 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                             padding: const EdgeInsets.only(
                                 top: 20, left: 30, right: 30, bottom: 20),
                             child: TextFormField(
-                              controller: purposeOfLoanController,
                               keyboardType: TextInputType.text,
                               style: Theme.of(context).accentTextTheme.display3,
                               cursorColor: credifyBlack,
@@ -199,6 +198,17 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: credifyBlack))),
+                              onChanged: (_purposeOfLoan) {
+                                if (_purposeOfLoan.length >= 5) {
+                                  setState(() {
+                                    isPurposeOfLoanMoreThanFiveChars = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isPurposeOfLoanMoreThanFiveChars = false;
+                                  });
+                                }
+                              },
                               validator: (_purposeOfLoan) {
                                 if (_purposeOfLoan.length == 0) {
                                   return "Please add a purpose of loan";
@@ -266,21 +276,18 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
             child: Container(
               height: 60,
               width: MediaQuery.of(context).size.width,
-              color:
-                  areTermsAccepted && purposeOfLoanController.text.length >= 5
-                      ? credifyBlue
-                      : credifyDarkGrey,
+              color: areTermsAccepted && isPurposeOfLoanMoreThanFiveChars
+                  ? credifyBlue
+                  : credifyDarkGrey,
               child: FlatButton(
                 child: Text(
                   "Confirm and Continue",
-                  style: areTermsAccepted &&
-                          purposeOfLoanController.text.length >= 5
+                  style: areTermsAccepted && isPurposeOfLoanMoreThanFiveChars
                       ? Theme.of(context).primaryTextTheme.display3
                       : Theme.of(context).accentTextTheme.display3,
                 ),
                 onPressed: () {
-                  if (areTermsAccepted &&
-                      purposeOfLoanController.text.length >= 5) {
+                  if (areTermsAccepted && isPurposeOfLoanMoreThanFiveChars) {
                     setState(() {
                       isLoading = true;
                     });
