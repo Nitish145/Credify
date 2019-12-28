@@ -261,23 +261,23 @@ class _VideoSelfieScreenState extends State<VideoSelfieScreen>
             if (cameras.isEmpty) {
               Fluttertoast.showToast(msg: "No Cameras Found");
             } else {
-              onNewCameraSelected(cameras[0]);
-            }
-          }
-        },
-        onDoubleTap: () {
-          if (cameras == null) {
-            Fluttertoast.showToast(msg: "Loading Cameras!!");
-          } else {
-            if (cameras.isEmpty) {
-              Fluttertoast.showToast(msg: "No Cameras Found");
-            } else {
               onNewCameraSelected(cameras[1]);
             }
           }
         },
+//        onDoubleTap: () {
+//          if (cameras == null) {
+//            Fluttertoast.showToast(msg: "Loading Cameras!!");
+//          } else {
+//            if (cameras.isEmpty) {
+//              Fluttertoast.showToast(msg: "No Cameras Found");
+//            } else {
+//              onNewCameraSelected(cameras[0]);
+//            }
+//          }
+//        },
         child: const Text(
-          'Tap for Rear Camera. \n\n Double Tap for Front Camera',
+          'Tap to activate Camera',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
