@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
-import 'package:credify/Components/due_date_vs_amount_table.dart';
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Screens/bank_detail_1_screen.dart';
 import 'package:credify/Screens/complete_KYC_1_screen.dart';
@@ -263,11 +262,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ],
                           )
                         : Container(),
+//                    isPersonalLoanAvailed == true
+//                        ? DashBoardLoanTable(
+//                            relationMap: relationMap,
+//                          )
+//                        : Container(),
                     isPersonalLoanAvailed == true
-                        ? DashBoardLoanTable(
-                            relationMap: relationMap,
+                        ? Padding(
+                            padding: const EdgeInsets.all(45.0),
+                            child: Container(
+                              child: Center(
+                                child: Text(
+                                  "Your Loan is under process and We will notify you soon!!",
+                                  style: Theme.of(context)
+                                      .accentTextTheme
+                                      .display2
+                                      .copyWith(letterSpacing: 2),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
                           )
-                        : Container(),
+                        : Container()
                   ],
                 ),
               ],
