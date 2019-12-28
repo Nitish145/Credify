@@ -17,6 +17,7 @@ class PersonalLoanScreen extends StatefulWidget {
 class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
   bool areTermsAccepted = false;
   String purposeOfLoan;
+  TextEditingController purposeOfLoanController = new TextEditingController();
   var formKey = new GlobalKey<FormState>();
 
   @override
@@ -185,6 +186,7 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                             padding: const EdgeInsets.only(
                                 top: 20, left: 30, right: 30, bottom: 20),
                             child: TextFormField(
+                              controller: purposeOfLoanController,
                               keyboardType: TextInputType.text,
                               style: Theme.of(context).accentTextTheme.display3,
                               cursorColor: credifyBlack,
@@ -264,16 +266,21 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
             child: Container(
               height: 60,
               width: MediaQuery.of(context).size.width,
-              color: areTermsAccepted ? credifyBlue : credifyDarkGrey,
+              color:
+                  areTermsAccepted && purposeOfLoanController.text.length >= 5
+                      ? credifyBlue
+                      : credifyDarkGrey,
               child: FlatButton(
                 child: Text(
                   "Confirm and Continue",
-                  style: areTermsAccepted
+                  style: areTermsAccepted &&
+                          purposeOfLoanController.text.length >= 5
                       ? Theme.of(context).primaryTextTheme.display3
                       : Theme.of(context).accentTextTheme.display3,
                 ),
                 onPressed: () {
-                  if (areTermsAccepted) {
+                  if (areTermsAccepted &&
+                      purposeOfLoanController.text.length >= 5) {
                     setState(() {
                       isLoading = true;
                     });
@@ -310,7 +317,8 @@ class _PersonalLoanScreenState extends State<PersonalLoanScreen> {
                     }
                   } else {
                     Fluttertoast.showToast(
-                        msg: "Please acknowledge Terms & Conditions");
+                        msg:
+                            "Please acknowledge Terms & Conditions or enter at least 5 characters for purpose");
                   }
                 },
               ),
