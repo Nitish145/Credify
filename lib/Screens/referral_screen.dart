@@ -29,7 +29,7 @@ class _ReferralScreenState extends State<ReferralScreen> with RouteAware {
         displayReferCode = sharedPrefs.getString("referralCode");
         totalEarnedAmount = sharedPrefs.getInt("referrBonus");
         referText =
-            "Register on CREDIFY with $displayReferCode and earn Rs.50 Download on $playStoreLink";
+            "Register on CREDIFY with $displayReferCode and earn Rs.50 Download on $playStoreLink: https://play.google.com/store/apps/details?id=com.credit.credify";
       });
     });
   }
