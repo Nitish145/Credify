@@ -27,6 +27,8 @@ class _CompleteKYC1State extends State<CompleteKYC1> with RouteAware {
 
   String nameFetched;
 
+  bool isPanInfoLoading = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -162,11 +164,21 @@ class _CompleteKYC1State extends State<CompleteKYC1> with RouteAware {
                           },
                           onChanged: (_panNumber) {
                             if (_panNumber.length == 10) {
+                              setState(() {
+                                isPanInfoLoading = true;
+                              });
                               verifyPan(_panNumber).then((panDetails) {
                                 nameFetched = panDetails.data.fullName;
+                                setState(() {
+                                  isPanInfoLoading = false;
+                                });
                               }).catchError((e) {
+                                setState(() {
+                                  isPanInfoLoading = false;
+                                });
                                 Fluttertoast.showToast(
-                                    msg: "Unable to fetch PAN details");
+                                    msg:
+                                        "Unable to fetch PAN details. Please Try again later");
                               });
                             }
                           },
@@ -288,9 +300,13 @@ class _CompleteKYC1State extends State<CompleteKYC1> with RouteAware {
                 )
               ],
             ),
-            UndismissableProgressBar(
-              message: "Saving",
-            )
+            isPanInfoLoading
+                ? UndismissableProgressBar(
+                    message: "Fetching Pan Info",
+                  )
+                : UndismissableProgressBar(
+                    message: "Saving",
+                  )
           ],
         ),
       ),
