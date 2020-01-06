@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:credify/Components/credify_card.dart';
 import 'package:credify/Components/dashboard_card.dart';
+import 'package:credify/Components/due_date_vs_amount_table.dart';
 import 'package:credify/Models/user_data_model.dart';
 import 'package:credify/Screens/bank_detail_1_screen.dart';
 import 'package:credify/Screens/complete_KYC_1_screen.dart';
@@ -30,7 +31,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool isKycDone;
   bool isBankAccountAdded;
   bool isJobProfileUpdated;
-  bool isPersonalLoanAvailed;
+  bool isPersonalLoanRequested;
+  bool isPersonalLoanApproved;
+  bool isPersonalLoanSanctioned;
 
   bool isLoanAvailable = false;
 
@@ -44,7 +47,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         sharedPrefs.setString("referralCode", userData.referralCode);
         sharedPrefs.setString("referredBy", userData.referredBy);
         sharedPrefs.setInt("referrBonus", userData.referrBonus);
-        sharedPrefs.setBool("loanTaken", userData.loanTaken);
+        sharedPrefs.setBool("loanRequested", userData.loanRequest);
+        sharedPrefs.setBool("loanApproved", userData.loanApproved);
+        sharedPrefs.setBool("loanSanctioned", userData.loanSanctioned);
         sharedPrefs.setBool("isProfileUpdated", userData.isProfileUpdated);
         setState(() {
           currentUserData = userData;
@@ -53,12 +58,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ? userData.bankDetailsProvided
               : false;
           isJobProfileUpdated = userData.isProfileUpdated;
-          isPersonalLoanAvailed = userData.loanTaken;
+          isPersonalLoanRequested = userData.loanRequest;
+          isPersonalLoanApproved = userData.loanApproved;
+          isPersonalLoanSanctioned = userData.loanSanctioned;
 
           isLoanAvailable =
               isKycDone && isBankAccountAdded && isJobProfileUpdated;
         });
-        if (userData.loanTaken) {
+        if (isPersonalLoanApproved) {
           getLoanDetails(sharedPrefs.getString("currentUserId"))
               .then((loanResponse) {
             DateTime startDateTime = getDateTimeObject(loanResponse.startDate);
@@ -199,11 +206,78 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void onTodo4Tapped() {
-    if (!isPersonalLoanAvailed && isLoanAvailable) {
+    if (isPersonalLoanRequested != true && isLoanAvailable) {
       logEvent("Apply for Personal Loan Tapped",
           eventParameters: {"user_data": currentUserData.toJson().toString()});
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => PersonalLoanScreen()));
+    }
+  }
+
+  Widget getLoanWidget() {
+    if (isPersonalLoanRequested == true &&
+        isPersonalLoanApproved != true &&
+        isPersonalLoanSanctioned != true) {
+      return Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+              child: Image.asset(
+                "assets/images/loan_process.png",
+                height: 150,
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text(
+                  "Your Loan is under process and We will notify on approval.",
+                  style: Theme.of(context)
+                      .accentTextTheme
+                      .display3
+                      .copyWith(letterSpacing: 2),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else if (isPersonalLoanApproved == true &&
+        isPersonalLoanSanctioned != true) {
+      return Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+              child: Image.asset(
+                "assets/images/loan_process.png",
+                height: 150,
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text(
+                  "Your Loan has been approved and will be dispatched soon.",
+                  style: Theme.of(context)
+                      .accentTextTheme
+                      .display2
+                      .copyWith(letterSpacing: 2),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else if (isPersonalLoanSanctioned == true) {
+      return DashBoardLoanTable(
+        relationMap: relationMap,
+      );
+    } else {
+      return Container();
     }
   }
 
@@ -235,7 +309,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       padding: const EdgeInsets.only(top: 70, bottom: 20),
                       child: CredifyCard(),
                     ),
-                    isPersonalLoanAvailed == false
+                    isPersonalLoanRequested == false
                         ? Column(
                             children: <Widget>[
                               Align(
@@ -256,34 +330,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   "Add Bank Account", onTodo2Tapped),
                               getTodoItem(isJobProfileUpdated,
                                   "Add your Job Profile", onTodo3Tapped),
-                              getTodoItem(isPersonalLoanAvailed,
+                              getTodoItem(isPersonalLoanRequested,
                                   "Apply for Personal Loan", onTodo4Tapped,
                                   isItemLocked: !isLoanAvailable),
                             ],
                           )
                         : Container(),
-//                    isPersonalLoanAvailed == true
-//                        ? DashBoardLoanTable(
-//                            relationMap: relationMap,
-//                          )
-//                        : Container(),
-                    isPersonalLoanAvailed == true
-                        ? Padding(
-                            padding: const EdgeInsets.all(45.0),
-                            child: Container(
-                              child: Center(
-                                child: Text(
-                                  "Your Loan is under process and We will notify you soon!!",
-                                  style: Theme.of(context)
-                                      .accentTextTheme
-                                      .display2
-                                      .copyWith(letterSpacing: 2),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container()
+                    getLoanWidget(),
                   ],
                 ),
               ],
@@ -292,7 +345,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           SizedBox(
             height: 20,
           ),
-          isPersonalLoanAvailed == false
+          isPersonalLoanRequested == false
               ? GestureDetector(
                   onTap: onTodo4Tapped,
                   child: Padding(

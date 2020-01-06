@@ -22,8 +22,10 @@ class UserData {
   String kycId;
   int kycProgress;
   bool kycStatus;
+  bool loanApproved;
   String loanId;
-  bool loanTaken;
+  bool loanRequest;
+  bool loanSanctioned;
   String mobileNumber;
   List<dynamic> packages;
   int referrBonus;
@@ -44,8 +46,10 @@ class UserData {
     this.kycId,
     this.kycProgress,
     this.kycStatus,
+    this.loanApproved,
     this.loanId,
-    this.loanTaken,
+    this.loanRequest,
+    this.loanSanctioned,
     this.mobileNumber,
     this.packages,
     this.referrBonus,
@@ -67,8 +71,10 @@ class UserData {
         kycId: json["kyc_id"],
         kycProgress: json["kyc_progress"],
         kycStatus: json["kyc_status"],
+        loanApproved: json["loan_approved"],
         loanId: json["loan_id"],
-        loanTaken: json["loan_taken"],
+        loanRequest: json["loan_request"],
+        loanSanctioned: json["loan_sanctioned"],
         mobileNumber: json["mobile_number"],
         packages: List<dynamic>.from(json["packages"].map((x) => x)),
         referrBonus: json["referr_bonus"],
@@ -90,8 +96,10 @@ class UserData {
         "kyc_id": kycId,
         "kyc_progress": kycProgress,
         "kyc_status": kycStatus,
+        "loan_approved": loanApproved,
         "loan_id": loanId,
-        "loan_taken": loanTaken,
+        "loan_request": loanRequest,
+        "loan_sanctioned": loanSanctioned,
         "mobile_number": mobileNumber,
         "packages": List<dynamic>.from(packages.map((x) => x)),
         "referr_bonus": referrBonus,
