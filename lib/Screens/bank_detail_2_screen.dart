@@ -1,6 +1,5 @@
 import 'package:credify/Components/undismissable_progress_bar.dart';
 import 'package:credify/Models/bank_details_response.dart';
-import 'package:credify/Screens/statement_upload_screen.dart';
 import 'package:credify/Services/add_bank_data.dart';
 import 'package:credify/globals.dart';
 import 'package:flutter/material.dart';
@@ -230,11 +229,15 @@ class _BankDetailScreen2State extends State<BankDetailScreen2> {
 
                                   if (bankDetailsResponse != null &&
                                       bankDetailsResponse.updated) {
-                                    Navigator.push(
+//                                    Navigator.push(
+//                                        context,
+//                                        MaterialPageRoute(
+//                                            builder: (context) =>
+//                                                StatementUploadScreen()));
+                                    Navigator.pushNamedAndRemoveUntil(
                                         context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                StatementUploadScreen()));
+                                        "/navigationScreen",
+                                        (Route<dynamic> route) => false);
                                   } else {
                                     Fluttertoast.showToast(
                                       msg:
