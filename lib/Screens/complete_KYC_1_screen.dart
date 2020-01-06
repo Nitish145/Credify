@@ -165,15 +165,18 @@ class _CompleteKYC1State extends State<CompleteKYC1> with RouteAware {
                           onChanged: (_panNumber) {
                             if (_panNumber.length == 10) {
                               setState(() {
+                                isLoading = true;
                                 isPanInfoLoading = true;
                               });
                               verifyPan(_panNumber).then((panDetails) {
                                 nameFetched = panDetails.data.fullName;
                                 setState(() {
+                                  isLoading = false;
                                   isPanInfoLoading = false;
                                 });
                               }).catchError((e) {
                                 setState(() {
+                                  isLoading = false;
                                   isPanInfoLoading = false;
                                 });
                                 Fluttertoast.showToast(
