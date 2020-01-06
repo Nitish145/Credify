@@ -9,7 +9,6 @@ import 'package:credify/Screens/complete_KYC_1_screen.dart';
 import 'package:credify/Screens/complete_KYC_2_screen.dart';
 import 'package:credify/Screens/complete_KYC_3_screen.dart';
 import 'package:credify/Screens/personal_loan_screen.dart';
-import 'package:credify/Screens/profile_screenshot_screen.dart';
 import 'package:credify/Services/loan_details.dart';
 import 'package:credify/Services/user_data.dart';
 import 'package:credify/colors.dart';
@@ -30,7 +29,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   UserData currentUserData;
   bool isKycDone;
   bool isBankAccountAdded;
-  bool isJobProfileUpdated;
+
+  //bool isJobProfileUpdated;
   bool isPersonalLoanRequested;
   bool isPersonalLoanApproved;
   bool isPersonalLoanSanctioned;
@@ -57,13 +57,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           isBankAccountAdded = userData.bankDetailsProvided != null
               ? userData.bankDetailsProvided
               : false;
-          isJobProfileUpdated = userData.isProfileUpdated;
+          //isJobProfileUpdated = userData.isProfileUpdated;
           isPersonalLoanRequested = userData.loanRequest;
           isPersonalLoanApproved = userData.loanApproved;
           isPersonalLoanSanctioned = userData.loanSanctioned;
 
           isLoanAvailable =
-              isKycDone && isBankAccountAdded && isJobProfileUpdated;
+              isKycDone && isBankAccountAdded /*&& isJobProfileUpdated*/;
         });
         if (isPersonalLoanApproved) {
           getLoanDetails(sharedPrefs.getString("currentUserId"))
@@ -196,14 +196,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void onTodo3Tapped() {
-    if (!isJobProfileUpdated) {
-      logEvent("Add your Job Profile Tapped",
-          eventParameters: {"user_data": currentUserData.toJson().toString()});
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ProfileScreenshotScreen()));
-    }
-  }
+//  void onTodo3Tapped() {
+//    if (!isJobProfileUpdated) {
+//      logEvent("Add your Job Profile Tapped",
+//          eventParameters: {"user_data": currentUserData.toJson().toString()});
+//      Navigator.push(context,
+//          MaterialPageRoute(builder: (context) => ProfileScreenshotScreen()));
+//    }
+//  }
 
   void onTodo4Tapped() {
     if (isPersonalLoanRequested != true && isLoanAvailable) {
@@ -328,8 +328,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   onTodo1Tapped),
                               getTodoItem(isBankAccountAdded,
                                   "Add Bank Account", onTodo2Tapped),
-                              getTodoItem(isJobProfileUpdated,
-                                  "Add your Job Profile", onTodo3Tapped),
+//                              getTodoItem(isJobProfileUpdated,
+//                                  "Add your Job Profile", onTodo3Tapped),
                               getTodoItem(isPersonalLoanRequested,
                                   "Apply for Personal Loan", onTodo4Tapped,
                                   isItemLocked: !isLoanAvailable),
