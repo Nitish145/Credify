@@ -263,7 +263,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   "Your Loan has been approved and will be dispatched soon.",
                   style: Theme.of(context)
                       .accentTextTheme
-                      .display2
+                      .display3
                       .copyWith(letterSpacing: 2),
                   textAlign: TextAlign.center,
                 ),
