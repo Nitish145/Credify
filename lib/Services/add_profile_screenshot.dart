@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
+import 'package:credify/globals.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
-String url =
-    "http://ec2-3-133-147-228.us-east-2.compute.amazonaws.com:5000/api/v1";
 http.Client client = new http.Client();
 
 Future<bool> addScreenshotService(String id, int index, Asset asset) async {

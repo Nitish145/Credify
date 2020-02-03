@@ -1,6 +1,8 @@
 import 'package:credify/Components/contacts_model.dart';
 import 'package:flutter/material.dart';
 
+String url = "http://ec2-18-189-28-132.us-east-2.compute.amazonaws.com:5000/api/v1";
+
 bool isLoading = false;
 
 List<ContactsModel> selectedContacts = [];
